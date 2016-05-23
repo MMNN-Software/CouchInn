@@ -1,0 +1,65 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body{
+  margin-top:70px;
+  background: #F1F1F1;
+}
+.profile{
+  padding: 15px 0 !important
+}
+.profile img{
+  margin-left: 10px; 
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+}
+#login-dp{
+  min-width: 300px;
+  padding: 14px 14px 0;
+  overflow:hidden;
+}
+
+#login-dp .help-block{
+  font-size:12px    
+}
+
+#login-dp .bottom{
+  border-top:1px solid #ddd;
+  clear:both;
+  padding:14px;
+}
+
+#login-dp .forgot{
+  padding-top:10px;
+}
+
+#login-dp .social-buttons{
+  margin:12px 0    
+}
+
+#login-dp .social-buttons a{
+  width: 49%;
+}
+
+#login-dp .form-group {
+  margin-bottom: 10px;
+}
+
+.navbar-brand {
+  padding: 0px;
+}
+
+.navbar-brand>img {
+  height: 100%;
+  padding: 15px;
+  width: auto;
+}
+
+.publicacion img{
+  width: 100%
+}
