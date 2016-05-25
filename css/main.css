@@ -61,6 +61,32 @@ body{
   width: auto;
 }
 
+.listado-publicaciones{
+  margin-top:10px;
+}
+
 .publicacion img{
-  width: 100%
+  width: 100%;
+}
+
+.dropdown .dropdown-menu {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+
+  max-height: 0;
+  display: block;
+  overflow: hidden;
+  opacity: 0
+}
+
+.addcat-modal{
+  max-width: 300px;
+}
+
+.dropdown.open .dropdown-menu {
+    max-height: 300px;
+    opacity: 1;
 }

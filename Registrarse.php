@@ -66,10 +66,10 @@
 <div class="container">
 <div class="row">
 <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
-<form action="#" method="post" class="form" role="form">
+<form action="/Registrarse.php" method="post" class="form" role="form">
   <div class="panel panel-default animated slideInDown">
     <div class="panel-body">
-      <h5>Registrarme</h5>
+      <h5>Registrarse</h5>
 
       <input type="hidden" name="registrarse" value="1">
 
