@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html<?php if(isset($headerbg)):?> style="background: url('<?php echo $headerbg; ?>');background-size: cover;background-position: center center"<?php endif; ?>>
 <head>
   <title>CouchInn</title>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="/img/logo.png" />
   <link rel="stylesheet" href="/css/reset.css" />
   <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/main.css" />
 </head>
 <body>
@@ -25,7 +26,7 @@
 
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav navbar-right">
-        <?php if (isset($_SESSION['usuario'])): ?>
+<?php if (isset($_SESSION['usuario'])): ?>
           <li class="dropdown"><?php include 'includes/user.php'; ?></li>
           <li>
             <p class="navbar-btn">
@@ -34,10 +35,21 @@
               </a>
             </p>
           </li>
-        <?php else: ?>
+<?php else: ?>
           <li><a href="/Registrarse.php">Registrarse</a></li>
-          <li class="dropdown"><?php include 'includes/login.php'; ?></li>
-        <?php endif ?>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ingresar</a>
+            <ul class="dropdown-menu" role="menu" id="login-dp">
+              <li>
+                <div class="row">
+                  <div class="col-md-12">
+                    <?php include 'includes/login.php'; ?>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+<?php endif; ?>
         </ul>
       </div>
     </div>

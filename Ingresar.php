@@ -1,6 +1,11 @@
 <?php 
   include 'includes/conexion.php';
 
+  if(isset($_SESSION['usuario'])){
+    header("Location: /");
+    die;
+  }
+
   function error($num = 0){
     header("Location: /Ingresar.php?error=".$num);
     die;

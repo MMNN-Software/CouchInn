@@ -8,8 +8,8 @@
   <?php if ($_SESSION['is_admin']): ?>
     <li><a href="/Administracion.php">Administración</a></li>
   <?php endif ?>
-    <li><a href="/MisPublicaciones.php">Publicaciones</a></li>
-    <li><a href="/MisPublicaciones.php">Valoraciones</a></li>
+    <!--<li><a href="/MisPublicaciones.php">Publicaciones</a></li>
+    <li><a href="/MisPublicaciones.php">Valoraciones</a></li>-->
     <li class="divider"></li>
     <li><a href="/logout.php">Cerrar Sesión</a></li>
   </ul>
