@@ -1,4 +1,4 @@
-<form class="form" role="form" method="POST" action="/Ingresar.php">
+<form class="form" role="form" method="POST" action="#" id="login_form">
   <input type="hidden" name="login" value="1">
   <div class="form-group">
     <label for="email">Dirección de correo electrónico</label>
@@ -12,6 +12,7 @@
       <a href="/Registrarse.php">Registrarme</a>
     </div>
   </div>
+  <p class="mensaje-de-error text-center text-danger"></p>
   <div class="form-group">
     <button type="submit" class="btn btn-success btn-block">Ingresar</button>
   </div>

@@ -2,6 +2,11 @@
 
   include 'includes/conexion.php';
 
+  if(isset($_SESSION['usuario'])){
+    header("Location: /");
+    die;
+  }
+
   define('NOMBRE_EMPTY',  1);
   define('EMAIL_EMPTY',   2);
   define('EMAIL_INVALID', 4);

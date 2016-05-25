@@ -7,13 +7,22 @@
   }
 
   function error($num = 0){
-    header("Location: /Ingresar.php?error=".$num);
+    $mensajes = array(
+      'Todo piola guachin',
+      'Falta indicar correo',
+      'Falta indicar correo',
+      'Usuario inexistente',
+      'Contraseña incorrecta'
+    );
+    $data = array('estado'=>(boolean)(!$num), 'mensaje'=>$mensajes[$num]);
+    header('Content-Type: application/json');
+    echo json_encode($data);
     die;
   }
 
   if( isset($_POST['login']) ){
     
-    if( !isset($_POST['email']) || !preg_match("/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/", $_POST['email']) ){
+    if( !isset($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ){
       error(1);
     }
 
@@ -39,11 +48,8 @@
     $_SESSION['nombre'] = $usuario['nombre'];
     $_SESSION['is_admin'] = ( $usuario['tipo'] == 'admin' );
 
-    header('Location: /');
-    die;
+    error(0);
 
   }
-
-  include 'includes/header.php';
-  include 'includes/footer.php';
+  header("Location: /");
 ?>

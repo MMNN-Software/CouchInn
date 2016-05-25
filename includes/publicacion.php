@@ -3,7 +3,7 @@
     <a href="#"><?php if (rand(0,1)): ?>
         <img src="/img/logo.png">
       <?php else: ?>
-        <img src="http://lorempixel.com/400/<?php echo rand(200,400); ?>">
+        <img src="http://lorempixel.com/400/<?php echo rand(200,400); ?>/">
     <?php endif ?></a>
     <div class="panel-body">
       <h6><b>Casita</b></h6>
