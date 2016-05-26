@@ -2,8 +2,8 @@
   include 'includes/conexion.php';
   include 'includes/header.php';
 ?>
-  <div class="container">
-    <div class="masonry listado-publicaciones">
+  <div class="container main">
+    <div class="masonry">
       <?php include 'includes/publicacion.php'; ?>
       <?php include 'includes/publicacion.php'; ?>
       <?php include 'includes/publicacion.php'; ?>

@@ -9,6 +9,7 @@
   <link rel="icon" type="image/png" href="/img/logo.png" />
   <link rel="stylesheet" href="/css/reset.css" />
   <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.vertical-tabs.min.css" />
   <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/main.css" />
 </head>
@@ -21,13 +22,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/"><img src="/img/logoc.png"></a>
+        <a class="navbar-brand animated fadeIn" href="/"><img src="/img/logoc.png"></a>
       </div>
 
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav navbar-right">
 <?php if (isset($_SESSION['usuario'])): ?>
-          <li class="dropdown"><?php include 'includes/user.php'; ?></li>
           <li>
             <p class="navbar-btn">
               <a href="/Agregar.php" class="btn btn-success">
@@ -35,6 +35,7 @@
               </a>
             </p>
           </li>
+          <li class="dropdown"><?php include 'includes/user.php'; ?></li>
 <?php else: ?>
           <li><a href="/Registrarse.php">Registrarse</a></li>
           <li class="dropdown">

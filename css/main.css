@@ -61,7 +61,7 @@ body{
   width: auto;
 }
 
-.listado-publicaciones{
+.container.main > div{
   margin-top:10px;
 }
 

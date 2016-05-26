@@ -29,6 +29,18 @@ $(document).ready(function () {
     });
   });
 
-  
+  $('#editCat').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var id = button.data('idcat');
+    var cat = button.data('categoria');
+    var modal = $(this);
+    modal.find('input[name=id]').val(id);
+    modal.find('.modal-body input[name=categoria]').val(cat).focus();
+  })
+
+  $('#addCat').on('show.bs.modal', function (event) {
+    var modal = $(this);
+    modal.find('.modal-body input').focus();
+  })
 
 });
