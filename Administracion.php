@@ -91,8 +91,8 @@
   </div>
 <?php endif ?>
   <div class="row">
-    <div class="col-sm-3">
-      <div class="panel panel-success">
+    <div class="col-sm-4">
+      <div class="panel panel-success" id="docked">
         <div class="panel-heading">Administración</div>
         <ul class="nav nav-tabs tabs-left">
           <li class="active"><a href="#categorias" data-toggle="tab">Categorías</a></li>
@@ -100,7 +100,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-8">
 
       <div class="tab-content">
         <div class="tab-pane active" id="categorias">
@@ -109,8 +109,7 @@
               <thead>
                 <tr>
                   <th>Categoría</th>
-                  <th>Publicaciones</th>
-                  <th>Acciones</th>
+                  <th colspan="2">Publicaciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -123,7 +122,12 @@
                 <tr>
                   <td><?php echo $categoria['nombre'];?></td>
                   <td><?php echo $categoria['pubs'];?></td>
-                  <td><a href="#" data-toggle="modal" data-target="#editCat" data-idcat="<?php echo $categoria['id'];?>" data-categoria="<?php echo htmlentities($categoria['nombre'], ENT_QUOTES);?>">Editar</a> - <a href="/Administracion.php?borrarCategoria=<?php echo $categoria['id'];?>">Borrar</a></td>
+                  <td style="text-align:right;padding: 5px 10px">
+                    <div class="btn-group">
+                      <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCat" data-idcat="<?php echo $categoria['id'];?>" data-categoria="<?php echo htmlentities($categoria['nombre'], ENT_QUOTES);?>"><span class="glyphicon glyphicon-edit"></span></a>
+                      <a href="/Administracion.php?borrarCategoria=<?php echo $categoria['id'];?>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Borrar</a>
+                      </div>
+                    </td>
                 </tr>
               <?php } ?>
                 <tr>
@@ -138,4 +142,14 @@
     </div>
   </div>
 </div>
-<?php include 'includes/footer.php'; ?>
+<?php 
+
+$javascripts = <<<EOD
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#docked').sticky({topSpacing:80});
+});
+</script>
+EOD;
+
+include 'includes/footer.php'; ?>

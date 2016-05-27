@@ -63,29 +63,52 @@
   $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$_SESSION['id']}'");
   $usuario = $usuario->fetch_assoc();
 
-  include 'includes/header.php';
-
-?>
+  include 'includes/header.php'; ?>
   <div class="container main">
     <div class="row">
       <div class="col-sm-4">
         <div class="panel panel-success">
-          <dir class="panel-body">
+          <div class="panel-body">
             <div class="profile-picture">
               <img src="/img/perfiles/<?php echo ($usuario['foto'])?$usuario['foto']:'default.png'; ?>" class="img-circle">
             </div>
             <h4><?php echo $usuario['nombre'] ?></h4>
             <p><?php echo $usuario['email'] ?></p>
+          </div>
+          <div class="panel-footer">
             <form action="/Perfil.php" method="POST" enctype="multipart/form-data" id="changeProfilePicture">
-              <span class="btn btn-success btn-block btn-file">Cambiar mi foto de perfil <input type="file" name="profile_picture"></span>
+              <span class="btn btn-success btn-block btn-file">Cambiar foto de perfil <input type="file" name="profile_picture"></span>
             </form>
-          </dir>
+          </div>
         </div>
       </div>
       <div class="col-sm-8">
         <div class="panel panel-success">
           <div class="panel-body">
-            <?php var_dump($usuario); ?>
+            <div class="row">
+              <div class="col-xs-6 text-right"><b>Tipo de usuario:</b></div>
+              <div class="col-xs-6">Básico - <a href="#">Mejorar</a></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 text-right"><b>DNI:</b></div>
+              <div class="col-xs-6"><?php echo $usuario['dni'] ?></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 text-right"><b>Religión:</b></div>
+              <div class="col-xs-6"><?php echo $usuario['religion'] ?></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 text-right"><b>Domicilio:</b></div>
+              <div class="col-xs-6"><?php echo $usuario['domicilio'] ?></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-6 text-right"><b>Sexo:</b></div>
+              <div class="col-xs-6"><?php echo $usuario['sexo'] ?></div>
+            </div>
+          </div>
+          <div class="panel-footer text-right">
+            <a href="#" class="btn btn-primary">Editar</a>
+            <a href="#" class="btn btn-danger">Dar de baja mi cuenta</a>
           </div>
         </div>
       </div>

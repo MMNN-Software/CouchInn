@@ -25,12 +25,22 @@
       </div>
 
       <div class="collapse navbar-collapse" id="navbar">
+        <div class="pull-left">
+          <form class="navbar-form" role="search" method="GET">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Buscar" name="q">
+              <div class="input-group-btn">
+                  <button class="btn btn-default btn-success" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
         <ul class="nav navbar-nav navbar-right">
 <?php if (isset($_SESSION['usuario'])): ?>
           <li>
             <p class="navbar-btn">
               <a href="/Agregar.php" class="btn btn-success">
-                Agregar publicación
+                Agregar
               </a>
             </p>
           </li>
@@ -54,5 +64,58 @@
       </div>
     </div>
   </nav>
+
+  <div class="navbar navbar-default search-bar animated slideInDown">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="control-label">Localidad</label>
+            <input type="text" class="form-control" placeholder="Localidad">
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <label class="control-label">Categoría</label>
+          <?php $categorias = $conexion->query("SELECT * FROM categoria"); ?>
+            <select name="categoria" class="form-control">
+            <?php while ( $categoria = $categorias->fetch_assoc() ){ ?>
+              <option value="<?php echo $categoria['id']?>">
+                <?php echo $categoria['nombre']?>
+              </option>
+            <?php } ?>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <label class="control-label">Fecha entrada</label>
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+              <input type="text" class="form-control" placeholder="Entrada">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-group">
+            <label class="control-label">Fecha salida</label>
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+              <input type="text" class="form-control" placeholder="Salida">
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label class="control-label">Cantidad de personas</label>
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+              <input type="text" class="form-control" placeholder="Plazas">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   

@@ -153,3 +153,10 @@ body{
 .shadow{
   box-shadow: 0 0 5px 0 #222;
 }
+.container.main{
+  padding-top: 15px;
+}
+
+.search-bar .container{
+  margin-top:10px;
+}
