@@ -61,10 +61,6 @@ body{
   width: auto;
 }
 
-.container.main > div{
-  margin-top:10px;
-}
-
 .publicacion img{
   width: 100%;
 }
@@ -87,6 +83,73 @@ body{
 }
 
 .dropdown.open .dropdown-menu {
-    max-height: 300px;
-    opacity: 1;
+  max-height: 300px;
+  opacity: 1;
+}
+.tabs-left {
+  border-bottom: none;
+  padding-top: 2px;
+}
+.tabs-left {
+  border-right: 1px solid #ddd;
+}
+.tabs-left>li{
+  float: none;
+  margin-bottom: 2px;
+}
+.tabs-left>li {
+  margin-right: -1px;
+}
+.tabs-right>li {
+  margin-left: -1px;
+}
+.tabs-left>li.active>a,
+.tabs-left>li.active>a:hover,
+.tabs-left>li.active>a:focus {
+  border-bottom-color: #ddd;
+  border-right-color: transparent;
+}
+
+.tabs-left>li>a {
+  margin-right: 0;
+  display:block;
+}
+
+.profile-picture{
+  text-align: center;
+}
+.profile-picture img{
+  width:70%;
+  margin: 15px 0
+}
+.navbar-nav>li>a.profile-image img{
+  width: 30px;
+}
+
+.navbar-nav>li>a.profile-image {
+  padding-top: 17px;
+  padding-bottom: 17px;
+}
+.btn-file {
+  position: relative;
+  overflow: hidden;
+}
+.btn-file input[type=file] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  min-width: 100%;
+  min-height: 100%;
+  font-size: 100px;
+  text-align: right;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  outline: none;
+  background: white;
+  cursor: inherit;
+  display: block;
+}
+
+.shadow{
+  box-shadow: 0 0 5px 0 #222;
 }

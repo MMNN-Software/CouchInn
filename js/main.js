@@ -1,3 +1,18 @@
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
 $(document).ready(function () {
   var $container = $('.masonry');
 
@@ -21,7 +36,11 @@ $(document).ready(function () {
       success: function(data){
         console.log(data);
         if(data.estado){
-          document.location.href = "/";
+          if( url = getUrlParameter('next')){
+            document.location.href = url;
+          }else{
+            document.location.href = "/";
+          }
         }else{
           $('#login_form .mensaje-de-error').html(data.mensaje);
         }
@@ -41,6 +60,9 @@ $(document).ready(function () {
   $('#addCat').on('show.bs.modal', function (event) {
     var modal = $(this);
     modal.find('.modal-body input').focus();
-  })
-
+  });
+  
+  $("#changeProfilePicture input[type=file]").change(function() {
+      $(this).closest("form").submit();
+  });
 });

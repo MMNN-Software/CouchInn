@@ -1,7 +1,65 @@
 <?php
   include 'includes/conexion.php';
+
   include 'includes/isUser.php';
   
+  if(isset($_FILES['profile_picture'])){
+    $archivo = $_FILES['profile_picture'];
+    $nombre = md5($_SESSION['id']).'.jpg';
+    $imgSrc = 'img/perfiles/'.$nombre;
+    move_uploaded_file($archivo['tmp_name'], $imgSrc);
+    switch ($archivo['type']) {
+
+      case 'image/jpg':
+        $myImage = imagecreatefromjpeg($imgSrc);
+        break;
+
+      case 'image/jpeg':
+        $myImage = imagecreatefromjpeg($imgSrc);
+        break;
+
+      case 'image/gif':
+        $myImage = imagecreatefromgif($imgSrc);
+        break;
+
+      case 'image/png':
+        $myImage = imagecreatefrompng($imgSrc);
+        break;
+      
+      default:
+        $error = "Tipo de archivo no soportado.";
+        break;
+    }
+
+    if(empty($error)){
+      list($width, $height) = getimagesize($imgSrc);
+
+      $myImage = imagecreatefromjpeg($imgSrc);
+
+      // calculating the part of the image to use for thumbnail
+      if ($width > $height) {
+        $y = 0;
+        $x = ($width - $height) / 2;
+        $smallestSide = $height;
+      } else {
+        $x = 0;
+        $y = ($height - $width) / 2;
+        $smallestSide = $width;
+      }
+
+      // copying the part into thumbnail
+      $thumbSize = 480;
+      $thumb = imagecreatetruecolor($thumbSize, $thumbSize);
+      imagecopyresampled($thumb, $myImage, 0, 0, $x, $y, $thumbSize, $thumbSize, $smallestSide, $smallestSide);
+      imagejpeg($thumb,$imgSrc,90);
+      $conexion->query("UPDATE usuario SET foto = '{$nombre}' WHERE id = '{$_SESSION['id']}';");
+      header("Location: /Perfil.php");
+      die;
+    }else{
+      unlink($imgsrc);
+    }
+  }
+
   $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$_SESSION['id']}'");
   $usuario = $usuario->fetch_assoc();
 
@@ -12,84 +70,23 @@
     <div class="row">
       <div class="col-sm-4">
         <div class="panel panel-success">
-          <?php var_dump($usuario); ?>
+          <dir class="panel-body">
+            <div class="profile-picture">
+              <img src="/img/perfiles/<?php echo ($usuario['foto'])?$usuario['foto']:'default.png'; ?>" class="img-circle">
+            </div>
+            <h4><?php echo $usuario['nombre'] ?></h4>
+            <p><?php echo $usuario['email'] ?></p>
+            <form action="/Perfil.php" method="POST" enctype="multipart/form-data" id="changeProfilePicture">
+              <span class="btn btn-success btn-block btn-file">Cambiar mi foto de perfil <input type="file" name="profile_picture"></span>
+            </form>
+          </dir>
         </div>
-
       </div>
       <div class="col-sm-8">
         <div class="panel panel-success">
-          <form class="form-horizontal">
-  <fieldset>
-    <legend>Legend</legend>
-    <div class="form-group">
-      <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-      <div class="col-lg-10">
-        <input type="text" class="form-control" id="inputEmail" placeholder="Email">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-      <div class="col-lg-10">
-        <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox"> Checkbox
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="textArea" class="col-lg-2 control-label">Textarea</label>
-      <div class="col-lg-10">
-        <textarea class="form-control" rows="3" id="textArea"></textarea>
-        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-lg-2 control-label">Radios</label>
-      <div class="col-lg-10">
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-            Option one is this
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-            Option two can be something else
-          </label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="select" class="col-lg-2 control-label">Selects</label>
-      <div class="col-lg-10">
-        <select class="form-control" id="select">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-        <br>
-        <select multiple="" class="form-control">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-lg-10 col-lg-offset-2">
-        <button type="reset" class="btn btn-default">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </div>
-  </fieldset>
-</form>
+          <div class="panel-body">
+            <?php var_dump($usuario); ?>
+          </div>
         </div>
       </div>
     </div>

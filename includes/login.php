@@ -12,7 +12,7 @@
       <a href="/Registrarse.php">Registrarme</a>
     </div>
   </div>
-  <p class="mensaje-de-error text-center text-danger"></p>
+  <p class="mensaje-de-error text-center text-danger"><?php if (isset($_GET['login'])): ?>Es necesario ingresar<?php endif ?></p>
   <div class="form-group">
     <button type="submit" class="btn btn-success btn-block">Ingresar</button>
   </div>

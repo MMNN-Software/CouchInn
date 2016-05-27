@@ -1,8 +1,11 @@
+<?php 
+  $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$_SESSION['id']}'");
+  $usuario = $usuario->fetch_assoc(); ?>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-    <span class="glyphicon glyphicon-user"></span> 
+  <a href="#" class="dropdown-toggle profile-image" data-toggle="dropdown">
+    <img src="/img/perfiles/<?php echo ($usuario['foto'])?$usuario['foto']:'default.png'; ?>" class="img-circle shadow">
     <?php echo $_SESSION['nombre']; ?>
-    <span class="glyphicon glyphicon-chevron-down"></span>
+    <b class="caret"></b>
   </a>
   <ul class="dropdown-menu">
   <?php if ($_SESSION['is_admin']): ?>

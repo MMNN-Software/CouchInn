@@ -9,7 +9,6 @@
   <link rel="icon" type="image/png" href="/img/logo.png" />
   <link rel="stylesheet" href="/css/reset.css" />
   <link rel="stylesheet" href="/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/css/bootstrap.vertical-tabs.min.css" />
   <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/main.css" />
 </head>
@@ -38,7 +37,7 @@
           <li class="dropdown"><?php include 'includes/user.php'; ?></li>
 <?php else: ?>
           <li><a href="/Registrarse.php">Registrarse</a></li>
-          <li class="dropdown">
+          <li class="dropdown<?php if(isset($_GET['login'])):?> open<?php endif;?>">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Ingresar</a>
             <ul class="dropdown-menu" role="menu" id="login-dp">
               <li>
