@@ -72,15 +72,22 @@
   }
 
   if(isset($_POST['tarjeta'])){
-    if( !preg_match("[0-9]{16}", $_POST['tarjeta']) or !luhn_check($_POST['tarjeta'])){
+    $pagos = $conexion->query("SELECT * FROM pago WHERE usuario_id = '{$_SESSION['id']}'");
+
+    if($pagos->num_rows){
+      $error = "Ya sos premium";
+    }
+
+    if( !preg_match("/^[0-9]{16}$/", $_POST['tarjeta']) or !luhn_check($_POST['tarjeta'])){
       $error = "El número de tarjeta parece ser inválido";
     }
-    if( !preg_match("[0-9]{16}", $_POST['tarjeta']) or !luhn_check($_POST['tarjeta'])){
-      $error = "El número de tarjeta parece ser inválido";
+    if( !preg_match("/^([01][0-2]|0?[1-9])\/[1-5][0-9]$/", $_POST['expires']) ){
+      $error = "La fecha de vencimiento de la tarjeta parece ser inválida";
     }
-    if( !preg_match("[0-9]{16}", $_POST['tarjeta']) or !luhn_check($_POST['tarjeta'])){
-      $error = "El número de tarjeta parece ser inválido";
+    if( !preg_match("/^[0-9]{3,4}$/", $_POST['ccv']) ){
+      $error = "El numero verificador parece ser inválido";
     }
+
     if(empty($error)){
       $hoy = date("Y-m-d H:i:s");
       $conexion->query("INSERT INTO pago(id, usuario_id, fecha, monto, tarjeta) VALUES (NULL,'{$_SESSION['id']}','{$hoy}',150,'{$_POST['tarjeta']}')");
@@ -109,20 +116,20 @@
               <div class="col-xs-12">
                 <label class="control-label">Número de tarjeta</label>
                 <div class="input-group">
-                  <input type="text"  name="tarjeta" class="form-control" placeholder="XXXXXXXXXXXXXXXX" required autofocus autocomplete="off">
+                  <input type="text"  name="tarjeta" class="form-control" placeholder="XXXXXXXXXXXXXXXX" minlength="16" maxlength="16" required autofocus autocomplete="off">
                   <span class="input-group-addon"><span class="glyphicon glyphicon-credit-card"></span></span>
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="form-group">
                   <label class="control-label">Fecha de vencimiento</label>
-                  <input type="text"  name="expires" class="form-control" placeholder="MM/AA" required autocomplete="off">
+                  <input type="text"  name="expires" class="form-control" placeholder="MM/AA" minlength="5" maxlength="5" required autocomplete="off">
                 </div>
               </div>
               <div class="col-xs-6">
                 <div class="form-group">
                   <label class="control-label">Código de seguridad</label>
-                  <input type="text"  name="ccv" class="form-control" placeholder="XXX" required autocomplete="off">
+                  <input type="text"  name="ccv" class="form-control" placeholder="XXX" required autocomplete="off" minlength="3" maxlength="4">
                 </div>
               </div>
             </div>
