@@ -65,4 +65,45 @@ $(document).ready(function () {
   $("#changeProfilePicture input[type=file]").change(function() {
       $(this).closest("form").submit();
   });
+
+  $("#search_input").autocomplete({
+    source: function( request, response ) {
+      $.ajax({
+        url: "/ciudades.php",
+        dataType: "json",
+        data: {
+          q: request.term
+        },
+        success: function( data ) {
+          response( data );
+        }
+      });
+    },
+    minLength: 3,
+    select: function( event, ui ) {
+      document.location.href = "/?ciudad="+ui.item.id;
+    }
+  }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<a>" + item.ciudad + ", " + item.provincia + " (" + item.publicaciones + ")</a>" )
+        .appendTo( ul );
+  };
+
+  $('#search-bar .input-daterange').datepicker({
+    format: "dd/mm/yy",
+    startDate: "today",
+    maxViewMode: 0,
+    language: "es",
+    todayHighlight: true,
+    autoclose: true
+  });
+
+  $('.container.main .masonry .publicacion .descripcion').readmore({
+    collapsedHeight: 120,
+    moreLink: '<a href="#">Leer Más</a>',
+    lessLink: '<a href="#">Leer Menos</a>',
+    afterToggle: function(){$('.masonry').masonry('layout');}
+  });
+
+  $('[data-toggle="tooltip"]').tooltip();
 });

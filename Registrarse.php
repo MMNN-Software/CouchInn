@@ -54,7 +54,7 @@
       $_POST['repass'],
       $_POST['sexo']);
     if(!$error){
-      header("Location: /Bienvenido.php");
+      header("Location: /?bienvenido");
       die;
     }
   }
