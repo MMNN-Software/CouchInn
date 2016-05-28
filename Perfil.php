@@ -233,7 +233,8 @@
         </div>
       </div>
       <div class="col-sm-8 col-lg-9">
-        <div class="panel panel-success">
+        <div class="panel panel-primary">
+          <div class="panel-heading">Datos personales</div>
           <div class="panel-body">
             <div class="row">
               <div class="col-xs-6 text-right"><b>Correo electrónico:</b></div>
