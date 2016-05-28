@@ -1,3 +1,7 @@
+$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+    event.preventDefault();
+    $(this).ekkoLightbox();
+}); 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
         sURLVariables = sPageURL.split('&'),
@@ -99,11 +103,13 @@ $(document).ready(function () {
   });
 
   $('.container.main .masonry .publicacion .descripcion').readmore({
-    collapsedHeight: 120,
-    moreLink: '<a href="#">Leer Más</a>',
-    lessLink: '<a href="#">Leer Menos</a>',
+    collapsedHeight: 160,
+    speed: 1,
+    moreLink: '<div class="text-center"><a href="#" class="readmore">Más <span class="glyphicon glyphicon-chevron-down"></span></a></div>',
+    lessLink: '<div class="text-center"><a href="#" class="readmore">Menos <span class="glyphicon glyphicon-chevron-up"></span></a></div>',
     afterToggle: function(){$('.masonry').masonry('layout');}
   });
+
 
   $('[data-toggle="tooltip"]').tooltip();
 });

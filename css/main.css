@@ -192,6 +192,17 @@ body{
   margin-bottom:0;
 }
 
+.publicacion .descripcion {
+  color: #888;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+
+.publicacion .readmore{
+  color: #BBB;
+  font-weight: bold;
+}
+
 .search-bar .container{
   margin-top:10px;
 }

@@ -45,7 +45,7 @@ if($publicaciones->num_rows){
         <div class="clearfix">
         <?php foreach ($imagenes as $img): ?>
           <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-            <a class="thumbnail" href="#">
+            <a class="thumbnail" href="/img/publicacion/<?php echo $img['path'] ?>" data-toggle="lightbox" data-gallery="publicacion">
               <img class="img-responsive" src="/img/publicacion/<?php echo $img['path'] ?>">
             </a>
           </div>

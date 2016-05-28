@@ -13,6 +13,7 @@
   <script type="text/javascript" src="/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="/js/bootstrap-datepicker.es.min.js"></script>
+  <script type="text/javascript" src="/js/ekko-lightbox.min.js"></script>
   <script type="text/javascript" src="/js/imagesloaded.pkgd.min.js"></script>
   <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
   <script type="text/javascript" src="/js/jquery.sticky.js"></script>

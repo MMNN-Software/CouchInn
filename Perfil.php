@@ -2,28 +2,47 @@
   include 'includes/conexion.php';
 
   include 'includes/isUser.php';
+
+
+  function luhn_check($number) {
+    $number=preg_replace('/\D/', '', $number);
+    $number_length=strlen($number);
+    $parity=$number_length % 2;
+    $total=0;
+    for ($i=0; $i<$number_length; $i++) {
+      $digit=$number[$i];
+      if ($i % 2 == $parity) {
+        $digit*=2;
+        if ($digit > 9) {
+          $digit-=9;
+        }
+      }
+      $total+=$digit;
+    }
+    return ($total % 10 == 0) ? TRUE : FALSE;
+  }
+
   
   if(isset($_FILES['profile_picture'])){
     $archivo = $_FILES['profile_picture'];
     $nombre = md5($_SESSION['id']).'.jpg';
     $imgSrc = 'img/perfiles/'.$nombre;
-    move_uploaded_file($archivo['tmp_name'], $imgSrc);
     switch ($archivo['type']) {
 
       case 'image/jpg':
-        $myImage = imagecreatefromjpeg($imgSrc);
+        $myImage = imagecreatefromjpeg($archivo['tmp_name']);
         break;
 
       case 'image/jpeg':
-        $myImage = imagecreatefromjpeg($imgSrc);
+        $myImage = imagecreatefromjpeg($archivo['tmp_name']);
         break;
 
       case 'image/gif':
-        $myImage = imagecreatefromgif($imgSrc);
+        $myImage = imagecreatefromgif($archivo['tmp_name']);
         break;
 
       case 'image/png':
-        $myImage = imagecreatefrompng($imgSrc);
+        $myImage = imagecreatefrompng($archivo['tmp_name']);
         break;
       
       default:
@@ -32,11 +51,7 @@
     }
 
     if(empty($error)){
-      list($width, $height) = getimagesize($imgSrc);
-
-      $myImage = imagecreatefromjpeg($imgSrc);
-
-      // calculating the part of the image to use for thumbnail
+      list($width, $height) = getimagesize($archivo['tmp_name']);
       if ($width > $height) {
         $y = 0;
         $x = ($width - $height) / 2;
@@ -46,8 +61,6 @@
         $y = ($height - $width) / 2;
         $smallestSide = $width;
       }
-
-      // copying the part into thumbnail
       $thumbSize = 480;
       $thumb = imagecreatetruecolor($thumbSize, $thumbSize);
       imagecopyresampled($thumb, $myImage, 0, 0, $x, $y, $thumbSize, $thumbSize, $smallestSide, $smallestSide);
@@ -55,8 +68,24 @@
       $conexion->query("UPDATE usuario SET foto = '{$nombre}' WHERE id = '{$_SESSION['id']}';");
       header("Location: /Perfil.php");
       die;
-    }else{
-      unlink($imgsrc);
+    }
+  }
+
+  if(isset($_POST['tarjeta'])){
+    if( !preg_match("[0-9]{16}", $_POST['tarjeta']) or !luhn_check($_POST['tarjeta'])){
+      $error = "El número de tarjeta parece ser inválido";
+    }
+    if( !preg_match("[0-9]{16}", $_POST['tarjeta']) or !luhn_check($_POST['tarjeta'])){
+      $error = "El número de tarjeta parece ser inválido";
+    }
+    if( !preg_match("[0-9]{16}", $_POST['tarjeta']) or !luhn_check($_POST['tarjeta'])){
+      $error = "El número de tarjeta parece ser inválido";
+    }
+    if(empty($error)){
+      $hoy = date("Y-m-d H:i:s");
+      $conexion->query("INSERT INTO pago(id, usuario_id, fecha, monto, tarjeta) VALUES (NULL,'{$_SESSION['id']}','{$hoy}',150,'{$_POST['tarjeta']}')");
+      $conexion->query("UPDATE usuario SET premium = 1 WHERE id = '{$_SESSION['id']}'");
+      $mensaje = "Tu usuario ahora es premium.";
     }
   }
 
@@ -67,16 +96,37 @@
 
 <div class="modal fade" id="mejorarCuenta">
   <form action="/Perfil.php" method="POST" class="form" role="form">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width:400px">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Mejorar Cuenta</h4>
         </div>
         <div class="modal-body">
-          <div class="form-group">
-            <input type="text"  name="categoria" class="form-control" placeholder="Tarjeta de crédito" required autofocus autocomplete="off">
-          </div>
+          <form class="form" action="/Perfil.php" method="POST">
+            <p>Se te cobrará un costo de membresía por única vez de $150</p>
+            <div class="row">
+              <div class="col-xs-12">
+                <label class="control-label">Número de tarjeta</label>
+                <div class="input-group">
+                  <input type="text"  name="tarjeta" class="form-control" placeholder="XXXXXXXXXXXXXXXX" required autofocus autocomplete="off">
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-credit-card"></span></span>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="control-label">Fecha de vencimiento</label>
+                  <input type="text"  name="expires" class="form-control" placeholder="MM/AA" required autocomplete="off">
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="control-label">Código de seguridad</label>
+                  <input type="text"  name="ccv" class="form-control" placeholder="XXX" required autocomplete="off">
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -111,6 +161,18 @@
 </div>
 
   <div class="container main">
+  <?php if (!empty($error)): ?>
+    <div class="alert alert-dismissible alert-danger">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <?php echo $error ?>
+    </div>
+  <?php endif ?>
+  <?php if (!empty($mensaje)): ?>
+    <div class="alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <?php echo $mensaje ?>
+    </div>
+  <?php endif ?>
     <div class="row">
       <div class="col-sm-4 col-lg-3">
         <div class="panel panel-success">
@@ -127,12 +189,18 @@
               <?php echo $usuario['nombre'] ?>
             </div>
             <div class="profile-usertitle-job">
-              Usuario base
+              <?php if ($usuario['premium']): ?>
+                Usuario Premium
+              <?php else: ?>
+                Usuario Base
+              <?php endif ?>
             </div>
           </div>
 
           <div class="profile-userbuttons">
-            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mejorarCuenta">Mejorar cuenta</button>
+            <?php if (!$usuario['premium']): ?>
+              <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mejorarCuenta">Mejorar cuenta</button>
+            <?php endif; ?>
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#darDeBaja">Dar de baja</button>
           </div>
 
