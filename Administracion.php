@@ -5,13 +5,26 @@
   include 'includes/isAdmin.php';
 
 
+  if(isset($_GET['borrarCategoria'])){
+    $categoria = $conexion->real_escape_string($_GET['borrarCategoria']);
+    $conexion->query("UPDATE categoria SET activa = 0 WHERE id = '{$categoria}';");
+    $mensaje = "Categoria borrada con éxito";
+  }
+
+
   if(isset($_POST['categoria'])){
     $categoria = trim($_POST['categoria']);
     if( !empty($categoria) ){
       $categoria = $conexion->real_escape_string($categoria);
-      $cat = $conexion->query("SELECT id FROM categoria WHERE nombre = '{$categoria}';");
+      $cat = $conexion->query("SELECT * FROM categoria WHERE nombre = '{$categoria}';");
       if($cat->num_rows){
-        $error = "La categoría ya existe.";
+        $categoria = $cat->fetch_assoc();
+        if(!$categoria['activa']){
+          $conexion->query("UPDATE categoria SET activa = 1 WHERE id = '{$categoria['id']}'");
+          $mensaje = "Categoria agregada con éxito";
+        }else{
+          $error = "La categoría ya existe.";
+        }
       }else{
         if(isset($_POST['id'])){
           $conexion->query("UPDATE categoria SET nombre = '{$categoria}' WHERE id = '{$_POST['id']}';");

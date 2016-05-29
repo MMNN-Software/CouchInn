@@ -154,8 +154,9 @@
           <h4 class="modal-title">Dar de baja</h4>
         </div>
         <div class="modal-body">
+          <p>Estas seguro? Ingresa tu contraseña por seguridad</p>
           <div class="form-group">
-            <input type="text"  name="categoria" class="form-control" placeholder="Tarjeta de crédito" required autofocus autocomplete="off">
+            <input type="password"  name="pass" class="form-control" placeholder="Contraseña" required autofocus autocomplete="off">
           </div>
         </div>
         <div class="modal-footer">
