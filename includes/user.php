@@ -9,7 +9,7 @@
   </a>
   <ul class="dropdown-menu">
   <?php if ($_SESSION['is_admin']): ?>
-    <li><a href="/Administracion.php">Administración</a></li>
+    <li><a href="/Administracion.php"><span class="glyphicon glyphicon-lock"></span> Administración</a></li>
   <?php endif ?>
     <li><a href="/Perfil.php"><span class="glyphicon glyphicon-user"></span> Mi Perfil</a></li>
     <li><a href="/Favoritos.php"><span class="glyphicon glyphicon-heart"></span> Favoritos</a></li>

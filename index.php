@@ -2,9 +2,10 @@
   include 'includes/conexion.php';
   include 'includes/header.php';
 
-  $publicaciones = $conexion->query("SELECT pu.id, pu.titulo, pu.capacidad, pu.descripcion, pu.fecha, ci.nombre as ciudad, pr.nombre as provincia, pu.ciudad_id, ca.nombre as categoria 
+  $publicaciones = $conexion->query("SELECT pu.id, pu.titulo, pu.capacidad, pu.descripcion, pu.fecha, ci.nombre as ciudad, pr.nombre as provincia, pu.ciudad_id, ca.nombre as categoria, u.premium
 FROM publicacion pu
 INNER JOIN categoria ca ON ca.id = pu.categoria_id
+INNER JOIN usuario u ON u.id = pu.usuario_id
 INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id");
 
