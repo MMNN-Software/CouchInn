@@ -234,34 +234,62 @@
         </div>
       </div>
       <div class="col-sm-8 col-lg-9">
-        <div class="panel panel-primary">
-          <div class="panel-heading">Datos personales</div>
-          <div class="panel-body">
-            <div class="row">
-              <div class="col-xs-6 text-right"><b>Correo electrónico:</b></div>
-              <div class="col-xs-6"><?php echo $usuario['email'] ?></div>
+        <form action="/Perfil.php" method="POST" class="form-horizontal" role="form">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Detalles de la cuenta</div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="input" class="col-sm-2 control-label">Correo electrónico:</label>
+                <div class="col-md-10 form-control-static">
+                  <?php echo htmlentities($usuario['email'], ENT_QUOTES); ?>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Tu nombre:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['nombre'], ENT_QUOTES); ?>" required="required">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">DNI:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['dni'], ENT_QUOTES); ?>">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Religión:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['religion'], ENT_QUOTES); ?>">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input" class="col-sm-2 control-label">Biografía:</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" rows="4" name="biografia"><?php echo $usuario['biografia'] ?></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Domicilio:</label>
+                <div class="col-sm-10">
+                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['domicilio'], ENT_QUOTES); ?>">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="input" class="col-sm-2 control-label">Sexo:</label>
+                <div class="col-sm-10">
+                  <select name="sexo" class="form-control">
+                    <option value=""<?php if (!$usuario['sexo']): ?> selected="selected"<?php endif ?>>Elige uno</option>
+                    <option value="F"<?php if ($usuario['sexo']=='F'): ?> selected="selected"<?php endif ?>>Mujer</option>
+                    <option value="M"<?php if ($usuario['sexo']=='M'): ?> selected="selected"<?php endif ?>>Hombre</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="row">
-              <div class="col-xs-6 text-right"><b>DNI:</b></div>
-              <div class="col-xs-6"><?php echo $usuario['dni'] ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6 text-right"><b>Religión:</b></div>
-              <div class="col-xs-6"><?php echo $usuario['religion'] ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6 text-right"><b>Domicilio:</b></div>
-              <div class="col-xs-6"><?php echo $usuario['domicilio'] ?></div>
-            </div>
-            <div class="row">
-              <div class="col-xs-6 text-right"><b>Sexo:</b></div>
-              <div class="col-xs-6"><?php echo $usuario['sexo'] ?></div>
+            <div class="panel-footer text-right">
+              <button type="submit" class="btn btn-primary">Actualizar información</button>
             </div>
           </div>
-          <div class="panel-footer text-right">
-            <a href="#" class="btn btn-primary">Editar</a>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
