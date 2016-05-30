@@ -43,7 +43,7 @@ $(document).ready(function () {
           if( url = getUrlParameter('next')){
             document.location.href = url;
           }else{
-            document.location.refresh();
+            document.location.reload();
           }
         }else{
           $('#login_form .mensaje-de-error').html(data.mensaje);

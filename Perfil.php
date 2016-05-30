@@ -1,7 +1,7 @@
 <?php
   include 'includes/conexion.php';
 
-  include 'includes/isUser.php';
+  //include 'includes/isUser.php';
 
 
   function luhn_check($number) {
@@ -108,121 +108,78 @@
     }
   }
 
-  $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$_SESSION['id']}'");
-  $usuario = $usuario->fetch_assoc();
+  $iduser = $conexion->real_escape_string((isset($_GET['id']))?$_GET['id']:$_SESSION['id']);
 
-  include 'includes/header.php'; ?>
+  $usuario_perfil = $conexion->query("SELECT * FROM usuario WHERE id = '{$iduser}'");
+  if($usuario_perfil->num_rows){
+    $usuario_perfil = $usuario_perfil->fetch_assoc();
+    $ismyprofile = !isset($_GET['id']) or $_GET['id'] == $_SESSION['id'];
+  }else{
+    $error = "El usuario no se ha encontrado";
+  }
 
-<div class="modal fade" id="mejorarCuenta">
-  <form action="/Perfil.php" method="POST" class="form" role="form">
-    <div class="modal-dialog" style="max-width:400px">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Mejorar Cuenta</h4>
-        </div>
-        <div class="modal-body">
-          <form class="form" action="/Perfil.php" method="POST">
-            <p>Se te cobrará un costo de membresía por única vez de $150</p>
-            <div class="row">
-              <div class="col-xs-12">
-                <label class="control-label">Número de tarjeta</label>
-                <div class="input-group">
-                  <input type="text"  name="tarjeta" class="form-control" placeholder="XXXXXXXXXXXXXXXX" minlength="16" maxlength="16" required autofocus autocomplete="off">
-                  <span class="input-group-addon"><span class="glyphicon glyphicon-credit-card"></span></span>
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label class="control-label">Fecha de vencimiento</label>
-                  <input type="text"  name="expires" class="form-control" placeholder="MM/AA" minlength="5" maxlength="5" required autocomplete="off">
-                </div>
-              </div>
-              <div class="col-xs-6">
-                <div class="form-group">
-                  <label class="control-label">Código de seguridad</label>
-                  <input type="text"  name="ccv" class="form-control" placeholder="XXX" required autocomplete="off" minlength="3" maxlength="4">
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-success">Mejorar</button>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+  include 'includes/header.php';?>
 
-
-<div class="modal fade" id="darDeBaja">
-  <form action="/Perfil.php" method="POST" class="form" role="form">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Dar de baja</h4>
-        </div>
-        <div class="modal-body">
-          <p>Estas seguro? Ingresa tu contraseña por seguridad</p>
-          <div class="form-group">
-            <input type="password"  name="pass" class="form-control" placeholder="Contraseña" required autofocus autocomplete="off">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> ELIMINAR MI CUENTA EN COUCHINN Y MIS PUBLICACIONES</button>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+  <?php if ($ismyprofile): ?>
+    <?php include 'includes/form_premium.php';?>
+    <?php include 'includes/form_baja.php'; ?>
+  <?php endif; ?>
 
   <div class="container main">
-  <?php if (!empty($error)): ?>
-    <div class="alert alert-dismissible alert-danger">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <?php echo $error ?>
-    </div>
-  <?php endif ?>
-  <?php if (!empty($mensaje)): ?>
-    <div class="alert alert-dismissible alert-success">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <?php echo $mensaje ?>
-    </div>
-  <?php endif ?>
+    <?php if (!empty($error)): ?>
+      <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <?php echo $error ?>
+      </div>
+    <?php endif ?>
+    <?php if (!empty($mensaje)): ?>
+      <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <?php echo $mensaje ?>
+      </div>
+    <?php endif ?>
+
+    <?php if (empty($error)): ?>
+      
     <div class="row">
       <div class="col-sm-4 col-lg-3">
         <div class="panel panel-success">
+          <?php if ($ismyprofile): ?>
           <form action="/Perfil.php" method="POST" enctype="multipart/form-data" id="changeProfilePicture">
             <div class="profile-picture img-circle shadow">
-              <img src="/img/perfiles/<?php echo ($usuario['foto'])?$usuario['foto']:'default.png'; ?>">
+              <img src="/img/perfiles/<?php echo ($usuario_perfil['foto'])?$usuario_perfil['foto']:'default.png'; ?>">
               <span class="mensaje-upload"><span class="glyphicon glyphicon-camera"></span> Subir</span>
               <input type="file" name="profile_picture" accept="image/*">
             </div>
           </form>
-
+          <?php else: ?>
+            <div id="changeProfilePicture">
+              <div class="profile-picture img-circle shadow">
+                <img src="/img/perfiles/<?php echo ($usuario_perfil['foto'])?$usuario_perfil['foto']:'default.png'; ?>">
+              </div>
+            </div>
+          <?php endif; ?>
           <div class="profile-usertitle">
             <div class="profile-usertitle-name">
-              <?php echo $usuario['nombre'] ?>
+              <?php echo $usuario_perfil['nombre'] ?>
             </div>
             <div class="profile-usertitle-job">
-              <?php if ($usuario['premium']): ?>
+              <?php if ($usuario_perfil['premium']): ?>
                 Usuario Premium
               <?php else: ?>
                 Usuario Base
               <?php endif ?>
             </div>
           </div>
-
+          
+          <?php if ($ismyprofile): ?>
           <div class="profile-userbuttons">
-            <?php if (!$usuario['premium']): ?>
+            <?php if (!$usuario_perfil['premium']): ?>
               <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#mejorarCuenta">Mejorar cuenta</button>
             <?php endif; ?>
             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#darDeBaja">Dar de baja</button>
           </div>
+          <?php endif ?>
 
           <div class="profile-usermenu">
             <ul class="nav">
@@ -235,6 +192,7 @@
         </div>
       </div>
       <div class="col-sm-8 col-lg-9">
+        <?php if ($ismyprofile): ?>
         <form action="/Perfil.php" method="POST" class="form-horizontal" role="form">
           <input type="hidden" name="update" value="1">
           <div class="panel panel-primary">
@@ -244,7 +202,7 @@
               <div class="form-group">
                 <labelclass="col-sm-2 control-label"><b>Correo electrónico:</b></label>
                 <div class="col-md-10 form-control-static">
-                  <?php echo htmlentities($usuario['email'], ENT_QUOTES); ?> <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Tu dirección de correo es privada"></span>
+                  <?php echo htmlentities($usuario_perfil['email'], ENT_QUOTES); ?> <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Tu dirección de correo es privada"></span>
                 </div>
               </div>
               <div class="form-group">
@@ -258,41 +216,41 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label"><b>Tu nombre:</b></label>
                 <div class="col-sm-10">
-                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['nombre'], ENT_QUOTES); ?>" required="required">
+                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario_perfil['nombre'], ENT_QUOTES); ?>" required="required">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label"><b>DNI:</b></label>
                 <div class="col-sm-10">
-                  <input type="text" name="dni" class="form-control" value="<?php echo htmlentities($usuario['dni'], ENT_QUOTES); ?>">
+                  <input type="text" name="dni" class="form-control" value="<?php echo htmlentities($usuario_perfil['dni'], ENT_QUOTES); ?>">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label"><b>Religión:</b></label>
                 <div class="col-sm-10">
-                  <input type="text" name="religion" class="form-control" value="<?php echo htmlentities($usuario['religion'], ENT_QUOTES); ?>">
+                  <input type="text" name="religion" class="form-control" value="<?php echo htmlentities($usuario_perfil['religion'], ENT_QUOTES); ?>">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label"><b>Biografía:</b></label>
                 <div class="col-sm-10">
-                  <textarea class="form-control" rows="2" name="biografia"><?php echo $usuario['biografia'] ?></textarea>
+                  <textarea class="form-control" rows="2" name="biografia"><?php echo $usuario_perfil['biografia'] ?></textarea>
                   <span class="help-block">Tu bigrafía será publica y aparecerá en todas tus publicaciones.</span>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label"><b>Domicilio:</b></label>
                 <div class="col-sm-10">
-                  <input type="text" name="domicilio" class="form-control" value="<?php echo htmlentities($usuario['domicilio'], ENT_QUOTES); ?>">
+                  <input type="text" name="domicilio" class="form-control" value="<?php echo htmlentities($usuario_perfil['domicilio'], ENT_QUOTES); ?>">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label"><b>Sexo:</b></label>
                 <div class="col-sm-10">
                   <select name="sexo" class="form-control">
-                    <option value=""<?php if (!$usuario['sexo']): ?> selected="selected"<?php endif ?>>Elige uno</option>
-                    <option value="F"<?php if ($usuario['sexo']=='F'): ?> selected="selected"<?php endif ?>>Mujer</option>
-                    <option value="M"<?php if ($usuario['sexo']=='M'): ?> selected="selected"<?php endif ?>>Hombre</option>
+                    <option value=""<?php if (!$usuario_perfil['sexo']): ?> selected="selected"<?php endif ?>>Elige uno</option>
+                    <option value="F"<?php if ($usuario_perfil['sexo']=='F'): ?> selected="selected"<?php endif ?>>Mujer</option>
+                    <option value="M"<?php if ($usuario_perfil['sexo']=='M'): ?> selected="selected"<?php endif ?>>Hombre</option>
                   </select>
                 </div>
               </div>
@@ -302,8 +260,10 @@
             </div>
           </div>
         </form>
+        <?php endif ?>
       </div>
     </div>
+    <?php endif ?>
   </div>
 <?php
 $javascripts = <<<EOD
