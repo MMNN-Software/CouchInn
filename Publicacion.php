@@ -63,7 +63,7 @@ if($publicaciones->num_rows){
             $i = 0;
             foreach ($imagenes as $img): ?>
               <div class="<?php if (!$i++): ?>col-xs-12 col-sm-8 col-md-6<?php else: ?>col-xs-6 col-sm-4 col-md-3<?php endif; ?>">
-                <a class="thumbnail" href="/img/publicacion/<?php echo $img['path'] ?>" data-toggle="lightbox" data-gallery="publicacion">
+                <a class="thumbnail" href="/img/publicacion/<?php echo $img['path'] ?>" data-toggle="lightbox" data-gallery="publicacion" data-title="<?php echo htmlentities($publicacion['titulo'], ENT_QUOTES); ?>">
                   <img class="img-responsive" src="/img/publicacion/<?php echo $img['path'] ?>">
                 </a>
               </div>
