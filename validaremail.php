@@ -35,9 +35,9 @@ include 'includes/conexion.php'; ?>
 		</body>
 		</html>';
 
-		$cabeceras  = ''. "\r\n";
+		$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
 		$cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$cabeceras .= 'From: Couchinn <couchinn@couchinn.com>' . "\r\n";
+		$cabeceras .= 'From: Codedrinks <mimail@codedrinks.com>' . "\r\n";
 		
 		mail($email, "Recuperar contraseña", $mensaje, $cabeceras);
 	}

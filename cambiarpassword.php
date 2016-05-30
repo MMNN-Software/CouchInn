@@ -14,29 +14,44 @@ if( $password1 != "" && $password2 != "" && $idusuario != "" && $token != "" ){
       <div class="col-md-8">
 <?php
 	
-	$sql = "SELECT * FROM resetpass WHERE idusuario = '$idusuario'";
+	$sql = " SELECT * FROM resetpass WHERE token = '$token' ";
 	$resultado = $conexion->query($sql);
-	
 	if( $resultado->num_rows > 0 ){
 		$usuario = $resultado->fetch_assoc();
-		
+		if( md5( $usuario['idusuario'] === $idusuario ) ){
 			if( $password1 === $password2 ){
 				$sql = "UPDATE usuario SET password = '".md5($password1)."' WHERE id = ".$usuario['idusuario'];
 				$resultado = $conexion->query($sql);
 				if($resultado){
-					$sql = "DELETE FROM resetpass WHERE idusuario = '$idusuario';";
+					$sql = "DELETE FROM resetpass WHERE token = '$token';";
 					$resultado = $conexion->query( $sql );
 				?>
 					<p> La contraseña se actualizó con exito. </p>
-				<?php	
+				<?php
 				}
-				
+				else{
+				?>
+					<p> Ocurrió un error al actualizar la contraseña, intentalo más tarde </p>
+				<?php
+				}
 			}
 			else{
 			?>
-			<p> Las contraseñas no coinciden </p>		
-	<?php	
-	}	
+			<p> Las contraseñas no coinciden </p>
+			<?php
+			}
+
+		}
+		else{
+?>
+<p> El token no es válido </p>
+<?php
+		}	
+	}
+	else{
+?>
+<p> El token no es válido </p>
+<?php
 	}
 	?>
 	</div>
@@ -44,9 +59,11 @@ if( $password1 != "" && $password2 != "" && $idusuario != "" && $token != "" ){
 	</div> <!-- /container -->
 <script src="js/jquery-1.11.1.js"></script>
     <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
 <?php
-	include 'includes/footer.php'
-	?>
-<?php
+}
+else{
+	header('Location:login.php');
 }
 ?>

@@ -5,7 +5,7 @@
 	$token = $_GET['token'];	
 	$idusuario = $_GET['idusuario'];
 	
-	$sql = "SELECT * FROM resetpass WHERE idusuario = '$idusuario'";
+	$sql = "SELECT * FROM resetpass WHERE token = '$token'";
 	$resultado = $conexion->query($sql);
 	
 	if( $resultado->num_rows > 0 ){
