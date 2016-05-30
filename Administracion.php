@@ -156,13 +156,13 @@
   </div>
 </div>
 <?php 
-
+/*
 $javascripts = <<<EOD
 <script type="text/javascript">
 $(document).ready(function(){
   $('#docked').sticky({topSpacing:80});
 });
 </script>
-EOD;
+EOD;*/
 
 include 'includes/footer.php'; ?>

@@ -13,7 +13,7 @@
   <?php endif ?>
     <li><a href="/Perfil.php"><span class="glyphicon glyphicon-user"></span> Mi Perfil</a></li>
     <li><a href="/Favoritos.php"><span class="glyphicon glyphicon-heart"></span> Favoritos</a></li>
-    <li><a href="/Publicaciones.php"><span class="glyphicon glyphicon-bed"></span> Mis Publicaciones</a></li>
+    <li><a href="/Publicaciones.php"><span class="glyphicon glyphicon-bed"></span> Publicaciones</a></li>
     <li><a href="/Valoraciones.php"><span class="glyphicon glyphicon-star"></span> Valoraciones</a></li>
     <li class="divider"></li>
     <li><a href="/logout.php">Cerrar Sesión</a></li>

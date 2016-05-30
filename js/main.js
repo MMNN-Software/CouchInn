@@ -112,4 +112,5 @@ $(document).ready(function () {
 
 
   $('[data-toggle="tooltip"]').tooltip();
+  $('#docked').sticky({topSpacing:70});
 });

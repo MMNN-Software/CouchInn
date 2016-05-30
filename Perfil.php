@@ -71,6 +71,18 @@
     }
   }
 
+  if(isset($_POST['update'])){
+    $nombre = $conexion->real_escape_string($_POST['nombre']);
+    $dni = $conexion->real_escape_string($_POST['dni']);
+    $domicilio = $conexion->real_escape_string($_POST['domicilio']);
+    $religion = $conexion->real_escape_string($_POST['religion']);
+    $sexo = $conexion->real_escape_string($_POST['sexo']);
+    $biografia = $conexion->real_escape_string($_POST['biografia']);
+    $conexion->query("UPDATE usuario SET nombre='{$nombre}',dni='{$dni}',domicilio='{$domicilio}',religion='{$religion}',sexo='{$sexo}',biografia='{$biografia}' WHERE id = '{$_SESSION['id']}' ");
+    $mensaje = "Tus datos fueron actualizados correctamente.";
+  }
+
+
   if(isset($_POST['tarjeta'])){
     $pagos = $conexion->query("SELECT * FROM pago WHERE usuario_id = '{$_SESSION['id']}'");
 
@@ -214,36 +226,35 @@
 
           <div class="profile-usermenu">
             <ul class="nav">
-              <li class="active">
-                <a href="#">
-                <i class="glyphicon glyphicon-info-sign"></i>
-                Información </a>
-              </li>
-              <li>
-                <a href="#">
-                <i class="glyphicon glyphicon-home"></i>
-                Mis Publicaciones </a>
-              </li>
-              <li>
-                <a href="#">
-                <i class="glyphicon glyphicon-star"></i>
-                Valoraciones </a>
-              </li>
+              <li class="active"><a href="/Perfil.php"><i class="glyphicon glyphicon-info-sign"></i> Información</a></li>
+              <li><a href="/Favoritos.php"><i class="glyphicon glyphicon-heart"></i> Favoritos</a></li>
+              <li><a href="/Publicaciones.php"><i class="glyphicon glyphicon-bed"></i> Publicaciones</a></li>
+              <li><a href="/Valoraciones.php"><i class="glyphicon glyphicon-star"></i> Valoraciones</a></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="col-sm-8 col-lg-9">
         <form action="/Perfil.php" method="POST" class="form-horizontal" role="form">
+          <input type="hidden" name="update" value="1">
           <div class="panel panel-primary">
-            <div class="panel-heading">Detalles de la cuenta</div>
             <div class="panel-body">
+              <h5>Detalles de la cuenta</h5>
+              <hr>
               <div class="form-group">
                 <label for="input" class="col-sm-2 control-label">Correo electrónico:</label>
                 <div class="col-md-10 form-control-static">
-                  <?php echo htmlentities($usuario['email'], ENT_QUOTES); ?>
+                  <?php echo htmlentities($usuario['email'], ENT_QUOTES); ?> <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Tu dirección de correo es privada"></span>
                 </div>
               </div>
+              <div class="form-group">
+                <label for="input" class="col-sm-2 control-label">Contraseña:</label>
+                <div class="col-md-10 form-control-static">
+                  <a href="/CambiarClave.php">Cambiar</a>
+                </div>
+              </div>
+              <h5>Detalles personales</h5>
+              <hr>
               <div class="form-group">
                 <label class="col-sm-2 control-label">Tu nombre:</label>
                 <div class="col-sm-10">
@@ -253,13 +264,13 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">DNI:</label>
                 <div class="col-sm-10">
-                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['dni'], ENT_QUOTES); ?>">
+                  <input type="text" name="dni" class="form-control" value="<?php echo htmlentities($usuario['dni'], ENT_QUOTES); ?>">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-2 control-label">Religión:</label>
                 <div class="col-sm-10">
-                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['religion'], ENT_QUOTES); ?>">
+                  <input type="text" name="religion" class="form-control" value="<?php echo htmlentities($usuario['religion'], ENT_QUOTES); ?>">
                 </div>
               </div>
               <div class="form-group">
@@ -271,7 +282,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">Domicilio:</label>
                 <div class="col-sm-10">
-                  <input type="text" name="nombre" class="form-control" value="<?php echo htmlentities($usuario['domicilio'], ENT_QUOTES); ?>">
+                  <input type="text" name="domicilio" class="form-control" value="<?php echo htmlentities($usuario['domicilio'], ENT_QUOTES); ?>">
                 </div>
               </div>
               <div class="form-group">
