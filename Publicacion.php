@@ -47,26 +47,29 @@ if($publicaciones->num_rows){
       <div class="panel panel-default">
         <div class="panel-heading">
           <div class="pull-right">
-            <a href="#" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-heart"></span> a favoritos</a>
+            <a href="#" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-heart"></span><span class="hidden-xs"> a favoritos</span></a>
             <a href="#" class="btn btn-sm btn-success">Ofertar</a><!--
             <a href="#" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
             <a href="#" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Borrar</a>-->
           </div>
           <a href="#" class="btn btn-sm btn-primary" onclick="history.back();return false;"><span class="glyphicon glyphicon-menu-left"></span> Volver al listado</a>
         </div>
+        <div class="publicacion-header">
+          <h4><?php echo $publicacion['titulo']?></h4>
+        </div>
         <div class="panel-body">
-
+          <p><a href="/?categoria=<?php echo $publicacion['categoria_id'] ?>"><?php echo $publicacion['categoria'] ?></a> en <a href="/?ciudad=<?php echo $publicacion['ciudad_id'] ?>"><?php echo $publicacion['ciudad'] ?>, <?php echo $publicacion['provincia'] ?></a> para <a href="/?capacidad=<?php echo $publicacion['capacidad'] ?>"><?php echo $publicacion['capacidad'] ?> persona<?php if ($publicacion['capacidad']!=1): ?>s<?php endif ?></a></p>
           <div class="clearfix">
-            <?php foreach ($imagenes as $img): ?>
-              <div class="col-xs-6 col-sm-4 col-md-3">
+            <?php
+            $i = 0;
+            foreach ($imagenes as $img): ?>
+              <div class="<?php if (!$i++): ?>col-xs-12 col-sm-8 col-md-6<?php else: ?>col-xs-6 col-sm-4 col-md-3<?php endif; ?>">
                 <a class="thumbnail" href="/img/publicacion/<?php echo $img['path'] ?>" data-toggle="lightbox" data-gallery="publicacion">
                   <img class="img-responsive" src="/img/publicacion/<?php echo $img['path'] ?>">
                 </a>
               </div>
             <?php endforeach ?>
           </div>
-          <h4><?php echo $publicacion['titulo']?></h4>
-          <p><a href="/?categoria=<?php echo $publicacion['categoria_id'] ?>"><?php echo $publicacion['categoria'] ?></a> en <a href="/?ciudad=<?php echo $publicacion['ciudad_id'] ?>"><?php echo $publicacion['ciudad'] ?>, <?php echo $publicacion['provincia'] ?></a> para <a href="/?capacidad=<?php echo $publicacion['capacidad'] ?>"><?php echo $publicacion['capacidad'] ?> persona<?php if ($publicacion['capacidad']!=1): ?>s<?php endif ?></a></p>
           <hr>
           <p><?php echo $publicacion['descripcion'] ?></p>
         </div>
@@ -237,4 +240,12 @@ if($publicaciones->num_rows){
     </div>
   <?php endif ?>
   </div>
-<?php include 'includes/footer.php'; ?>
+<?php 
+$javascripts = <<<EOD
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.publicacion-header').sticky({topSpacing:64});
+});
+</script>
+EOD;
+include 'includes/footer.php'; ?>
