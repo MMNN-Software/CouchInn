@@ -1,6 +1,6 @@
 <?php 
 
-  include 'includes/conexion.php';
+  include '../includes/conexion.php';
 
   $term = $conexion->real_escape_string($_GET['q']);
 

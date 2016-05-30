@@ -1,18 +1,16 @@
 <?php 
-include 'includes/conexion.php'; ?>
+include '../includes/conexion.php'; ?>
 <?php
 	
 	function generarLinkTemporal($idusuario, $username){
-
+    global $conexion;
 		$cadena = $idusuario.$username.rand(1,9999999).date('Y-m-d');
 		$token = sha1($cadena);
-		$conexion = new mysqli('localhost','couchinn','FZxMQCESvfwDPyQC','couchinn');
-		$conexion->set_charset("utf8");
-		$sql = "INSERT INTO resetpass (idusuario, token, creado) VALUES($idusuario,'$token',NOW());";
-
-		$resultado = $conexion->query($sql);
+		/*$conexion = new mysqli('localhost','couchinn','*******','couchinn');
+		$conexion->set_charset("utf8");*/
+		$resultado = $conexion->query("INSERT INTO resetpass (idusuario, token, creado) VALUES($idusuario,'$token',NOW());");
 		if($resultado){
-			$enlace = $_SERVER["SERVER_NAME"].'/restablecer.php?idusuario='.sha1($idusuario).'&token='.$token;
+			$enlace = $_SERVER["SERVER_NAME"].'/Restablecer.php?idusuario='.sha1($idusuario).'&token='.$token;
 			return $enlace;
 		}
 		else

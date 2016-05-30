@@ -1,5 +1,5 @@
 <?php 
-  include 'includes/conexion.php';
+  include '../includes/conexion.php';
 
   if(isset($_SESSION['usuario'])){
     header("Location: /");

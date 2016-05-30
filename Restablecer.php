@@ -11,15 +11,14 @@
 	if( $resultado->num_rows > 0 ){
 		$usuario = $resultado->fetch_assoc();		
 ?>
-
-    <div class="container" role="main">
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
+    <br>
+    <div class="container">
+      <div class="col-md-4 col-md-offset-4">
         <form action="/cambiarpassword.php" method="post">
           <div class="panel panel-default">
-            <div class="panel-heading"> Restaurar contraseña </div>
             <div class="panel-body">
-              <p></p>
+              <h5>Restaurar contraseña</h5>
+              <hr>
               <div class="form-group">
                 <label for="password"> Nueva contraseña </label>
                 <input type="password" class="form-control" name="password1" autocomplete="off" required>
@@ -31,24 +30,16 @@
               <input type="hidden" name="token" value="<?php echo $token ?>">
               <input type="hidden" name="idusuario" value="<?php echo $idusuario ?>">
               <div class="form-group">
-                <input type="submit" class="btn btn-success btn-block" value="Recuperar contraseña" >
+                <input type="submit" class="btn btn-success btn-block" value="Recuperar contraseña">
               </div>
             </div>
           </div>
         </form>  
       </div>
-      <div class="col-md-4"></div>
-
-    </div> <!-- /container -->
-
-    <script src="js/jquery-1.11.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-	<?php
-include 'includes/footer.php';
-?>
-<?php	
-		}
-	else{
-		header('Location:index.php');
-	}
+    </div>
+  	<?php
+    include 'includes/footer.php';
+  }else{
+  	header('Location:index.php');
+  }
 ?>

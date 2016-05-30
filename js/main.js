@@ -33,7 +33,7 @@ $(document).ready(function () {
     e.preventDefault();
     $.ajax({
       method: 'POST',
-      url: '/login.php',
+      url: '/ajax/login.php',
       cache: false,
       dataType: 'JSON',
       data: $(this).serialize(),
@@ -73,7 +73,7 @@ $(document).ready(function () {
   $("#search_input").autocomplete({
     source: function( request, response ) {
       $.ajax({
-        url: "/ciudades.php",
+        url: "/ajax/ciudades.php",
         dataType: "json",
         data: {
           q: request.term
@@ -110,6 +110,18 @@ $(document).ready(function () {
     afterToggle: function(){$('.masonry').masonry('layout');}
   });
 
+  $("#frmRestablecer").submit(function(event){
+    event.preventDefault();
+    $.ajax({
+      url:'/ajax/validaremail.php',
+      type:'post',
+      dataType:'json',
+      data: $("#frmRestablecer").serializeArray()
+    }).done(function(respuesta){
+      $("#mensaje").html(respuesta.mensaje);
+      $("#email").val('');
+    });
+  });
 
   $('[data-toggle="tooltip"]').tooltip();
   $('#docked').sticky({topSpacing:70});

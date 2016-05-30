@@ -70,7 +70,7 @@
   <div class="panel panel-default animated slideInDown">
     <div class="panel-body">
       <h5>Registrarse</h5>
-
+      <hr>
       <input type="hidden" name="registrarse" value="1">
 
       <div class="form-group<?php if ($error & NOMBRE_EMPTY) echo ' has-error'; ?>">
