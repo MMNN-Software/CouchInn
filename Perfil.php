@@ -200,7 +200,7 @@
               <h5>Detalles de la cuenta</h5>
               <hr>
               <div class="form-group">
-                <labelclass="col-sm-2 control-label"><b>Correo electrónico:</b></label>
+                <label class="col-sm-2 control-label" control-label"><b>Correo:</b></label>
                 <div class="col-md-10 form-control-static">
                   <?php echo htmlentities($usuario_perfil['email'], ENT_QUOTES); ?> <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Tu dirección de correo es privada"></span>
                 </div>

@@ -27,8 +27,7 @@ $(document).ready(function () {
       transitionDuration: 0
     });
   });
-
-
+  
   $('#login_form').on('submit',function(e){
     e.preventDefault();
     $.ajax({

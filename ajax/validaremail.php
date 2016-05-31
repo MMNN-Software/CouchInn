@@ -1,45 +1,20 @@
 <?php 
-include '../includes/conexion.php'; ?>
-<?php
-	
-	function generarLinkTemporal($idusuario, $username){
+include '../includes/conexion.php';
+
+  function generarLinkTemporal($idusuario, $username){
     global $conexion;
 		$cadena = $idusuario.$username.rand(1,9999999).date('Y-m-d');
 		$token = sha1($cadena);
-		/*$conexion = new mysqli('localhost','couchinn','*******','couchinn');
-		$conexion->set_charset("utf8");*/
-		$resultado = $conexion->query("INSERT INTO resetpass (idusuario, token, creado) VALUES($idusuario,'$token',NOW());");
-		if($resultado){
-			$enlace = $_SERVER["SERVER_NAME"].'/Restablecer.php?idusuario='.sha1($idusuario).'&token='.$token;
-			return $enlace;
-		}
-		else
-			return FALSE;
+    $ex = $conexion->query("SELECT id FROM resetpass WHERE usuario_id = $idusuario;");
+    if($ex->num_rows){
+		  $conexion->query("UPDATE resetpass SET token = '$token', creado = NOW()");
+    }else{
+      $conexion->query("INSERT INTO resetpass (usuario_id, token, creado) VALUES($idusuario,'$token',NOW());");
+    }
+		$enlace = 'http://'.$_SERVER["SERVER_NAME"].'/Restablecer.php?idusuario='.sha1($idusuario).'&token='.$token;
+		return $enlace;
 	}
 
-	function enviarEmail( $email, $link ){
-
-		$mensaje = '<html>
-		<head>
- 			<title>Restablece tu contraseña</title>
-		</head>
-		<body>
- 			<p>Hemos recibido una petición para restablecer la contraseña de tu cuenta.</p>
- 			<p>Si hiciste esta petición, haz clic en el siguiente enlace, si no hiciste esta petición puedes ignorar este correo.</p>
- 			<p>
- 				<strong>Enlace para restablecer tu contraseña</strong><br>
- 				<a href="'.$link.'"> Restablecer contraseña </a>
- 			</p>
-		</body>
-		</html>';
-
-		$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
-		$cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$cabeceras .= 'From: Codedrinks <mimail@codedrinks.com>' . "\r\n";
-		
-		mail($email, "Recuperar contraseña", $mensaje, $cabeceras);
-	}
-	
 	$email = $_POST['email'];
 	$respuesta = new stdClass();
 
@@ -50,10 +25,9 @@ include '../includes/conexion.php'; ?>
 
    		if($resultado->num_rows > 0){
       		$usuario = $resultado->fetch_assoc();
-			$linkTemporal = generarLinkTemporal( $usuario['id'], $usuario['email'] );
+	        $linkTemporal = generarLinkTemporal( $usuario['id'], $usuario['email'] );
       		if($linkTemporal){
-        		enviarEmail( $email, $linkTemporal );
-        		$respuesta->mensaje = '<div class="alert alert-info"> Un correo ha sido enviado a su cuenta de email con las instrucciones para restablecer la contraseña </div>';
+        		$respuesta->mensaje = '<div class="alert alert-info"> Un correo ha sido enviado a su cuenta de email con las instrucciones para restablecer la contraseña <br>(<a href="'.$linkTemporal .'">link trucho</a>)</div>';
       		}
    		}
    		else

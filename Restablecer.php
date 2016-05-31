@@ -5,8 +5,7 @@
 	$token = $_GET['token'];	
 	$idusuario = $_GET['idusuario'];
 	
-	$sql = "SELECT * FROM resetpass WHERE token = '$token'";
-	$resultado = $conexion->query($sql);
+	$resultado = $conexion->query("SELECT * FROM resetpass WHERE token = '$token'");
 	
 	if( $resultado->num_rows > 0 ){
 		$usuario = $resultado->fetch_assoc();		
@@ -14,7 +13,7 @@
     <br>
     <div class="container">
       <div class="col-md-4 col-md-offset-4">
-        <form action="/cambiarpassword.php" method="post">
+        <form action="/Cambiar.php" method="post">
           <div class="panel panel-default">
             <div class="panel-body">
               <h5>Restaurar contraseña</h5>

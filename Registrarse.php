@@ -42,7 +42,7 @@
     $nombre = $conexion->real_escape_string($nombre);
     $pass = md5($pass);
     $fecha = date("Y-m-d H:i:s");
-    $conexion->query("INSERT INTO usuario (id, email, nombre, password, sexo, tipo, activo, registro) VALUES (NULL, '{$email}', '{$nombre}','{$pass}', '{$sexo}', 'user', 1, '{$registro}' )");
+    $conexion->query("INSERT INTO usuario (id, email, nombre, password, sexo, tipo, activo, registro) VALUES (NULL, '{$email}', '{$nombre}','{$pass}', '{$sexo}', 'user', 1, '{$fecha}' )");
     return 0;
   }
 
