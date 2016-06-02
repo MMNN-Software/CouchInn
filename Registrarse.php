@@ -45,7 +45,7 @@
     $fecha = date("Y-m-d H:i:s");
     $conexion->query("INSERT INTO usuario (id, email, nombre, password, sexo, tipo, activo, registro) VALUES (NULL, '{$email}', '{$nombre}','{$pass}', '{$sexo}', 'user', 1, '{$fecha}' )");
     $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$conexion->insert_id}'");
-    doLoginOf($usuario->fetch_assoc(););
+    doLoginOf($usuario->fetch_assoc());
     return 0;
   }
 
