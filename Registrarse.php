@@ -78,6 +78,7 @@
 
       <div class="form-group<?php if ($error & NOMBRE_EMPTY) echo ' has-error'; ?>">
         <input type="text"  name="nombre" class="form-control" placeholder="Nombre" required autofocus autocomplete="off" value="<?php echo htmlentities($_POST['nombre'], ENT_QUOTES); ?>">
+        <span class="help-block">Será tu nombre público en el sitio</span>
         <?php if ($error & NOMBRE_EMPTY): ?>
           <span class="help-block">El nombre no puede estar vacío</span>
         <?php endif ?>
@@ -98,6 +99,7 @@
 
       <div class="form-group<?php if ($error & ( PASS_EMPTY | PASS_SHORT ) ) echo ' has-error'; ?>">
         <input type="password" name="pass" class="form-control" placeholder="Tu contraseña" required minlength="6" maxlength="32">
+        <span class="help-block">Debe ser entre 6 y 32 caracteres</span>
         <?php if ($error & PASS_SHORT): ?>
           <span class="help-block">La contraseña es demasiado corta</span>
         <?php endif ?>
