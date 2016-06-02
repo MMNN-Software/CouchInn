@@ -1,5 +1,6 @@
 <?php
   include 'includes/conexion.php';
+  include 'includes/functions.php';
 
   //include 'includes/isUser.php';
 
@@ -80,6 +81,8 @@
     $sexo = $conexion->real_escape_string($_POST['sexo']);
     $biografia = $conexion->real_escape_string(strip_tags(trim($_POST['biografia']), '<b><i>'));
     $conexion->query("UPDATE usuario SET nombre='{$nombre}',dni='{$dni}',domicilio='{$domicilio}',religion='{$religion}',sexo='{$sexo}',biografia='{$biografia}' WHERE id = '{$_SESSION['id']}' ");
+    $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$_SESSION['id']}'");
+    doLoginOf($usuario->fetch_assoc());
     $mensaje = "Tus datos fueron actualizados correctamente.";
   }
 
