@@ -1,7 +1,7 @@
 <div class="publicacion col-xs-12 col-sm-6 col-md-4 col-lg-3">
   <div class="panel panel-default">
     <a href="/Publicacion.php?id=<?php echo $publicacion['id'] ?>"><?php
-      if($publicacion['premium']){
+      if($_SESSION['premium']){
         $imagenes = $conexion->query("SELECT path FROM imagen WHERE publicacion_id = '{$publicacion['id']}' ORDER BY orden ASC LIMIT 1"); 
         if($imagenes->num_rows){
           $im = $imagenes->fetch_assoc();?>

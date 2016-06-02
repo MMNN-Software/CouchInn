@@ -40,7 +40,7 @@
     }
   }
 
-  $categorias = $conexion->query("SELECT c.id as id, c.nombre as nombre, COUNT(p.id) as pubs FROM categoria c LEFT JOIN publicacion p ON p.categoria_id = c.id WHERE c.activa = 1 GROUP BY c.id, c.nombre");
+  $categorias = $conexion->query("SELECT c.id as id, c.nombre as nombre, COUNT(p.id) as pubs FROM categoria c LEFT JOIN publicacion p ON p.categoria_id = c.id WHERE c.activa = 1 GROUP BY c.id, c.nombre ORDER BY c.nombre ASC");
 
   include 'includes/header.php';
 ?>

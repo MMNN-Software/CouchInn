@@ -2,13 +2,13 @@
   include 'includes/conexion.php';
   include 'includes/header.php';
 
-  $publicaciones = $conexion->query("SELECT pu.id, pu.titulo, pu.capacidad, pu.descripcion, pu.fecha, ci.nombre as ciudad, pr.nombre as provincia, pu.ciudad_id, ca.nombre as categoria, u.premium
+  $publicaciones = $conexion->query("SELECT pu.id, pu.titulo, pu.capacidad, pu.descripcion, pu.fecha, ci.nombre as ciudad, pr.nombre as provincia, pu.ciudad_id, ca.nombre as categoria
 FROM publicacion pu
 INNER JOIN categoria ca ON ca.id = pu.categoria_id
-INNER JOIN usuario u ON u.id = pu.usuario_id
 INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id
-WHERE ca.activa");
+WHERE ca.activa
+ORDER BY pu.fecha DESC");
 
   $plazas = $conexion->query("SELECT capacidad FROM publicacion GROUP BY capacidad");
 
@@ -69,6 +69,12 @@ WHERE ca.activa");
 
 
   <div class="container main">
+    <?php if (!isset($_GET["bienvenido"])): ?>
+      <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Se ha registrado exitosamente!
+      </div>
+    <?php endif ?>
     <div class="masonry">
     <?php while( $publicacion = $publicaciones->fetch_assoc() ){ ?>
       <?php include 'includes/publicacion.php'; ?>

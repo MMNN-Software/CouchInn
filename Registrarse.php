@@ -1,6 +1,7 @@
 <?php
 
   include 'includes/conexion.php';
+  include 'includes/functions.php';
 
   if(isset($_SESSION['usuario'])){
     header("Location: /");
@@ -43,6 +44,8 @@
     $pass = md5($pass);
     $fecha = date("Y-m-d H:i:s");
     $conexion->query("INSERT INTO usuario (id, email, nombre, password, sexo, tipo, activo, registro) VALUES (NULL, '{$email}', '{$nombre}','{$pass}', '{$sexo}', 'user', 1, '{$fecha}' )");
+    $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$conexion->insert_id}'");
+    doLoginOf($usuario->fetch_assoc(););
     return 0;
   }
 

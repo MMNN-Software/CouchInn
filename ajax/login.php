@@ -1,5 +1,6 @@
 <?php 
   include '../includes/conexion.php';
+  include '../includes/functions.php';
 
   if(isset($_SESSION['usuario'])){
     header("Location: /");
@@ -43,10 +44,7 @@
       error(4);
     }
 
-    $_SESSION['id'] = $usuario['id'];
-    $_SESSION['usuario'] = $usuario['email'];
-    $_SESSION['nombre'] = $usuario['nombre'];
-    $_SESSION['is_admin'] = ( $usuario['tipo'] == 'admin' );
+    doLoginOf($usuario);
 
     error(0);
 

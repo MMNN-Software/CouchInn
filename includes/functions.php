@@ -22,3 +22,11 @@ function tiempo_transcurrido($fecha) {
   
   return "Hace $diferencia $intervalos[$j]";
 }
+
+function doLoginOf( $usuario ){
+  $_SESSION['id'] = $usuario['id'];
+  $_SESSION['usuario'] = $usuario['email'];
+  $_SESSION['nombre'] = $usuario['nombre'];
+  $_SESSION['premium'] = $usuario['premium'];
+  $_SESSION['is_admin'] = ( $usuario['tipo'] == 'admin' );
+}
