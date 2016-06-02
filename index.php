@@ -69,7 +69,7 @@ ORDER BY pu.fecha DESC");
 
 
   <div class="container main">
-    <?php if (!isset($_GET["bienvenido"])): ?>
+    <?php if (isset($_GET["bienvenido"])): ?>
       <div class="alert alert-dismissible alert-success">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         Se ha registrado exitosamente!
