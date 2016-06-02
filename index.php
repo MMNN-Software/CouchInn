@@ -8,7 +8,8 @@ INNER JOIN categoria ca ON ca.id = pu.categoria_id
 INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id
 WHERE ca.activa
-ORDER BY pu.fecha DESC");
+ORDER BY pu.fecha DESC
+/*LIMIT 8*/");
 
   $plazas = $conexion->query("SELECT capacidad FROM publicacion GROUP BY capacidad");
 
@@ -75,10 +76,57 @@ ORDER BY pu.fecha DESC");
         Se ha registrado exitosamente!
       </div>
     <?php endif ?>
-    <div class="masonry">
-    <?php while( $publicacion = $publicaciones->fetch_assoc() ){ ?>
-      <?php include 'includes/publicacion.php'; ?>
-    <?php } ?>
+    <div class="masonry" id="content">
+      <!--<div><ul class="pager"><li><a href="/?page=1">Next</a></li></ul></div>-->
+      <?php while( $publicacion = $publicaciones->fetch_assoc() ){ ?>
+        <?php include 'includes/publicacion.php'; ?>
+      <?php } ?>
     </div> 
   </div>
-<?php include 'includes/footer.php'; ?>
+<?php
+$javascripts = <<<EOD
+
+<script type="text/javascript">
+  var rmOptions = {
+    collapsedHeight: 160,
+    speed: 1,
+    moreLink: '<div class="text-center"><a href="#" class="readmore">Más <span class="glyphicon glyphicon-chevron-down"></span></a></div>',
+    lessLink: '<div class="text-center"><a href="#" class="readmore">Menos <span class="glyphicon glyphicon-chevron-up"></span></a></div>',
+    afterToggle: function(){ $('.masonry').masonry('layout');}
+  };
+
+  $(document).ready(function(){
+    var container = $('#content');
+
+    container.imagesLoaded(function () {
+      container.masonry({
+        itemSelector: '.publicacion',
+        columnWidth: '.publicacion',
+        transitionDuration: 0
+      });
+    });
+
+    /*container.infinitescroll({
+      animate:true,
+      navSelector  : '.pager',    // selector for the paged navigation 
+      nextSelector : '.pager a',  // selector for the NEXT link (to page 2)
+      itemSelector : '.publicacion',     // selector for all items you'll retrieve
+      loading: {
+        finishedMsg: 'No hay más publicaciones para mostrar'
+      },
+      maxPage:2
+    },function( newElements ) {
+      var newElems = $( newElements );
+      newElems.find('.descripcion').readmore(rmOptions);
+      container.imagesLoaded(function () {
+        container.masonry( 'appended', newElems );
+      });
+    });*/
+    
+    container.find('.publicacion .descripcion').readmore(rmOptions);
+
+  });
+</script>
+EOD;
+
+include 'includes/footer.php'; ?>

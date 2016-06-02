@@ -18,6 +18,7 @@
   <script type="text/javascript" src="/js/masonry.pkgd.min.js"></script>
   <script type="text/javascript" src="/js/jquery.sticky.js"></script>
   <script type="text/javascript" src="/js/jquery.elastic.source.js"></script>
+  <script type="text/javascript" src="/js/jquery.infinitescroll.min.js"></script>
   <script type="text/javascript" src="/js/readmore.min.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
   <?php if (isset($javascripts)): ?>

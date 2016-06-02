@@ -40,9 +40,9 @@
     }
   }
 
-  $categorias = $conexion->query("SELECT c.id as id, c.nombre as nombre, COUNT(p.id) as pubs FROM categoria c LEFT JOIN publicacion p ON p.categoria_id = c.id WHERE c.activa = 1 GROUP BY c.id, c.nombre ORDER BY c.nombre ASC");
 
   include 'includes/header.php';
+  $categorias = $conexion->query("SELECT c.id as id, c.nombre as nombre, COUNT(p.id) as pubs FROM categoria c LEFT JOIN publicacion p ON p.categoria_id = c.id WHERE c.activa = 1 GROUP BY c.id, c.nombre ORDER BY c.nombre ASC");
 ?>
 <div class="modal fade" id="addCat">
   <form action="/Administracion.php" method="POST" class="form" role="form">
@@ -138,7 +138,7 @@
                   <td style="text-align:right;padding: 5px 10px">
                     <div class="btn-group">
                       <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editCat" data-idcat="<?php echo $categoria['id'];?>" data-categoria="<?php echo htmlentities($categoria['nombre'], ENT_QUOTES);?>"><span class="glyphicon glyphicon-edit"></span></a>
-                      <a href="/Administracion.php?borrarCategoria=<?php echo $categoria['id'];?>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Borrar</a>
+                      <a href="/Administracion.php?borrarCategoria=<?php echo $categoria['id'];?>" onclick="return confirm('Está seguro? Esta categoría cuenta con <?php echo $categoria['pubs'];?> publicacione<?php if($categoria['pubs']!=1):?>s<?php endif; ?>')" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Borrar</a>
                       </div>
                     </td>
                 </tr>

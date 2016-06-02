@@ -42,7 +42,7 @@
           <li>
             <p class="navbar-btn">
               <a href="/Agregar.php" class="btn btn-success">
-                Agregar <span class="hidden-xs">Publicación</span>
+                Agregar <span class="hidden-xs hidden-sm">Publicación</span>
               </a>
             </p>
           </li>
