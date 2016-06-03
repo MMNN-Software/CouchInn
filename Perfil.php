@@ -87,6 +87,29 @@
   }
 
 
+  if(isset($_POST['pass'])){
+    $usuario = $conexion->query("SELECT * FROM usuario WHERE id = '{$_SESSION['id']}'");
+    $usuario = $usuario->fetch_assoc();
+
+    if( strlen($_POST['pass']) < 6 ){
+      $error = "La nueva contraseña es demasiado corta";
+    }
+
+    if( md5($_POST['pass']) != $usuario['password'] ){
+      $error = "La contraseña ingresada no corresponde a tu cuenta";
+    }
+
+    if( md5($_POST['npass']) != md5($_POST['nrepass']) ){
+      $error = "Las contraseñas ingresadas no coinciden";
+    }
+
+    if(empty($error)){
+      $pass = $conexion->real_escape_string($_POST['pass']);
+      $conexion->query("UPDATE usuario SET password = MD5('{$pass}') WHERE id = '{$_SESSION['id']}'");
+      $mensaje = "Tu contraseña fue actualizada correctamente";
+    }
+  }
+
   if(isset($_POST['tarjeta'])){
     $pagos = $conexion->query("SELECT * FROM pago WHERE usuario_id = '{$_SESSION['id']}'");
 
@@ -127,6 +150,7 @@
   <?php if ($ismyprofile): ?>
     <?php include 'includes/form_premium.php';?>
     <?php include 'includes/form_baja.php'; ?>
+    <?php include 'includes/form_pass.php'; ?>
   <?php endif; ?>
 
   <div class="container main">
@@ -143,7 +167,6 @@
       </div>
     <?php endif ?>
 
-    <?php if (empty($error)): ?>
       
     <div class="row">
       <div class="col-sm-4 col-lg-3">
@@ -212,7 +235,8 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label"><b>Contraseña:</b></label>
                 <div class="col-md-10 form-control-static">
-                  <a href="/CambiarClave.php">Cambiar</a>
+                  <a href="#" data-toggle="modal" data-target="#modificarPassword">Cambiar</a>
+
                 </div>
               </div>
               <h5>Detalles personales</h5>
@@ -267,7 +291,6 @@
         <?php endif ?>
       </div>
     </div>
-    <?php endif ?>
   </div>
 <?php
 $javascripts = <<<EOD
