@@ -104,7 +104,7 @@
     }
 
     if(empty($error)){
-      $pass = $conexion->real_escape_string($_POST['pass']);
+      $pass = $conexion->real_escape_string($_POST['npass']);
       $conexion->query("UPDATE usuario SET password = MD5('{$pass}') WHERE id = '{$_SESSION['id']}'");
       $mensaje = "Tu contraseña fue actualizada correctamente";
     }
