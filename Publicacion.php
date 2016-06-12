@@ -2,7 +2,6 @@
   include 'includes/conexion.php';
   include 'includes/header.php';
 
-
   $id = $conexion->real_escape_string($_GET['id']);
   $publicaciones = $conexion->query("SELECT 
     pu.id,
@@ -26,7 +25,6 @@ INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id
 WHERE pu.id = '{$id}' AND ca.activa ");
 
-
 if($publicaciones->num_rows){
   $publicacion = $publicaciones->fetch_assoc();
   $img = $conexion->query("SELECT path FROM imagen WHERE publicacion_id = '{$publicacion['id']}' ORDER BY orden ASC");
@@ -35,8 +33,37 @@ if($publicaciones->num_rows){
     $imagenes[] = $im;
   }
   $img->free();
-  $preguntas = $conexion->query("SELECT pre.id AS preg_id,
-									   pre.usuario_id AS preguntador,
+}
+
+function ask_question ( $publi_id, $user_id, $pregunta) {
+	$error = 0;
+    global $conexion;
+    if( empty($pregunta) ) $error |= PREGUNTA_EMPTY;
+
+    if($error) return $error;
+
+    $publi_id = $conexion->real_escape_string($publi_id);
+    $user_id = $conexion->real_escape_string($user_id);
+    $pregunta = $conexion->real_escape_string($pregunta);
+    $tiempo = date("Y-m-d H:i:s");
+	$conexion->query("INSERT INTO pregunta (publicacion_id, usuario_id, pregunta, fecha) VALUES ({$publi_id}, {$user_id}, '{$pregunta}', '{$tiempo}');");
+	return 0;
+}
+
+if( isset($_POST['preguntar']) ){
+	$error = ask_question(
+      $publicacion['id'],
+      $_SESSION['id'],
+      $_POST['pregunta1']);
+	$pre_agregada = 1;
+	$mensaje = "Pregunta a?adida exitosamente.";
+	}
+else {
+    $pre_agregada = 0;
+}
+
+$preguntas = $conexion->query("SELECT pre.id AS preg_id,
+									   pre.usuario_id AS preguntador_id,
 									   pre.respuesta_id AS res_id,
 									   u.foto AS foto,
 									   u.nombre AS preguntador,
@@ -54,7 +81,6 @@ if($publicaciones->num_rows){
 		   $preg_res[] = $prre;
 	   }
    }
-}
 
 ?>
   <div class="container main">
@@ -97,7 +123,7 @@ if($publicaciones->num_rows){
       </div>
       <div class="panel panel-default">
         <div class="panel-body">
-          <h5>Preguntas</h5>
+          <h5 id="Preguntas">Preguntas</h5>
 		  <hr>
 		  <?php if (!isset($preg_res)): ?>
 		    Por el momento no hay preguntas para esta publicacion.
@@ -110,9 +136,8 @@ if($publicaciones->num_rows){
 					  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($prre['foto'])?$prre['foto']:'default.png'; ?>" width="48">
 					</div>
 					<div class="media-body">
-					  <h5 class="media-heading"><small class="pull-right">Hace 5 horas</small><a href="/Perfil.php?id=<?php echo $prre['usuario_id']?>"><?php echo $prre['preguntador'] ?></a></h5>
+					  <h5 class="media-heading"><small class="pull-right">Hace 5 horas</small><a href="/Perfil.php?id=<?php echo $prre['preguntador_id']?>"><?php echo $prre['preguntador'] ?></a></h5>
 					  <?php echo $prre['pregunta'] ?>
-
 					  <?php if ($prre['respuesta'] !== NULL): ?>
 						  <div class="media" style="padding-left:20px">
 							<div class="media-body">
@@ -123,7 +148,7 @@ if($publicaciones->num_rows){
 							</div>
 						  </div>
 					  <?php endif ?>
-					  <?php if ($prre['respuesta'] == NULL && $_SESSION[usuario] != NULL ): ?>
+					  <?php if ($prre['respuesta'] == NULL && $_SESSION[usuario] == $publicacion[owner]): ?>
 						  <div class="media" style="padding-left:20px">
 							<div class="media-body">
 							  <textarea rows="1" name="respuesta" placeholder="Escribe aqui la respuesta..."></textarea>
@@ -135,16 +160,20 @@ if($publicaciones->num_rows){
 					  <?php endif ?>
 					</div>
 				  </div>
+				  <hr>
 			  <?php endforeach ?>
 		  <?php endif ?>
 		  <?php if ($_SESSION[usuario] != NULL ): ?>
+		  <form method="post" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form" role="form">
 		  <div class="media">
 			<div class="media-left">
 			  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($_SESSION['foto'])?$_SESSION['foto']:'default.png'; ?>" width="48">
 			</div>
 			<div class="media-body">
-				<h5 class="media-heading"><small class="pull-right">Ahora</small><a href="/Perfil.php?id=<?php echo $_SESSION['usuario_id'];?>"><?php echo $_SESSION['nombre']; ?></a></h5>
-				<textarea rows="1" name="pregunta" placeholder="Escribe aqui tu pregunta..."></textarea>
+				<h5 class="media-heading"><small class="pull-right">Ahora</small><a href="/Perfil.php?id=<?php echo $_SESSION['id'];?>"><?php echo $_SESSION['nombre']; ?></a></h5>
+				<input type="hidden" name="preguntar" value="1">
+				<textarea rows="1" class="col-sm-8" style="font-size:100%" required name="pregunta1" id="pregunta1" placeholder="Escribe aqui tu pregunta..."></textarea>
+				<button type="submit" name="ask_button" id="ask_button" class="btn btn-success">Enviar</button>
 				<div class="media" style="padding-left:20px">
 					<div class="media-body">
 						&nbsp
@@ -152,9 +181,9 @@ if($publicaciones->num_rows){
 				</div>
 			</div>
 		   </div>
+		   </form>
 		   <?php endif ?>
           </div>
-          <hr>
 		</div>
       </div>
     <div class="col-sm-4">
@@ -257,3 +286,10 @@ $(document).ready(function(){
 </script>
 EOD;
 include 'includes/footer.php'; ?>
+
+<?php if ($pre_agregada == 1): ?>
+<script>
+	$(function(){successAlert('Exito', 'La respuesta fue guardada exitosamente.');
+				})
+</script>
+<?php endif ?>

@@ -21,6 +21,8 @@
   <script type="text/javascript" src="/js/jquery.infinitescroll.min.js"></script>
   <script type="text/javascript" src="/js/readmore.min.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
+  <script type="text/javascript" src="/js/jAlert-v4.min.js"></script>
+  <script type="text/javascript" src="/js/jAlert-functions.min"></script>
   <?php if (isset($javascripts)): ?>
     <?php echo $javascripts; ?>
   <?php endif ?>

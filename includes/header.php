@@ -14,6 +14,9 @@
   <link rel="stylesheet" href="/css/ekko-lightbox.min.css" />
   <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="/css/jAlert-FB.css" />
+  <link rel="stylesheet" href="/css/jAlert-v4.css" />
 </head>
 <body>
   <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
