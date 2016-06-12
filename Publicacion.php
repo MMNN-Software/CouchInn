@@ -35,8 +35,26 @@ if($publicaciones->num_rows){
     $imagenes[] = $im;
   }
   $img->free();
+  $preguntas = $conexion->query("SELECT pre.id AS preg_id,
+									   pre.usuario_id AS preguntador,
+									   pre.respuesta_id AS res_id,
+									   u.foto AS foto,
+									   u.nombre AS preguntador,
+									   pre.pregunta AS pregunta,
+									   pre.fecha AS pre_fecha,
+									   res.respuesta AS respuesta,
+									   res.fecha AS res_fecha
+								FROM pregunta pre
+								LEFT JOIN respuesta res ON res.id = pre.id
+								LEFT JOIN usuario u ON u.id=pre.usuario_id
+								WHERE pre.publicacion_id = '{$id}';");
+   if ($preguntas->num_rows) {
+	   $preg_res = array();
+	   while ( $prre = $preguntas->fetch_assoc()){
+		   $preg_res[] = $prre;
+	   }
+   }
 }
-
 
 ?>
   <div class="container main">
@@ -80,56 +98,65 @@ if($publicaciones->num_rows){
       <div class="panel panel-default">
         <div class="panel-body">
           <h5>Preguntas</h5>
-          
-          <hr>
+		  <hr>
+		  <?php if (!isset($preg_res)): ?>
+		    Por el momento no hay preguntas para esta publicacion.
+		  <?php else: ?>
+			  <?php 
+				$i = 0;
+				foreach ($preg_res AS $prre): ?>
+				  <div class="media">
+					<div class="media-left">
+					  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($prre['foto'])?$prre['foto']:'default.png'; ?>" width="48">
+					</div>
+					<div class="media-body">
+					  <h5 class="media-heading"><small class="pull-right">Hace 5 horas</small><a href="/Perfil.php?id=<?php echo $prre['usuario_id']?>"><?php echo $prre['preguntador'] ?></a></h5>
+					  <?php echo $prre['pregunta'] ?>
 
-          <div class="media">
-            <div class="media-left">
-              <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
-            </div>
-            <div class="media-body">
-              <h5 class="media-heading"><small class="pull-right">Hace 5 horas</small><a href="/Perfil.php?id=<?php echo $publicacion['usuario_id']?>"><?php echo $publicacion['owner'] ?></a></h5>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-
-              <div class="media">
-                <div class="media-body">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-                </div>
-                <div class="media-right">
-                  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
-                </div>
-              </div>
-            </div>
+					  <?php if ($prre['respuesta'] !== NULL): ?>
+						  <div class="media" style="padding-left:20px">
+							<div class="media-body">
+							  <?php echo $prre['respuesta'] ?>
+							</div>
+							<div class="media-right">
+							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
+							</div>
+						  </div>
+					  <?php endif ?>
+					  <?php if ($prre['respuesta'] == NULL && $_SESSION[usuario] != NULL ): ?>
+						  <div class="media" style="padding-left:20px">
+							<div class="media-body">
+							  <textarea rows="1" name="respuesta" placeholder="Escribe aqui la respuesta..."></textarea>
+							</div>
+							<div class="media-right">
+							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
+							</div>
+						  </div>
+					  <?php endif ?>
+					</div>
+				  </div>
+			  <?php endforeach ?>
+		  <?php endif ?>
+		  <?php if ($_SESSION[usuario] != NULL ): ?>
+		  <div class="media">
+			<div class="media-left">
+			  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($_SESSION['foto'])?$_SESSION['foto']:'default.png'; ?>" width="48">
+			</div>
+			<div class="media-body">
+				<h5 class="media-heading"><small class="pull-right">Ahora</small><a href="/Perfil.php?id=<?php echo $_SESSION['usuario_id'];?>"><?php echo $_SESSION['nombre']; ?></a></h5>
+				<textarea rows="1" name="pregunta" placeholder="Escribe aqui tu pregunta..."></textarea>
+				<div class="media" style="padding-left:20px">
+					<div class="media-body">
+						&nbsp
+					</div>
+				</div>
+			</div>
+		   </div>
+		   <?php endif ?>
           </div>
-
           <hr>
-
-          <div class="media">
-            <div class="media-left">
-              <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
-            </div>
-            <div class="media-body">
-              <h5 class="media-heading"><small class="pull-right">Hace 12 horas</small><a href="/Perfil.php?id=<?php echo $publicacion['usuario_id']?>"><?php echo $publicacion['owner'] ?></a></h5>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-
-              <div class="media">
-                <div class="media-body">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-                </div>
-                <div class="media-right">
-                  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
+		</div>
       </div>
-    </div>
     <div class="col-sm-4">
       <div class="panel panel-default" id="docked">
         <div class="panel-body">
