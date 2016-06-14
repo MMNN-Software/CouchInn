@@ -74,9 +74,9 @@ $(document).ready(function () {
       });
     },
     minLength: 3,
-    select: function( event, ui ) {
-      document.location.href = "/?ciudad="+ui.item.id;
-    }
+    // select: function( event, ui ) {
+      // document.location.href = "/?ciudad="+ui.item.id;
+    // }
   }).autocomplete( "instance" )._renderItem = function( ul, item ) {
       return $( "<li>" )
         .append( "<a>" + item.ciudad + ", " + item.provincia + " (" + item.publicaciones + ")</a>" )
@@ -84,7 +84,7 @@ $(document).ready(function () {
   };
 
   $('#search-bar .input-daterange').datepicker({
-    format: "dd/mm/yy",
+    format: "dd/mm/yyyy",
     startDate: "today",
     maxViewMode: 0,
     language: "es",
