@@ -139,12 +139,13 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 					  <h5 class="media-heading"><small class="pull-right">Hace 5 horas</small><a href="/Perfil.php?id=<?php echo $prre['preguntador_id']?>"><?php echo $prre['preguntador'] ?></a></h5>
 					  <?php echo strip_tags ((string)$prre['pregunta']) ?>
 					  <?php if ($prre['respuesta'] !== NULL): ?>
-						  <div class="media" style="padding-left:20px">
-							<div class="media-body">
+						  <div class="developer-reply" style="width:80%; margin:7px; float:right">
+							<div class="media-body" style="background:#e5e5e5; text-align:right">
 							  <?php echo strip_tags ((string)$prre['respuesta']) ?>
+							  <div class="box-arrow-up"></div>
 							</div>
 							<div class="media-right">
-							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
+							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="32">
 							</div>
 						  </div>
 					  <?php endif ?>

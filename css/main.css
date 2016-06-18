@@ -1917,3 +1917,39 @@ td.device-edit-field {
     display: inline-block;
     position: relative
 }
+
+.developer-reply {
+    background: #e5e5e5;
+        background-color: rgb(229, 229, 229);
+        background-image: none;
+        background-repeat: repeat;
+        background-attachment: scroll;
+        background-position: 0% 0%;
+        background-clip: border-box;
+        background-origin: padding-box;
+        background-size: auto auto;
+    padding: 12px;
+        padding-top: 12px;
+        padding-right: 12px;
+        padding-bottom: 12px;
+        padding-left: 12px;
+    position: relative;
+}
+
+.box-arrow-up {
+    border-left: 10px solid transparent;
+        border-left-width: 10px;
+        border-left-style: solid;
+        border-left-color: transparent;
+    border-right: 10px solid transparent;
+        border-right-width: 10px;
+        border-right-style: solid;
+        border-right-color: transparent;
+    border-bottom: 10px solid #e5e5e5;
+        border-bottom-width: 10px;
+        border-bottom-style: solid;
+        border-bottom-color: rgb(229, 229, 229);
+    left: 15px;
+    position: absolute;
+    top: -10px;
+}
