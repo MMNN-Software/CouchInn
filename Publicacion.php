@@ -38,13 +38,13 @@ if($publicaciones->num_rows){
 function ask_question ( $publi_id, $user_id, $pregunta) {
 	$error = 0;
     global $conexion;
-    if( empty($pregunta) ) $error |= PREGUNTA_EMPTY;
+    if( empty(strip_tags ($pregunta))) $error |= PREGUNTA_EMPTY;
 
     if($error) return $error;
 
     $publi_id = $conexion->real_escape_string($publi_id);
     $user_id = $conexion->real_escape_string($user_id);
-    $pregunta = $conexion->real_escape_string($pregunta);
+    $pregunta = $conexion->real_escape_string(strip_tags ($pregunta));
     $tiempo = date("Y-m-d H:i:s");
 	$conexion->query("INSERT INTO pregunta (publicacion_id, usuario_id, pregunta, fecha) VALUES ({$publi_id}, {$user_id}, '{$pregunta}', '{$tiempo}');");
 	return 0;
@@ -56,7 +56,7 @@ if( isset($_POST['preguntar']) ){
       $_SESSION['id'],
       $_POST['pregunta1']);
 	$pre_agregada = 1;
-	$mensaje = "Pregunta a?adida exitosamente.";
+	$mensaje = "Pregunta guardada exitosamente.";
 	}
 else {
     $pre_agregada = 0;
@@ -137,11 +137,11 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 					</div>
 					<div class="media-body">
 					  <h5 class="media-heading"><small class="pull-right">Hace 5 horas</small><a href="/Perfil.php?id=<?php echo $prre['preguntador_id']?>"><?php echo $prre['preguntador'] ?></a></h5>
-					  <?php echo $prre['pregunta'] ?>
+					  <?php echo strip_tags ((string)$prre['pregunta']) ?>
 					  <?php if ($prre['respuesta'] !== NULL): ?>
 						  <div class="media" style="padding-left:20px">
 							<div class="media-body">
-							  <?php echo $prre['respuesta'] ?>
+							  <?php echo strip_tags ((string)$prre['respuesta']) ?>
 							</div>
 							<div class="media-right">
 							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
