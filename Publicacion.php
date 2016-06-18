@@ -1,6 +1,7 @@
 <?php
   include 'includes/conexion.php';
   include 'includes/header.php';
+  include 'includes/functions.php';
 
   $id = $conexion->real_escape_string($_GET['id']);
   $publicaciones = $conexion->query("SELECT 
@@ -15,6 +16,7 @@
     ci.nombre as ciudad,
     pr.nombre as provincia,
     ca.nombre as categoria,
+	u.id as owner_id,
     u.nombre as owner,
     u.sexo,
     u.foto
@@ -68,13 +70,14 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 									   u.foto AS foto,
 									   u.nombre AS preguntador,
 									   pre.pregunta AS pregunta,
-									   pre.fecha AS pre_fecha,
+									   UNIX_TIMESTAMP(pre.fecha) AS pre_fecha,
 									   res.respuesta AS respuesta,
 									   res.fecha AS res_fecha
 								FROM pregunta pre
 								LEFT JOIN respuesta res ON res.id = pre.id
 								LEFT JOIN usuario u ON u.id=pre.usuario_id
-								WHERE pre.publicacion_id = '{$id}';");
+								WHERE pre.publicacion_id = '{$id}'
+								ORDER BY pre.fecha DESC;");
    if ($preguntas->num_rows) {
 	   $preg_res = array();
 	   while ( $prre = $preguntas->fetch_assoc()){
@@ -125,6 +128,26 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
         <div class="panel-body">
           <h5 id="Preguntas">Preguntas</h5>
 		  <hr>
+		  <?php if ($_SESSION[usuario] != NULL && $_SESSION[id] !== $publicacion[owner_id]):  ?>
+		  <form method="post" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form" role="form">
+		  <div class="media">
+			<div class="media-left">
+			  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($_SESSION['foto'])?$_SESSION['foto']:'default.png'; ?>" width="48">
+			</div>
+			<div class="media-body">
+				<h5 class="media-heading"><small class="pull-right">Ahora</small><a href="/Perfil.php?id=<?php echo $_SESSION['id'];?>"><?php echo $_SESSION['nombre']; ?></a></h5>
+				<input type="hidden" name="preguntar" value="1">
+				<textarea rows="1" class="col-sm-8" style="font-size:100%; width:100%" required name="pregunta1" id="pregunta1" placeholder="Escribe aqui tu pregunta..."></textarea>
+				<button type="submit" name="ask_button" id="ask_button" class="btn btn-success">Enviar</button>
+				<div class="media" style="padding-left:20px">
+					<div class="media-body">
+						&nbsp
+					</div>
+				</div>
+			</div>
+		   </div>
+		   </form>
+		   <?php endif ?>
 		  <?php if (!isset($preg_res)): ?>
 		    Por el momento no hay preguntas para esta publicacion.
 		  <?php else: ?>
@@ -136,12 +159,12 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 					  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($prre['foto'])?$prre['foto']:'default.png'; ?>" width="48">
 					</div>
 					<div class="media-body">
-					  <h5 class="media-heading"><small class="pull-right">Hace 5 horas</small><a href="/Perfil.php?id=<?php echo $prre['preguntador_id']?>"><?php echo $prre['preguntador'] ?></a></h5>
-					  <?php echo strip_tags ((string)$prre['pregunta']) ?>
+					  <h5 class="media-heading"><small class="pull-right"><?php echo hace($prre['pre_fecha']) ?></small><a href="/Perfil.php?id=<?php echo $prre['preguntador_id']?>"><?php echo $prre['preguntador'] ?></a></h5>
+					  <span style="width:100%"><?php echo strip_tags ((string)$prre['pregunta']) ?></span>
 					  <?php if ($prre['respuesta'] !== NULL): ?>
-						  <div class="developer-reply" style="width:80%; margin:7px; float:right">
+						  <div class="developer-reply" style="width:100%; margin:7px; float:right">
 							<div class="media-body" style="background:#e5e5e5; text-align:right">
-							  <?php echo strip_tags ((string)$prre['respuesta']) ?>
+							  <span><?php echo strip_tags ((string)$prre['respuesta']) ?></span>
 							  <div class="box-arrow-up"></div>
 							</div>
 							<div class="media-right">
@@ -149,13 +172,15 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 							</div>
 						  </div>
 					  <?php endif ?>
-					  <?php if ($prre['respuesta'] == NULL && $_SESSION[usuario] == $publicacion[owner]): ?>
-						  <div class="media" style="padding-left:20px">
+					  <?php if ($prre['respuesta'] == NULL && $_SESSION[id] == $publicacion[owner_id]): ?>
+						  <div class="developer-reply" style="width:100%; margin:7px; float:right">
 							<div class="media-body">
-							  <textarea rows="1" name="respuesta" placeholder="Escribe aqui la respuesta..."></textarea>
+							  <textarea style="width:80%; background:#e5e5e5; font-color:black" rows="1" name="respuesta" placeholder="Escribe aqui la respuesta..."></textarea>
+							  <button type="submit" name="reply_button" id="reply_button" class="btn btn-success">Responder</button>
+							  <div class="box-arrow-up"></div>
 							</div>
 							<div class="media-right">
-							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="48">
+							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="32">
 							</div>
 						  </div>
 					  <?php endif ?>
@@ -164,26 +189,6 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 				  <hr>
 			  <?php endforeach ?>
 		  <?php endif ?>
-		  <?php if ($_SESSION[usuario] != NULL ): ?>
-		  <form method="post" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form" role="form">
-		  <div class="media">
-			<div class="media-left">
-			  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($_SESSION['foto'])?$_SESSION['foto']:'default.png'; ?>" width="48">
-			</div>
-			<div class="media-body">
-				<h5 class="media-heading"><small class="pull-right">Ahora</small><a href="/Perfil.php?id=<?php echo $_SESSION['id'];?>"><?php echo $_SESSION['nombre']; ?></a></h5>
-				<input type="hidden" name="preguntar" value="1">
-				<textarea rows="1" class="col-sm-8" style="font-size:100%" required name="pregunta1" id="pregunta1" placeholder="Escribe aqui tu pregunta..."></textarea>
-				<button type="submit" name="ask_button" id="ask_button" class="btn btn-success">Enviar</button>
-				<div class="media" style="padding-left:20px">
-					<div class="media-body">
-						&nbsp
-					</div>
-				</div>
-			</div>
-		   </div>
-		   </form>
-		   <?php endif ?>
           </div>
 		</div>
       </div>
