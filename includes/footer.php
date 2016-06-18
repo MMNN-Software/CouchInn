@@ -1,13 +1,11 @@
-  <!--
-  El footer se puede evitar. No queda lindo, pero falta algo que remate el pie de página.
   <div class="footer">
     <div class="container text-center">
-      <a href="#">Acerca de</a> -
-      <a href="#">Ayuda</a> -
-      <a href="#">Políticas de uso</a> -
-      <a href="#">Privacidad</a>
+      <a href="/Acerca.php">Acerca de</a> -
+      <a href="/Ayuda.php">Ayuda</a> -
+      <a href="/PoliticasUso">Políticas de uso</a> -
+      <a href="/Privacidad">Privacidad</a>
     </div>
-  </div>-->
+  </div>
   <script type="text/javascript" src="/js/jquery-2.2.4.min.js"></script>
   <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
   <script type="text/javascript" src="/js/bootstrap.min.js"></script>
