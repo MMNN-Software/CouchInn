@@ -64,6 +64,34 @@ else {
     $pre_agregada = 0;
 }
 
+function reply_question ( $preg_id, $user_id, $respuesta) {
+	$error = 0;
+    global $conexion;
+    if( empty(strip_tags ($respuesta))) $error |= RESPUESTA_EMPTY;
+
+    if($error) return $error;
+
+    $preg_id = $conexion->real_escape_string($preg_id);
+    $user_id = $conexion->real_escape_string($user_id);
+    $respuesta = $conexion->real_escape_string(strip_tags ($respuesta));
+    $tiempo = date("Y-m-d H:i:s");
+	$conexion->query("INSERT INTO respuesta (id, respuesta, fecha) VALUES (NULL, '{$respuesta}', '{$tiempo}');");
+	$conexion->query("UPDATE pregunta SET respuesta_id='{$conexion->insert_id}' WHERE id='{$preg_id}';");
+	return 0;
+}
+
+if( isset($_POST['responder']) ){
+	$error = reply_question(
+      $_POST['responder'],
+      $_SESSION['id'],
+      $_POST['respuesta']);
+	$res_agregada = 1;
+	$mensaje = "Respuesta guardada exitosamente.";
+	}
+else {
+    $pre_agregada = 0;
+}
+
 $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 									   pre.usuario_id AS preguntador_id,
 									   pre.respuesta_id AS res_id,
@@ -74,7 +102,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 									   res.respuesta AS respuesta,
 									   res.fecha AS res_fecha
 								FROM pregunta pre
-								LEFT JOIN respuesta res ON res.id = pre.id
+								LEFT JOIN respuesta res ON res.id = pre.respuesta_id
 								LEFT JOIN usuario u ON u.id=pre.usuario_id
 								WHERE pre.publicacion_id = '{$id}'
 								ORDER BY pre.fecha DESC;");
@@ -136,7 +164,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 			</div>
 			<div class="media-body">
 				<h5 class="media-heading"><small class="pull-right">Ahora</small><a href="/Perfil.php?id=<?php echo $_SESSION['id'];?>"><?php echo $_SESSION['nombre']; ?></a></h5>
-				<input type="hidden" name="preguntar" value="1">
+				<input type="hidden" name="preguntar" value="1" />
 				<textarea rows="1" class="col-sm-8" style="font-size:100%; width:100%" required name="pregunta1" id="pregunta1" placeholder="Escribe aqui tu pregunta..."></textarea>
 				<button type="submit" name="ask_button" id="ask_button" class="btn btn-success">Enviar</button>
 				<div class="media" style="padding-left:20px">
@@ -173,16 +201,19 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 						  </div>
 					  <?php endif ?>
 					  <?php if ($prre['respuesta'] == NULL && $_SESSION[id] == $publicacion[owner_id]): ?>
+					  <form method="post" name="responder_<?php echo ($prre['preg_id']) ?>" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form" role="form">
 						  <div class="developer-reply" style="width:100%; margin:7px; float:right">
 							<div class="media-body">
-							  <textarea style="width:80%; background:#e5e5e5; font-color:black" rows="1" name="respuesta" placeholder="Escribe aqui la respuesta..."></textarea>
-							  <button type="submit" name="reply_button" id="reply_button" class="btn btn-success">Responder</button>
+							  <input type="hidden" name="responder" value="<?php echo ($prre['preg_id']) ?>" />
+							  <textarea style="width:80%; background:#e5e5e5; font-color:black" rows="1" name="respuesta" placeholder="Escribe aqui la respuesta..." required id="preg_<?php echo ($prre['preg_id']) ?>"></textarea>
+							  <input type="submit" class="btn btn-success" name="<?php echo ($prre['preg_id']) ?>" value="Responder" />
 							  <div class="box-arrow-up"></div>
 							</div>
 							<div class="media-right">
 							  <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($publicacion['foto'])?$publicacion['foto']:'default.png'; ?>" width="32">
 							</div>
 						  </div>
+					  </form>
 					  <?php endif ?>
 					</div>
 				  </div>
@@ -295,7 +326,13 @@ include 'includes/footer.php'; ?>
 
 <?php if ($pre_agregada == 1): ?>
 <script>
+	$(function(){successAlert('Exito', 'La pregunta fue guardada exitosamente.');
+				});
+</script>
+<?php endif ?>
+<?php if ($res_agregada == 1): ?>
+<script>
 	$(function(){successAlert('Exito', 'La respuesta fue guardada exitosamente.');
-				})
+				});
 </script>
 <?php endif ?>
