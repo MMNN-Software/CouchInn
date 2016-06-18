@@ -42,6 +42,21 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
 <?php if (isset($_SESSION['usuario'])): ?>
+<?php 	  
+  $cantpreg = $conexion->query("SELECT COUNT(DISTINCT pre.id) as cant
+                                FROM pregunta pre
+								INNER JOIN publicacion pu ON pu.id=pre.publicacion_id
+								LEFT JOIN respuesta res ON res.id = pre.respuesta_id
+								LEFT JOIN usuario u ON u.id=pre.usuario_id
+								WHERE res.id IS NULL AND pu.usuario_id = '{$_SESSION['id']}'");
+  $cantpreg = $cantpreg->fetch_assoc(); ?>
+          <li>
+		    <p class="navbar-btn">
+              <a href="/Preguntas.php" class="btn btn-success">
+                Preguntas <span class="hidden-xs hidden-sm">(<?php echo ($cantpreg[cant]) ?>)</span>
+              </a>
+            </p>
+		  </li>
           <li>
             <p class="navbar-btn">
               <a href="/Agregar.php" class="btn btn-success">

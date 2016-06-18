@@ -89,7 +89,7 @@ if( isset($_POST['responder']) ){
 	$mensaje = "Respuesta guardada exitosamente.";
 	}
 else {
-    $pre_agregada = 0;
+    $res_agregada = 0;
 }
 
 $preguntas = $conexion->query("SELECT pre.id AS preg_id,
