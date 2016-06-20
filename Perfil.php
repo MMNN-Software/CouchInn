@@ -191,9 +191,11 @@
               <?php echo $usuario_perfil['nombre'] ?>
             </div>
             <div class="profile-usertitle-job">
-              <?php if ($usuario_perfil['premium']): ?>
-                Usuario Premium
-              <?php else: ?>
+              <?php if ($usuario_perfil['tipo'] == 'admin'): ?>
+                Usuario Administrador
+              <?php elseif ($usuario_perfil['premium']): ?>
+			    Usuario Premium
+			  <?php else: ?>
                 Usuario Base
               <?php endif ?>
             </div>
