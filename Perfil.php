@@ -132,6 +132,7 @@
       $conexion->query("INSERT INTO pago(id, usuario_id, fecha, monto, tarjeta) VALUES (NULL,'{$_SESSION['id']}','{$hoy}',150,'{$_POST['tarjeta']}')");
       $conexion->query("UPDATE usuario SET premium = 1 WHERE id = '{$_SESSION['id']}'");
       $mensaje = "Tu usuario ahora es premium.";
+	  $_SESSION['premium'] = 1;
     }
   }
 
