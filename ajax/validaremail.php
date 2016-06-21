@@ -27,7 +27,7 @@ include '../includes/conexion.php';
       		$usuario = $resultado->fetch_assoc();
 	        $linkTemporal = generarLinkTemporal( $usuario['id'], $usuario['email'] );
       		if($linkTemporal){
-        		$respuesta->mensaje = '<div class="alert alert-info"> Un correo ha sido enviado a su cuenta de email con las instrucciones para restablecer la contraseña <br>(<a href="'.$linkTemporal .'">link</a>)</div>';
+        		$respuesta->mensaje = '<div class="alert alert-success"> Un correo ha sido enviado a su cuenta de email con las instrucciones para restablecer la contraseña <br>(<a href="'.$linkTemporal .'">link</a>)</div>';
       		}
    		}
    		else
