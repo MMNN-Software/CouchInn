@@ -16,7 +16,20 @@ ORDER BY pu.fecha DESC
 
 ?>
 
- <?php include 'includes/body.php'; ?>
+<?php include 'includes/body.php'; 
+if( $resultado->num_rows <= 0 ){ 
+$mensaje ="Aun no tienes publicaciones "?>
+<form class="container main">
+<div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <?php echo $mensaje ?>
+      </div>
+</form>	  
+<?php
+} else {
+?>
+
+ 
 
   <div class="container main">
     <?php if (isset($_GET["bienvenido"])): ?>
@@ -28,6 +41,7 @@ ORDER BY pu.fecha DESC
    <?php include 'includes/mostrar_publi.php'; ?>
   </div>
 <?php
+}
 $javascripts = <<<EOD
 
 <script type="text/javascript">
