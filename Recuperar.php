@@ -18,7 +18,7 @@ include 'includes/header.php';
               </div>
             </div>
             <div class="panel-footer clearfix">
-              <button class="btn btn-primary pull-right" type="submit">Recuperar contraseña</button>
+              <button class="btn btn-success pull-right" type="submit">Recuperar contraseña</button>
             </div>
           </div>
         </form>
