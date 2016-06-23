@@ -1,1 +1,0 @@
-DateTime::createFromFormat('d/m/Y', $_POST['fecha_inicio'])->format('yyyy-mm-dd');

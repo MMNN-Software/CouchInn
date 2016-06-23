@@ -17,7 +17,7 @@ ORDER BY pu.fecha DESC
 ?>
 
 <?php include 'includes/body.php'; 
-if( $resultado->num_rows <= 0 ){ 
+if( $publicaciones->num_rows == 0 ){ 
 $mensaje ="Aun no tienes publicaciones "?>
 <form class="container main">
 <div class="alert alert-dismissible alert-danger">

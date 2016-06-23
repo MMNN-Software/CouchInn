@@ -22,15 +22,19 @@ if( $password1 != "" && $password2 != "" && $idusuario != "" && $token != "" ){
           if( $password1 === $password2 ){
             $conexion->query("UPDATE usuario SET password = '".md5($password1)."' WHERE id = ".$usuario['idusuario']);
             $conexion->query("DELETE FROM resetpass WHERE token = '$token';");
-            ?><p> La contraseña se actualizó con exito. </p><?php
-          }else{
+            ?><p> La contraseña se actualizó con exito. </p>
+			<?php
+			sleep(2);
+			header('Location: index.php');?>
+		
+          <?php}else{
             ?><p> Las contraseñas no coinciden </p><?php
           }
         }else{
-          ?><p> El token no es válido </p><?php
+          ?><p> El token no es válido1 </p><?php
         } 
       }else{
-        ?><p> El token no es válido </p><?php
+        ?><p> El token no es válido2 </p><?php
       } ?>
     </div>
   </div>
