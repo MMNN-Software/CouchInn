@@ -22,7 +22,7 @@
           <h5>Agregar publicación</h5>
           <hr>
           <form action="Agregar.php" method="POST" class="form-horizontal">
-            <div id="files"></div>
+            <div id="files" class="clearfix"></div>
             <span class="btn btn-success btn-block fileinput-button">
                 <i class="glyphicon glyphicon-plus"></i>
                 <span>Agregar fotos</span>
@@ -61,14 +61,22 @@
             <div class="form-group">
               <label class="col-sm-2 control-label"><b>Plazas:</b></label>
               <div class="col-sm-10">
-                <input type="number" name="capacidad" class="form-control" min="1" max="50" step="1" required="required">
+
+                <select name="capacidad" class="form-control" required="required">
+                  <option value="0">Selecciona un valor</option>
+                <?php for ($i=1; $i <= 50 ; $i++) { ?>
+                  <option value="<?php echo $i?>">
+                    <?php echo $i?> Persona<?php if($i!=1) echo 's';?>
+                  </option>
+                <?php } ?>
+                </select>
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-2 control-label"><b>Lugar:</b></label>
               <div class="col-sm-10">
-                <input type="hidden" name="idLugar" value="-1" id="idLugar">
+                <input type="hidden" name="idLugar" value="0" id="idLugar">
                 <input type="text" name="lugar" class="form-control" required="required" id="autocompleteLugar">
               </div>
             </div>
@@ -84,11 +92,45 @@
     </div>  
   </div>  
 </div>
+
+<style type="text/css">
+  .fotoupload{
+    position: relative;
+  }
+
+  .fotoupload .borrar{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }
+</style>
 <?php 
 
 $javascripts = <<<EOD
 <script type="text/javascript">
+
+function borrarFoto(e){
+  $(e).parent().parent().remove();
+  container.masonry('reloadItems');
+  container.masonry('layout');
+  return false;
+}
+
+
 $(document).ready(function(){
+  var container = $('#files');
+
+  window.container = container;
+
+  container.imagesLoaded(function () {
+    container.masonry({
+      itemSelector: '.fotoupload',
+      columnWidth: '.fotoupload',
+      transitionDuration: 0
+    });
+  });
+
+
   $('#fileupload').fileupload({
       url: 'Agregar.php?im',
       dataType: 'json',
@@ -96,7 +138,18 @@ $(document).ready(function(){
       done: function (e, data) {
           $.each(data.result.files, function (index, file) {
             console.log(file);
-              $('<div class="col-xs-6 col-md-4 col-lg-3"><div href="#" class="thumbnail"><img src="'+file.url+'" /></div></div>').appendTo('#files');
+            if(file.error){
+              //successAlert(file.error);
+            }else{
+              $('<div class="col-xs-6 col-md-4 col-lg-3 fotoupload">'+
+              '<span class="borrar"><button class="btn btn-sm btn-danger" onclick="return borrarFoto(this);"><span class="glyphicon glyphicon-trash"></span></button></span>'+
+              '<div class="thumbnail"><img src="'+file.url+'" /><input type="hidden" name="fotos[]" value="'+file.name+'"></div></div>').appendTo(container);
+              
+              container.imagesLoaded(function () {
+                container.masonry('reloadItems');
+                container.masonry('layout');
+              });
+            }
           });
       }
   });

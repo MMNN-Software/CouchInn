@@ -308,7 +308,7 @@ body {
     z-index: 1100;
 }
 .ui-menu .ui-menu-item a.ui-corner-all:hover, .ui-menu .ui-menu-item a.ui-corner-all:focus, .ui-menu .ui-menu-item a.ui-corner-all:active {
-    background: #689F38!important;
+    background: #689F38 !important;
     color: #FFF;
     border-radius: 0;
 }
@@ -319,6 +319,9 @@ body {
     color: #FFF !important;
     border-radius: 0;
     font-weight: normal;
+}
+.ui-state-hover a, .ui-widget-content .ui-state-hover a, .ui-widget-header .ui-state-hover a, .ui-state-focus a, .ui-widget-content .ui-state-focus a, .ui-widget-header .ui-state-focus a {
+    color: #FFF;
 }
 .footer {
     background: #FFF;

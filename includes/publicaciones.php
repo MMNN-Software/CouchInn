@@ -4,7 +4,7 @@ $publicaciones = $conexion->query("SELECT * FROM publicacion WHERE usuario_id = 
 ?>
 <div class="panel panel-default">
   <div class="panel-body">
-    <h5>Mis publicaciones</h5>
+    <h5>Publicaciones</h5>
     <hr>
     <div class="list-group">
 <?php while( $publicacion = $publicaciones->fetch_assoc() ){ ?>
@@ -26,6 +26,7 @@ $publicaciones = $conexion->query("SELECT * FROM publicacion WHERE usuario_id = 
           </button>
         </span>
         <h4 class="list-group-item-heading"><a href="/Publicacion.php?id=<?php echo $publicacion['id'] ?>"><?php echo $publicacion['titulo']; ?></a></h4>
+        <!--<p class="list-group-item-text"><span class="glyphicon glyphicon-comment"></span> </p>-->
       </div>
 <?php } ?>
     </div>
