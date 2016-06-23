@@ -133,9 +133,15 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <a href="#" class="btn btn-sm btn-primary" onclick="history.back();return false;"><span class="glyphicon glyphicon-menu-left"></span> Volver al listado</a>
         </div>
         <?php include 'includes/ofertar.php';?>
+<<<<<<< HEAD
         <div class="publicacion-header">
            <h4><button type="button" class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#ofertar" >Ofertar</button><?php echo $publicacion['titulo']?></h4>
         </div>
+=======
+        <div class="publicacion-header">		
+           <button type="button" class="btn btn-sm btn-success pull-right " data-toggle="modal" data-target="#ofertar" >Ofertar</button> 
+	   </div>
+>>>>>>> f8f97392c93c368effc84d46029e1db1910e2c40
         <div class="panel-body">
           <p><a href="/?categoria=<?php echo $publicacion['categoria_id'] ?>"><?php echo $publicacion['categoria'] ?></a> en <a href="/?ciudad=<?php echo $publicacion['ciudad_id'] ?>"><?php echo $publicacion['ciudad'] ?>, <?php echo $publicacion['provincia'] ?></a> para <a href="/?capacidad=<?php echo $publicacion['capacidad'] ?>"><?php echo $publicacion['capacidad'] ?> persona<?php if ($publicacion['capacidad']!=1): ?>s<?php endif ?></a></p>
           <div class="clearfix">
