@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/css/bootstrap-datepicker3.css" />
   <link rel="stylesheet" href="/css/ekko-lightbox.min.css" />
   <link rel="stylesheet" href="/css/animate.css" />
+  <link rel="stylesheet" href="/css/jquery.fileupload.css" />
   <link rel="stylesheet" href="/css/main.css" />
 
   

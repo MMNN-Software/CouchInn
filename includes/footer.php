@@ -8,6 +8,7 @@
   </div>
   <script type="text/javascript" src="/js/jquery-2.2.4.min.js"></script>
   <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.fileupload.js"></script>
   <script type="text/javascript" src="/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="/js/bootstrap-datepicker.es.min.js"></script>
@@ -20,7 +21,7 @@
   <script type="text/javascript" src="/js/readmore.min.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
   <script type="text/javascript" src="/js/jAlert-v4.min.js"></script>
-  <script type="text/javascript" src="/js/jAlert-functions.min"></script>
+  <script type="text/javascript" src="/js/jAlert-functions.min.js"></script>
   <?php if (isset($javascripts)): ?>
     <?php echo $javascripts; ?>
   <?php endif ?>
