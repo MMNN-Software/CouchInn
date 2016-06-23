@@ -125,7 +125,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
             <?php if (isset($_SESSION['usuario'])): ?>
               <a href="#" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-heart"></span><span class="hidden-xs"> a favoritos</span></a>
               <?php if ($_SESSION['id'] == $publicacion['usuario_id'] ): ?>
-                <a href="#" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                <a href="#" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
                 <a href="#" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Borrar</a>
               <?php endif; ?>
             <?php endif; ?>
@@ -133,9 +133,9 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <a href="#" class="btn btn-sm btn-primary" onclick="history.back();return false;"><span class="glyphicon glyphicon-menu-left"></span> Volver al listado</a>
         </div>
         <?php include 'includes/ofertar.php';?>
-        <div class="publicacion-header">		
-           <button type="button" class="btn btn-sm btn-success pull-right " data-toggle="modal" data-target="#ofertar" >Ofertar</button> 
-	   </div>
+        <div class="publicacion-header">
+           <h4><button type="button" class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#ofertar" >Ofertar</button><?php echo $publicacion['titulo']?></h4>
+        </div>
         <div class="panel-body">
           <p><a href="/?categoria=<?php echo $publicacion['categoria_id'] ?>"><?php echo $publicacion['categoria'] ?></a> en <a href="/?ciudad=<?php echo $publicacion['ciudad_id'] ?>"><?php echo $publicacion['ciudad'] ?>, <?php echo $publicacion['provincia'] ?></a> para <a href="/?capacidad=<?php echo $publicacion['capacidad'] ?>"><?php echo $publicacion['capacidad'] ?> persona<?php if ($publicacion['capacidad']!=1): ?>s<?php endif ?></a></p>
           <div class="clearfix">
