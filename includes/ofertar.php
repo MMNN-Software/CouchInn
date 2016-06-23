@@ -1,5 +1,6 @@
+
 <div class="modal fade" id="ofertar">
-  <form action="/confirmar_oferta.php" method="POST" class="form" role="form">
+  <form action="/confirmar_oferta.php?id=<?php echo $publicacion['id'] ?>" method="POST" class="form" role="form">
     <div class="modal-dialog" style="max-width:400px">
       <div class="modal-content">
         <div class="modal-header">
@@ -7,7 +8,7 @@
           <h4 class="modal-title">Ofertar</h4>
         </div>
         <div class="modal-body">
-          <form class="form" action="/confirmar_oferta.php" method="POST">
+          <form class="form" action="/confirmar_oferta.php?idu=<?php echo $publicacion['usuario_id'] ?>" method="POST">
             <p>Se enviara una petición para poder llevar a cabo la reserva</p>
 			<div class="row">
 			<div class="col-sm-12">

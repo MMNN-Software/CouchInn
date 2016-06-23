@@ -14,9 +14,9 @@
   <link rel="stylesheet" href="/css/ekko-lightbox.min.css" />
   <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/main.css" />
-  <link rel="stylesheet" href="/css/main.css" />
-  <link rel="stylesheet" href="/css/jAlert-FB.css" />
-  <link rel="stylesheet" href="/css/jAlert-v4.css" />
+
+  
+
 </head>
 <body>
   <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
@@ -32,14 +32,7 @@
 
       <div class="collapse navbar-collapse" id="navbar">
   
-        <div class="pull-left">
-          <form class="navbar-form" role="search" method="GET">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="¿A qué ciudad querés ir?" name="ciudad" id="search_input">
-              <span class="input-group-addon"><a href="#" style="color:white"><span class="glyphicon glyphicon-search"></span></a></span>
-            </div>
-          </form>
-        </div>
+       
         <ul class="nav navbar-nav navbar-right">
 <?php if (isset($_SESSION['usuario'])): ?>
 <?php 	  
