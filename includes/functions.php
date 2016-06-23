@@ -6,7 +6,7 @@ function tiempo_transcurrido($fecha) {
   $duraciones = array("60","60","24","7","4.35","12");
    
   $ahora = time();
-  $unix = strtotime($fecha);
+  $unix = $fecha;
   
   $diferencia = $ahora - $unix;
   for($j = 0; $diferencia >= $duraciones[$j] && $j < count($duraciones)-1; $j++) {

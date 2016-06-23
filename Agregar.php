@@ -24,7 +24,7 @@
           <form action="Agregar.php" method="POST" class="form-horizontal">
             <div id="files" class="clearfix"></div>
             <span class="btn btn-success btn-block fileinput-button">
-                <i class="glyphicon glyphicon-plus"></i>
+                <i class="glyphicon glyphicon-camera"></i>
                 <span>Agregar fotos</span>
                 <input id="fileupload" type="file" name="files[]" multiple>
             </span>
@@ -40,7 +40,7 @@
             <div class="form-group">
               <label class="col-sm-2 control-label"><b>Descripción:</b></label>
               <div class="col-sm-10">
-                <textarea name="descripcion" class="form-control" rows="4" required="required" placeholder="Describe tu publicación detalladamente, cuanta más información indiques, mejores chances tenés de conseguir más huéspedes!"></textarea>
+                <textarea name="descripcion" class="form-control" rows="3" required="required" placeholder="Describe tu publicación detalladamente, cuanta más información indiques, mejores chances tenés de conseguir más huéspedes!"></textarea>
               </div>
             </div>
 
@@ -103,6 +103,13 @@
     top: 5px;
     right: 10px;
   }
+  #files{
+    margin-bottom: 10px
+  }
+  #files:empty {
+    min-height:100px;
+    border:3px dashed #DDD;
+  }
 </style>
 <?php 
 
@@ -118,6 +125,7 @@ function borrarFoto(e){
 
 
 $(document).ready(function(){
+  $('textarea').elastic();
   var container = $('#files');
 
   window.container = container;
