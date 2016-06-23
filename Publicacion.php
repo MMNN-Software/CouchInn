@@ -93,6 +93,28 @@ else {
     $res_agregada = 0;
 }
 
+$reservas = $conexion->query("SELECT u.id AS res_user_id,
+                                     u.nombre AS res_u_nombre,
+									r.id AS reserva_id,
+                                    r.desde AS r_desde,
+                                    r.hasta as r_hasta,
+									r.mensaje AS r_mensaje,
+									p.id AS publicacion_id,
+									p.titulo AS publicacion_titulo,
+									p.usuario_id AS publicacion_owner_id
+							FROM reserva r
+							INNER JOIN publicacion p ON p.id = r.publicacion_id
+							INNER JOIN usuario u ON u.id = r.usuario_id
+							WHERE r.estado = 1 AND p.id = '{$id}'");
+   if ($reservas->num_rows) {
+	   $_res = array();
+	   while ( $reser = $reservas->fetch_assoc()){
+		   $_res[] = $reser;
+	   }
+   }
+
+
+
 $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 									   pre.usuario_id AS preguntador_id,
 									   pre.respuesta_id AS res_id,
@@ -150,11 +172,22 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <p><?php echo $publicacion['descripcion'] ?></p>
         </div>
       </div>
+	  <div class="panel panel-default">
+        <div class="panel-body">
+          <h5 id="Reservas">Reservas <button id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info">+</button></h5>
+          <hr>
+		  <div id="res_info" class="collapse">
+			<?php include 'includes/reservas.php' ?>
+		  </div>
+		</div>
+	  </div>
       <div class="panel panel-default">
         <div class="panel-body">
-          <h5 id="Preguntas">Preguntas</h5>
+          <h5 id="Preguntas">Preguntas <button id="preg_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#preg_info">+</button></h5>
           <hr>
-          <?php include 'includes/preguntas.php' ?>
+		  <div id="preg_info" class="collapse">
+			<?php include 'includes/preguntas.php' ?>
+		  </div>
         </div>
       </div>
     </div>
@@ -267,5 +300,18 @@ include 'includes/footer.php'; ?>
 <script>
 	$(function(){successAlert('Exito', 'La respuesta fue guardada exitosamente.');
 				});
+</script>
+<script>
+function handleClick()
+{
+    this.value = (this.value == '+' ? '-' : '+');
+}
+document.getElementById('res_icon').onclick=handleClick;
+
+function handleClick()
+{
+    this.value = (this.value == '+' ? '-' : '+');
+}
+document.getElementById('preg_icon').onclick=handleClick;
 </script>
 <?php endif ?>
