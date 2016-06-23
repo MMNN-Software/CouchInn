@@ -12,9 +12,9 @@
     <li><a href="/Administracion.php"><span class="glyphicon glyphicon-lock"></span> Administración</a></li>
   <?php endif ?>
     <li><a href="/Perfil.php"><span class="glyphicon glyphicon-user"></span> Mi Perfil</a></li>
-    <li><a href="/Favoritos.php"><span class="glyphicon glyphicon-heart"></span> Favoritos</a></li>
-    <li><a href="/Publicaciones.php"><span class="glyphicon glyphicon-bed"></span> Publicaciones</a></li>
-    <li><a href="/Valoraciones.php"><span class="glyphicon glyphicon-star"></span> Valoraciones</a></li>
+    <li><a href="/Perfil.php?tab=publicaciones"><span class="glyphicon glyphicon-bed"></span> Publicaciones</a></li>
+    <li><a href="/Perfil.php?tab=favoritos"><span class="glyphicon glyphicon-heart"></span> Favoritos</a></li>
+    <li><a href="/Perfil.php?tab=valoraciones"><span class="glyphicon glyphicon-star"></span> Valoraciones</a></li>
     <li class="divider"></li>
     <li><a href="/logout.php">Cerrar Sesión</a></li>
   </ul>

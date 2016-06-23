@@ -45,14 +45,12 @@
 								WHERE res.id IS NULL AND pu.usuario_id = '{$_SESSION['id']}'");
   $cantpreg = $cantpreg->fetch_assoc(); ?>
           <li>
-		    <p class="navbar-btn">
-              <a href="/Preguntas.php" class="btn btn-success">
-                Preguntas <span class="hidden-xs hidden-sm">(<?php echo ($cantpreg[cant]) ?>)</span>
-              </a>
-            </p>
-		  </li>
-          <li>
             <p class="navbar-btn">
+            <?php if ($cantpreg['cant']): ?>
+              <a href="/Preguntas.php" class="btn btn-success">
+                Preguntas <span class="hidden-xs hidden-sm">(<?php echo ($cantpreg['cant']) ?>)</span>
+              </a>
+            <?php endif ?>
               <a href="/Agregar.php" class="btn btn-success">
                 Agregar <span class="hidden-xs hidden-sm">Publicación</span>
               </a>
