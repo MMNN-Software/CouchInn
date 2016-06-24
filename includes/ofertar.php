@@ -1,6 +1,6 @@
-
+  
 <div class="modal fade" id="ofertar">
-  <form  class="form" action="/confirmar_oferta.php?idu=<?php echo $publicacion['usuario_id']?>&idp=<?php echo $publicacion['id']?>" method="POST">
+  <form  class="form" action="/confirmar_oferta.php?idp=<?php echo $publicacion['id']?>" method="POST">
     <div class="modal-dialog" style="max-width:400px">
       <div class="modal-content">
         <div class="modal-header">
@@ -8,7 +8,7 @@
           <h4 class="modal-title">Ofertar</h4>
         </div>
         <div class="modal-body">
-          <form class="form" action="/confirmar_oferta.php?idu=<?php echo $publicacion['usuario_id']?>&idp=<?php echo $publicacion['id']?>" method="POST">
+          <form class="form" action="/confirmar_oferta.php?idp=<?php echo $publicacion['id']?>" method="POST">
             <p>Se enviara una petición para poder llevar a cabo la reserva</p>
 			<div class="row">
 			<div class="col-sm-12">
@@ -24,7 +24,7 @@
               <div class="input-daterange">
 				  <div class="col-sm-6">
 						<div class="form-group">
-						  <label class="control-label">Fecha entrada</label>
+						  <label class="control-label">Fecha entrada </label>
 						  <div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 							<input class="form-control" placeholder="Entrada" id="datein" name="datein">
