@@ -331,9 +331,11 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
             <p class="list-group-item-text"><?php echo $val['mensaje'] ?></p>
           </div>
           <?php endwhile; ?>
+          <?php if ($resumen['total']): ?>
           <a href="#" class="list-group-item text-center">
             <b>Ver todas (<?php echo $resumen['total']; ?>)</b>
           </a>
+          <?php endif ?>
         </div>
       </div>
     </div>
