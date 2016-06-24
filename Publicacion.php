@@ -234,7 +234,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <p><?php echo $publicacion['descripcion'] ?></p>
         </div>
       </div>
-	  <!--<div class="panel panel-default">
+	  <div class="panel panel-default">
         <div class="panel-body">
           <h5 id="Reservas">Reservas <input type="button" id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info" value="+" /></h5>
           <hr>
@@ -242,14 +242,15 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 			<?php include 'includes/reservas.php' ?>
 		  </div>
 		</div>
-	  </div>-->
+	  </div>
+	  
       <div class="panel panel-default">
         <div class="panel-body">
           <h5 id="Preguntas">Preguntas</h5>
           <hr>
     			<?php include 'includes/preguntas.php' ?>
         </div>
-      </div>
+      </div>	  
     </div>
     <div class="col-sm-4">
       <div class="panel panel-default" id="docked">
@@ -318,7 +319,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
             </div>
           </div>
         </div>
-        <div class="list-group valoraciones">
+       <div class="list-group valoraciones">
           <?php while( $val = $valoraciones->fetch_assoc() ): ?>
           <div class="list-group-item">
             <div class="featured-review-star-rating pull-right">
