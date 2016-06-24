@@ -88,7 +88,7 @@ function aceptar_reserva ( $reserva_id, $user_id) {
 	
     $reserva_id = $conexion->real_escape_string($reserva_id);
     $user_id = $conexion->real_escape_string($user_id);
-	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2
+	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - Rechazado 3
 	$conexion->query("UPDATE reserva SET estado=2 WHERE id={$reserva_id};");
 	return 0;
 }
@@ -100,8 +100,8 @@ function rechazar_reserva ( $reserva_id, $user_id) {
 	
     $reserva_id = $conexion->real_escape_string($reserva_id);
     $user_id = $conexion->real_escape_string($user_id);
-	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2
-	$conexion->query("UPDATE reserva SET estado=0 WHERE id={$reserva_id};");
+	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - RECHAZADO 3
+	$conexion->query("UPDATE reserva SET estado=3 WHERE id={$reserva_id};");
 	return 0;
 }
 
