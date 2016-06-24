@@ -191,6 +191,10 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <div class="pull-right">
             <?php if (isset($_SESSION['usuario'])): ?>
               <a href="#" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-heart"></span><span class="hidden-xs"> a favoritos</span></a>
+              <?php if ($_SESSION['id'] == $publicacion['usuario_id'] ): ?>
+                <a href="/Agregar.php?editar=<?php echo $publicacion['id']?>" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
+                <a href="/Borrar.php?id=<?php echo $publicacion['id']?>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Borrar</a>
+              <?php endif; ?>
             <?php endif; ?>
           </div>
           <a href="#" class="btn btn-sm btn-primary" onclick="history.back();return false;"><span class="glyphicon glyphicon-menu-left"></span> Volver al listado</a>
@@ -227,11 +231,9 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 	  </div>
       <div class="panel panel-default">
         <div class="panel-body">
-          <h5 id="Preguntas">Preguntas <input type="button" id="preg_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#preg_info" value="+" /></h5>
+          <h5 id="Preguntas">Preguntas</h5>
           <hr>
-		  <div id="preg_info" class="collapse">
-			<?php include 'includes/preguntas.php' ?>
-		  </div>
+    			<?php include 'includes/preguntas.php' ?>
         </div>
       </div>
     </div>

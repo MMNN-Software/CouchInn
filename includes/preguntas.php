@@ -1,24 +1,27 @@
 <?php if ($_SESSION[usuario] != NULL && $_SESSION[id] !== $publicacion[owner_id]):  ?>
-  <form method="post" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form" role="form">
-    <div class="media">
-      <div class="media-left">
-        <img class="media-object img-circle shadow" src="/img/perfiles/<?php echo ($_SESSION['foto'])?$_SESSION['foto']:'default.png'; ?>" width="48">
+  <form method="post" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form form-horizontal" role="form">
+    <input type="hidden" name="preguntar" value="1" />
+    <div class="form-group">
+      <label for="textarea" class="col-sm-1 control-label"><span class="glyphicon glyphicon-comment"></span></label>
+      <div class="col-sm-11">
+        <textarea name="pregunta1" id="textarea" class="form-control" rows="2" required="required" placeholder="Escribe aqui tu pregunta..."></textarea>
       </div>
-      <div class="media-body">
-        <h5 class="media-heading"><a href="/Perfil.php?id=<?php echo $_SESSION['id'];?>"><?php echo $_SESSION['nombre']; ?></a></h5>
-        <input type="hidden" name="preguntar" value="1" />
-        <textarea class="col-sm-8" style="font-size:100%; width:100%" required name="pregunta1" id="pregunta1" class="form-control" rows="1" placeholder="Escribe aqui tu pregunta..."></textarea>
-        <button type="submit" name="ask_button" id="ask_button" class="btn btn-success">Enviar</button>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-11 col-sm-offset-1">
+        <button type="submit" name="ask_button" class="btn btn-primary">Preguntar</button>
       </div>
     </div>
   </form>
+  <hr>
 <?php endif ?>
 
 
 
 
       <?php if (!isset($preg_res)): ?>
-        Por el momento no hay preguntas para esta publicacion.
+        <p class="text-center">Por el momento no hay preguntas para esta publicación.</p>
       <?php else: ?>
         <?php 
         $i = 0;

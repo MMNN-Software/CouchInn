@@ -18,12 +18,12 @@ $publicaciones = $conexion->query("SELECT * FROM publicacion WHERE usuario_id = 
         <?php } 
         $imagenes->free(); ?></span>
         <span class="pull-right">
-          <button class="btn btn-sm btn-warning">
+          <a href="/Agregar.php?editar=<?php echo $publicacion['id']?>" class="btn btn-sm btn-warning">
             <span class="glyphicon glyphicon-pencil"></span> Editar
-          </button>
-          <button class="btn btn-sm btn-danger">
+          </a>
+          <a href="/Borrar.php?id=<?php echo $publicacion['id']?>" class="btn btn-sm btn-danger">
             <span class="glyphicon glyphicon-trash"></span> Borrar
-          </button>
+          </a>
         </span>
         <h4 class="list-group-item-heading"><a href="/Publicacion.php?id=<?php echo $publicacion['id'] ?>"><?php echo $publicacion['titulo']; ?></a></h4>
         <!--<p class="list-group-item-text"><span class="glyphicon glyphicon-comment"></span> </p>-->

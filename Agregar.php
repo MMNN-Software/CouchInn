@@ -11,7 +11,38 @@
   }
 
   if(isset($_GET['save'])){
-
+    $titulo = $conexion->real_escape_string($_POST['titulo']);
+    $descripcion = $conexion->real_escape_string($_POST['descripcion']);
+    if(isset($_POST['id'])){
+      $ands = '';
+      $i = 0;
+      foreach ($_POST['viejas'] as $id) {
+        $i++;
+        $ands .= ' AND id != \''.$id."'";
+      }
+      $conexion->query("DELETE FROM imagen WHERE publicacion_id = '{$_POST['id']}'".$ands);
+      foreach ($_POST['fotos'] as $foto) {
+        $i++;
+        $path = $conexion->real_escape_string($foto);
+        $conexion->query("INSERT INTO imagen(id, publicacion_id, `path`, orden) VALUES (NULL,'{$_POST['id']}','{$path}','{$i}')");
+      }
+      $conexion->query("UPDATE publicacion SET categoria_id = '{$_POST['tipo']}', ciudad_id = '{$_POST['idLugar']}', titulo = '{$titulo}', descripcion = '{$descripcion}', capacidad = '{$_POST['capacidad']}' WHERE id = '{$_POST['id']}'");
+      header("Location: /Publicacion.php?id=".$_POST['id']);
+      die;
+    }else{
+      $dd = date('Y-m-d H:i:s');
+      $conexion->query("INSERT INTO publicacion(id, categoria_id, ciudad_id, usuario_id, titulo, descripcion, fecha, capacidad) 
+        VALUES (NULL,'{$_POST['tipo']}','{$_POST['idLugar']}','{$_SESSION['id']}','{$titulo}','{$descripcion}','{$dd}','{$_POST['capacidad']}')");
+      $id = $conexion->insert_id;
+      $i = 0;
+      foreach ($_POST['fotos'] as $foto) {
+        $i++;
+        $path = $conexion->real_escape_string($foto);
+        $conexion->query("INSERT INTO imagen(id, publicacion_id, `path`, orden) VALUES (NULL,'{$id}','{$path}','{$i}')");
+      }
+      header("Location: /Publicacion.php?id=".$id);
+      die;
+    }
   }
 
   if(isset($_GET['editar'])){
@@ -45,11 +76,12 @@
     <div class="col-sm-8 col-sm-offset-2">
       <div class="panel panel-default">
         <div class="panel-body">
-          <h5>Agregar publicación</h5>
+          <h5><?php echo ($publicacion)?'Editar':'Agregar'; ?> publicación</h5>
           <hr>
           <form action="Agregar.php?save" method="POST" class="form-horizontal">
+            <?php if ($publicacion): ?><input type="hidden" name="id" value="<?php echo $publicacion['id'] ?>"><?php endif ?>
             <div id="files" class="clearfix"><?php foreach ($imagenes as $img): ?>
-            <div class="col-xs-6 col-md-4 col-lg-3 fotoupload"><span class="borrar"><button class="btn btn-sm btn-danger" onclick="return borrarFoto(this);"><span class="glyphicon glyphicon-trash"></span></button></span><div class="thumbnail"><img src="/img/publicacion/<?php echo $img['path'] ?>" /><input type="hidden" name="fotos[]" value="<?php echo $img['id'] ?>"></div></div>
+            <div class="col-xs-6 col-md-4 col-lg-3 fotoupload"><span class="borrar"><button class="btn btn-sm btn-danger" onclick="return borrarFoto(this);"><span class="glyphicon glyphicon-trash"></span></button></span><div class="thumbnail"><img src="/img/publicacion/<?php echo $img['path'] ?>" /><input type="hidden" name="viejas[]" value="<?php echo $img['id'] ?>"></div></div>
             <?php endforeach ?></div>
             <span class="btn btn-success btn-block fileinput-button">
                 <i class="glyphicon glyphicon-camera"></i>
@@ -76,7 +108,7 @@
               <label class="col-sm-2 control-label"><b>Tipo:</b></label>
               <div class="col-sm-10">
                 <select name="tipo" class="form-control" required="required">
-                  <option value="0">Selecciona un tipo</option>
+                  <option value="">Selecciona un tipo</option>
                 <?php while ( $categoria = $categorias->fetch_assoc() ){ ?>
                   <option value="<?php echo $categoria['id']?>"<?php if($publicacion['categoria_id'] == $categoria['id']): ?> selected<?php endif ?>>
                     <?php echo $categoria['nombre']?>
@@ -91,7 +123,7 @@
               <div class="col-sm-10">
 
                 <select name="capacidad" class="form-control" required="required">
-                  <option value="0">Selecciona un valor</option>
+                  <option value="">Selecciona un valor</option>
                 <?php for ($i=1; $i <= 50 ; $i++) { ?>
                   <option value="<?php echo $i?>"<?php if($publicacion['capacidad'] == $i): ?> selected<?php endif ?>>
                     <?php echo $i?> Persona<?php if($i!=1) echo 's';?>
@@ -104,14 +136,14 @@
             <div class="form-group">
               <label class="col-sm-2 control-label"><b>Lugar:</b></label>
               <div class="col-sm-10">
-                <input type="hidden" name="idLugar" value="<?php echo ($publicacion['ciudad_id'])?$publicacion['ciudad_id']:0 ?>" id="idLugar">
+                <input type="hidden" name="idLugar" value="<?php echo ($publicacion['ciudad_id'])?$publicacion['ciudad_id']:'' ?>" id="idLugar">
                 <input type="text" name="lugar" class="form-control" required="required" id="autocompleteLugar" value="<?php if($publicacion) echo htmlentities($publicacion['ciudad'], ENT_QUOTES).', '.htmlentities($publicacion['provincia'], ENT_QUOTES); ?>">
               </div>
             </div>
 
             <div class="form-group">
               <div class="col-sm-10 col-sm-offset-2">
-                <button type="submit" class="btn btn-success">Enviar</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
               </div>
             </div>
           </form>
