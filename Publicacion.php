@@ -174,7 +174,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
       </div>
 	  <div class="panel panel-default">
         <div class="panel-body">
-          <h5 id="Reservas">Reservas <button id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info">+</button></h5>
+          <h5 id="Reservas">Reservas <input type="button" id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info" value="+" /></h5>
           <hr>
 		  <div id="res_info" class="collapse">
 			<?php include 'includes/reservas.php' ?>
@@ -183,7 +183,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 	  </div>
       <div class="panel panel-default">
         <div class="panel-body">
-          <h5 id="Preguntas">Preguntas <button id="preg_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#preg_info">+</button></h5>
+          <h5 id="Preguntas">Preguntas <input type="button" id="preg_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#preg_info" value="+" /></h5>
           <hr>
 		  <div id="preg_info" class="collapse">
 			<?php include 'includes/preguntas.php' ?>
@@ -291,27 +291,23 @@ EOD;
 include 'includes/footer.php'; ?>
 
 <?php if ($pre_agregada == 1): ?>
-<script>
+<script type="text/javascript">
 	$(function(){successAlert('Exito', 'La pregunta fue guardada exitosamente.');
 				});
 </script>
 <?php endif ?>
 <?php if ($res_agregada == 1): ?>
-<script>
+<script type="text/javascript">
 	$(function(){successAlert('Exito', 'La respuesta fue guardada exitosamente.');
 				});
 </script>
-<script>
-function handleClick()
-{
-    this.value = (this.value == '+' ? '-' : '+');
-}
-document.getElementById('res_icon').onclick=handleClick;
-
+<?php endif ?>
+<script type="text/javascript">
 function handleClick()
 {
     this.value = (this.value == '+' ? '-' : '+');
 }
 document.getElementById('preg_icon').onclick=handleClick;
+document.getElementById('res_icon').onclick=handleClick;
+
 </script>
-<?php endif ?>
