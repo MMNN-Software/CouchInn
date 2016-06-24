@@ -9,7 +9,7 @@ FROM publicacion pu
 INNER JOIN categoria ca ON ca.id = pu.categoria_id
 INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id
-WHERE ca.activa and ci.nombre LIKE '%$consultaBusqueda%'
+WHERE ca.activa and ci.nombre AND pu.estado LIKE '%$consultaBusqueda%'
 ORDER BY pu.fecha DESC
 /*LIMIT 8*/");
 

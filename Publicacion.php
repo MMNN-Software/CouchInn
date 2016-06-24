@@ -148,10 +148,10 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
                                      u.nombre AS res_u_nombre,
 									 u.foto,
 									r.id AS reserva_id,
-                                    r.desde AS r_desde,
-                                    r.hasta as r_hasta,
+                  r.desde AS r_desde,
+                  r.hasta as r_hasta,
 									r.mensaje AS r_mensaje,
-									r.fecha AS r_fecha,
+                     UNIX_TIMESTAMP(r.fecha) AS r_fecha,
 									p.id AS publicacion_id,
 									p.titulo AS publicacion_titulo,
 									p.usuario_id AS publicacion_owner_id
@@ -189,6 +189,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
    }
 
 ?>
+  <?php include 'includes/ofertar.php';?>		
   <div class="container main">
   <?php if (!$publicacion): ?>
     Publicacion no encontrada
@@ -207,16 +208,16 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           </div>
           <a href="#" class="btn btn-sm btn-primary" onclick="history.back();return false;"><span class="glyphicon glyphicon-menu-left"></span> Volver al listado</a>
         </div>
-		
-		<?php if (isset($_SESSION['usuario'])): ?>
-		<?php if ($_SESSION['id'] <> $publicacion['usuario_id'] ): ?>
-		
-		<?php include 'includes/ofertar.php';?>		
+  
         <div class="publicacion-header">
-           <h4><button type="button" class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#ofertar" >Ofertar</button><?php echo $publicacion['titulo']?></h4>
+           <h4>
+
+            <?php if (isset($_SESSION['usuario']) and  $_SESSION['id'] != $publicacion['usuario_id'] ): ?>
+              <button type="button" class="btn btn-sm btn-success pull-right" data-toggle="modal" data-target="#ofertar" >Ofertar</button>
+            <?php endif ?>
+            <?php echo $publicacion['titulo']?>
+            </h4>
         </div>
-		<?php endif; ?>
-		 <?php endif; ?>
         <div class="panel-body">
           <p><a href="/?categoria=<?php echo $publicacion['categoria_id'] ?>"><?php echo $publicacion['categoria'] ?></a> en <a href="/?ciudad=<?php echo $publicacion['ciudad_id'] ?>"><?php echo $publicacion['ciudad'] ?>, <?php echo $publicacion['provincia'] ?></a> para <a href="/?capacidad=<?php echo $publicacion['capacidad'] ?>"><?php echo $publicacion['capacidad'] ?> persona<?php if ($publicacion['capacidad']!=1): ?>s<?php endif ?></a></p>
           <div class="clearfix">

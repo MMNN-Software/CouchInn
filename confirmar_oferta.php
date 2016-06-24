@@ -36,7 +36,7 @@ header( "refresh:2; url=publicacion.php?id=$idpubli" );
 					Usted ya tiene una oferta pendiente en esta publicación.
 			</div>';
 	echo "$mjs";
-header( "refresh:2; url=publicacion.php?id=$idpubli" );
+header( "refresh:2; url=Publicacion.php?id=$idpubli" );
 }
 
 
