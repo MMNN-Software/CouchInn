@@ -81,6 +81,30 @@ function reply_question ( $preg_id, $user_id, $respuesta) {
 	return 0;
 }
 
+function aceptar_reserva ( $reserva_id, $user_id) {
+    $error = 0;
+	global $conexion;
+	if($error) return $error;
+	
+    $reserva_id = $conexion->real_escape_string($reserva_id);
+    $user_id = $conexion->real_escape_string($user_id);
+	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2
+	$conexion->query("UPDATE reserva SET estado=2 WHERE id={$reserva_id};");
+	return 0;
+}
+
+function rechazar_reserva ( $reserva_id, $user_id) {
+	$error = 0;
+	global $conexion;
+	if($error) return $error;
+	
+    $reserva_id = $conexion->real_escape_string($reserva_id);
+    $user_id = $conexion->real_escape_string($user_id);
+	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2
+	$conexion->query("UPDATE reserva SET estado=0 WHERE id={$reserva_id};");
+	return 0;
+}
+
 if( isset($_POST['responder']) ){
 	$error = reply_question(
       $_POST['responder'],
@@ -91,6 +115,28 @@ if( isset($_POST['responder']) ){
 	}
 else {
     $res_agregada = 0;
+}
+
+if( isset($_POST['aceptar']) ){
+	$error = aceptar_reserva(
+      $_POST['aceptar'],
+      $_SESSION['id']);
+	$reserva_aceptada = 1;
+	$mensaje = "Reserva aceptada correctamente.";
+	}
+else {
+    $reserva_aceptada = 0;
+}
+
+if( isset($_POST['rechazar']) ){
+	$error = rechazar_reserva(
+      $_POST['rechazar'],
+      $_SESSION['id']);
+	$reserva_rechazada = 1;
+	$mensaje = "Reserva rechazada correctamente.";
+	}
+else {
+    $reserva_rechazada = 0;
 }
 
 $reservas = $conexion->query("SELECT u.id AS res_user_id,
@@ -112,8 +158,6 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
 		   $_res[] = $reser;
 	   }
    }
-
-
 
 $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 									   pre.usuario_id AS preguntador_id,
@@ -299,6 +343,18 @@ include 'includes/footer.php'; ?>
 <?php if ($res_agregada == 1): ?>
 <script type="text/javascript">
 	$(function(){successAlert('Exito', 'La respuesta fue guardada exitosamente.');
+				});
+</script>
+<?php endif ?>
+<?php if ($reserva_aceptada == 1): ?>
+<script type="text/javascript">
+	$(function(){successAlert('Exito', 'La reserva fue aceptada exitosamente.');
+				});
+</script>
+<?php endif ?>
+<?php if ($reserva_rechazada == 1): ?>
+<script type="text/javascript">
+	$(function(){successAlert('Exito', 'La reserva fue rechazada exitosamente.');
 				});
 </script>
 <?php endif ?>

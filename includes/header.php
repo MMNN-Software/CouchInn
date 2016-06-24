@@ -15,8 +15,8 @@
   <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/jquery.fileupload.css" />
   <link rel="stylesheet" href="/css/main.css" />
-
-  
+  <link rel="stylesheet" href="/css/jAlert-FB.css" />
+  <link rel="stylesheet" href="/css/jAlert-v4.css" />
 
 </head>
 <body>
