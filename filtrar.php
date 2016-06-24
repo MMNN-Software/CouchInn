@@ -33,11 +33,15 @@ if ($titulo <> "") {
 if ($ciudad <> "") {	
 	$prov = substr($ciudad, (strpos($ciudad,',')+1));
 	$ciu = substr($ciudad, 0, strpos($ciudad, ','));
-	 
-	$prov1 = $conexion->query("SELECT id FROM provincia WHERE nombre like 'Neuquen'");
-	$prov1 = $prov1->fetch_assoc();
+	$prov = ltrim($prov);
+	$prov1 = $conexion->query("SELECT * FROM provincia WHERE nombre like '%$prov%' ");
+    $prov1 = $prov1->fetch_assoc();
 	$prov1 = $prov1['id'];
-	$sql .= "AND ci.nombre like '$ciu' AND pr.id = $prov1 ";
+	$ciu = ltrim($ciu);
+	$sql .= "AND ci.nombre like '%$ciu%' AND pr.id = $prov1 ";
+	
+	
+	
 }
 
 if ($capacidad <> 0) {
