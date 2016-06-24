@@ -90,6 +90,11 @@ function aceptar_reserva ( $reserva_id, $user_id) {
     $user_id = $conexion->real_escape_string($user_id);
 	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - Rechazado 3
 	$conexion->query("UPDATE reserva SET estado=2 WHERE id={$reserva_id};");
+	$conexion->query("UPDATE reserva SET estado=3 WHERE id IN (SELECT DISTINCT r.id as reserva_id FROM reserva r
+										INNER JOIN reserva r2 ON r2.publicacion_id=r.publicacion_id
+										WHERE (r.desde BETWEEN r2.desde AND r2.hasta
+										OR r.hasta BETWEEN r2.desde AND r2.hasta)
+										AND r2.id != r.id AND r2.id={$reserva_id});");
 	return 0;
 }
 
@@ -141,17 +146,20 @@ else {
 
 $reservas = $conexion->query("SELECT u.id AS res_user_id,
                                      u.nombre AS res_u_nombre,
+									 u.foto,
 									r.id AS reserva_id,
                                     r.desde AS r_desde,
                                     r.hasta as r_hasta,
 									r.mensaje AS r_mensaje,
+									r.fecha AS r_fecha,
 									p.id AS publicacion_id,
 									p.titulo AS publicacion_titulo,
 									p.usuario_id AS publicacion_owner_id
 							FROM reserva r
 							INNER JOIN publicacion p ON p.id = r.publicacion_id
 							INNER JOIN usuario u ON u.id = r.usuario_id
-							WHERE r.estado = 1 AND p.id = '{$id}'");
+							WHERE r.estado = 1 AND p.id = '{$id}'
+							ORDER BY r_fecha DESC;");
    if ($reservas->num_rows) {
 	   $_res = array();
 	   while ( $reser = $reservas->fetch_assoc()){
