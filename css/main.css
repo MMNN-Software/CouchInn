@@ -153,8 +153,8 @@ body {
 }
 
 .navbar-nav>li>a.profile-image {
-    padding-top: 17px;
-    padding-bottom: 17px;
+    padding-top: 18px;
+    padding-bottom: 15px;
 }
 
 .profile-picture:hover span.mensaje-upload {

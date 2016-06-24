@@ -46,17 +46,21 @@
   $cantpreg = $cantpreg->fetch_assoc(); ?>
           <li>
             <p class="navbar-btn">
-            <?php if ($cantpreg['cant']): ?>
-              <a href="/Preguntas.php" class="btn btn-success">
-                Preguntas <span class="hidden-xs hidden-sm">(<?php echo ($cantpreg['cant']) ?>)</span>
-              </a>
-            <?php endif ?>
               <a href="/Agregar.php" class="btn btn-success">
                 Agregar <span class="hidden-xs hidden-sm">Publicación</span>
               </a>
             </p>
           </li>
-          <li class="dropdown"><?php include 'includes/user.php'; ?></li>
+
+            <?php if ($cantpreg['cant']): ?>
+            <li>
+                <a href="/Preguntas.php">
+                  <b>Preguntas</b>
+                  <span class="badge"><?php echo $cantpreg['cant'] ?></span>
+                </a>
+            </li>
+            <?php endif ?>
+          <?php include 'includes/user.php'; ?>
 <?php else: ?>
           <li><a href="/Registrarse.php">Registrarse</a></li>
           <li class="dropdown<?php if(isset($_GET['login'])):?> open<?php endif;?>">

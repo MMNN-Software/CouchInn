@@ -10,6 +10,32 @@
     die;
   }
 
+  if(isset($_GET['save'])){
+
+  }
+
+  if(isset($_GET['editar'])){
+    $id = $conexion->real_escape_string($_GET['editar']);
+    $publicaciones = $conexion->query("SELECT p.id, p.titulo, p.descripcion, p.categoria_id, p.capacidad, p.ciudad_id, c.nombre as ciudad, pr.nombre as provincia
+                                  FROM publicacion p 
+                                  INNER JOIN ciudad c ON c.id = p.ciudad_id
+                                  INNER JOIN provincia pr ON pr.id = c.provincia_id
+                                  WHERE p.id = '{$id}'");
+
+    if($publicaciones->num_rows){
+      $publicacion = $publicaciones->fetch_assoc();
+
+      $img = $conexion->query("SELECT id, path FROM imagen WHERE publicacion_id = '{$publicacion['id']}' ORDER BY orden ASC");
+      $imagenes = array();
+      while( $im = $img->fetch_assoc() ){
+        $imagenes[] = $im;
+      }
+      $img->free();
+
+    }else{
+      $error = "La publicación no existe";
+    }
+  }
 
   include 'includes/header.php';
   $categorias = $conexion->query("SELECT * FROM categoria WHERE activa = 1");
@@ -21,8 +47,10 @@
         <div class="panel-body">
           <h5>Agregar publicación</h5>
           <hr>
-          <form action="Agregar.php" method="POST" class="form-horizontal">
-            <div id="files" class="clearfix"></div>
+          <form action="Agregar.php?save" method="POST" class="form-horizontal">
+            <div id="files" class="clearfix"><?php foreach ($imagenes as $img): ?>
+            <div class="col-xs-6 col-md-4 col-lg-3 fotoupload"><span class="borrar"><button class="btn btn-sm btn-danger" onclick="return borrarFoto(this);"><span class="glyphicon glyphicon-trash"></span></button></span><div class="thumbnail"><img src="/img/publicacion/<?php echo $img['path'] ?>" /><input type="hidden" name="fotos[]" value="<?php echo $img['id'] ?>"></div></div>
+            <?php endforeach ?></div>
             <span class="btn btn-success btn-block fileinput-button">
                 <i class="glyphicon glyphicon-camera"></i>
                 <span>Agregar fotos</span>
@@ -33,14 +61,14 @@
             <div class="form-group">
               <label class="col-sm-2 control-label"><b>Título:</b></label>
               <div class="col-sm-10">
-                <input type="text" name="titulo" class="form-control" required="required" placeholder="Título de la publicación">
+                <input type="text" name="titulo" class="form-control" required="required" placeholder="Título de la publicación" value="<?php echo htmlentities($publicacion['titulo'], ENT_QUOTES); ?>">
               </div>
             </div>
 
             <div class="form-group">
               <label class="col-sm-2 control-label"><b>Descripción:</b></label>
               <div class="col-sm-10">
-                <textarea name="descripcion" class="form-control" rows="3" required="required" placeholder="Describe tu publicación detalladamente, cuanta más información indiques, mejores chances tenés de conseguir más huéspedes!"></textarea>
+                <textarea name="descripcion" class="form-control" rows="3" required="required" placeholder="Describe tu publicación detalladamente, cuanta más información indiques, mejores chances tenés de conseguir más huéspedes!"><?php echo $publicacion['descripcion'] ?></textarea>
               </div>
             </div>
 
@@ -50,7 +78,7 @@
                 <select name="tipo" class="form-control" required="required">
                   <option value="0">Selecciona un tipo</option>
                 <?php while ( $categoria = $categorias->fetch_assoc() ){ ?>
-                  <option value="<?php echo $categoria['id']?>">
+                  <option value="<?php echo $categoria['id']?>"<?php if($publicacion['categoria_id'] == $categoria['id']): ?> selected<?php endif ?>>
                     <?php echo $categoria['nombre']?>
                   </option>
                 <?php } ?>
@@ -65,7 +93,7 @@
                 <select name="capacidad" class="form-control" required="required">
                   <option value="0">Selecciona un valor</option>
                 <?php for ($i=1; $i <= 50 ; $i++) { ?>
-                  <option value="<?php echo $i?>">
+                  <option value="<?php echo $i?>"<?php if($publicacion['capacidad'] == $i): ?> selected<?php endif ?>>
                     <?php echo $i?> Persona<?php if($i!=1) echo 's';?>
                   </option>
                 <?php } ?>
@@ -76,8 +104,8 @@
             <div class="form-group">
               <label class="col-sm-2 control-label"><b>Lugar:</b></label>
               <div class="col-sm-10">
-                <input type="hidden" name="idLugar" value="0" id="idLugar">
-                <input type="text" name="lugar" class="form-control" required="required" id="autocompleteLugar">
+                <input type="hidden" name="idLugar" value="<?php echo ($publicacion['ciudad_id'])?$publicacion['ciudad_id']:0 ?>" id="idLugar">
+                <input type="text" name="lugar" class="form-control" required="required" id="autocompleteLugar" value="<?php if($publicacion) echo htmlentities($publicacion['ciudad'], ENT_QUOTES).', '.htmlentities($publicacion['provincia'], ENT_QUOTES); ?>">
               </div>
             </div>
 
