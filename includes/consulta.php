@@ -10,7 +10,7 @@ FROM publicacion pu
 INNER JOIN categoria ca ON ca.id = pu.categoria_id
 INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id
-WHERE ca.activa 
+WHERE ca.activa AND pu.estado
 ORDER BY pu.fecha DESC
 /*LIMIT 8*/");
 ?>

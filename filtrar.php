@@ -7,7 +7,7 @@ FROM publicacion pu
 INNER JOIN categoria ca ON ca.id = pu.categoria_id
 INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id
-WHERE ca.activa ";
+WHERE ca.activa and pu.estado ";
 
 $categoria = $_POST['categoria'];
 $ciudad = $_POST['ciudad'];

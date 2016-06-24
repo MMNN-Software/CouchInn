@@ -5,7 +5,7 @@
   $term = $conexion->real_escape_string($_GET['q']);
 
   
-  $ciudades = $conexion->query("SELECT c.id, c.nombre as ciudad, p.nombre as provincia, (SELECT COUNT(*) FROM publicacion pi WHERE pi.ciudad_id = c.id) as publicaciones
+  $ciudades = $conexion->query("SELECT c.id, c.nombre as ciudad, p.nombre as provincia, (SELECT COUNT(*) FROM publicacion pi WHERE pi.ciudad_id = c.id AND pi.estado) as publicaciones
     FROM ciudad c 
     INNER JOIN provincia p ON p.id = c.provincia_id 
     WHERE c.nombre LIKE '%{$term}%'

@@ -26,7 +26,7 @@ INNER JOIN categoria ca ON ca.id = pu.categoria_id
 INNER JOIN usuario u ON u.id = pu.usuario_id
 INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
 INNER JOIN provincia pr ON pr.id = ci.provincia_id
-WHERE pu.id = '{$id}' AND ca.activa ");
+WHERE pu.id = '{$id}' AND ca.activa AND pu.estado");
 
 if($publicaciones->num_rows){
   $publicacion = $publicaciones->fetch_assoc();
@@ -228,7 +228,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <p><?php echo $publicacion['descripcion'] ?></p>
         </div>
       </div>
-	  <div class="panel panel-default">
+	  <!--<div class="panel panel-default">
         <div class="panel-body">
           <h5 id="Reservas">Reservas <input type="button" id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info" value="+" /></h5>
           <hr>
@@ -236,7 +236,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 			<?php include 'includes/reservas.php' ?>
 		  </div>
 		</div>
-	  </div>
+	  </div>-->
       <div class="panel panel-default">
         <div class="panel-body">
           <h5 id="Preguntas">Preguntas</h5>

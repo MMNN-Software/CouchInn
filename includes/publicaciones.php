@@ -1,6 +1,6 @@
 <?php
 
-$publicaciones = $conexion->query("SELECT * FROM publicacion WHERE usuario_id = '{$usuario_perfil['id']}'");
+$publicaciones = $conexion->query("SELECT * FROM publicacion WHERE estado AND usuario_id = '{$usuario_perfil['id']}'");
 ?>
 <div class="panel panel-default">
   <div class="panel-body">

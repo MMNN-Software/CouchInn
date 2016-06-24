@@ -42,7 +42,7 @@
 								INNER JOIN publicacion pu ON pu.id=pre.publicacion_id
 								LEFT JOIN respuesta res ON res.id = pre.respuesta_id
 								LEFT JOIN usuario u ON u.id=pre.usuario_id
-								WHERE res.id IS NULL AND pu.usuario_id = '{$_SESSION['id']}'");
+								WHERE res.id IS NULL AND pu.usuario_id = '{$_SESSION['id']}' AND pu.estado");
   $cantpreg = $cantpreg->fetch_assoc(); ?>
           <li>
             <p class="navbar-btn">
