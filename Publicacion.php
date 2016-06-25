@@ -90,13 +90,23 @@ function aceptar_reserva ( $reserva_id, $user_id) {
     $user_id = $conexion->real_escape_string($user_id);
 	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - Rechazado 3
 	$conexion->query("UPDATE reserva SET estado=2 WHERE id={$reserva_id};");
-	echo $reserva_id;
-	echo '<script type="text/javascript">alert("hello!");</script>';
-	$conexion->query("UPDATE reserva SET estado=3 WHERE id IN (SELECT DISTINCT r.id as reserva_id FROM reserva r
+	$a_rechazar = $conexion->query("SELECT GROUP_CONCAT(r.id) as reserva_id FROM reserva r
 										INNER JOIN reserva r2 ON r2.publicacion_id=r.publicacion_id
 										WHERE (r.desde BETWEEN r2.desde AND r2.hasta
 										OR r.hasta BETWEEN r2.desde AND r2.hasta)
-										AND r2.id != r.id AND r2.id={$reserva_id});");
+										AND r2.id != r.id AND r2.id= {$reserva_id};");
+	if ($a_rechazar->num_rows) {
+		$a_rech = $a_rechazar->fetch_assoc();
+	}
+	$sql = "UPDATE reserva SET estado=3 WHERE id IN ({$a_rech[reserva_id]});";
+	echo $sql;
+	echo '<script type="text/javascript">alert("hello!");</script>';
+	if ($conexion->query($sql) === TRUE) {
+		echo "Record updated successfully";
+	} else {
+		echo "Error updating record: " . $conexion->error;
+	}
+	echo '<script type="text/javascript">alert("hello!");</script>';
 	return 0;
 }
 
