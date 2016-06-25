@@ -80,9 +80,13 @@
           <hr>
           <form action="Agregar.php?save" method="POST" class="form-horizontal">
             <?php if ($publicacion): ?><input type="hidden" name="id" value="<?php echo $publicacion['id'] ?>"><?php endif ?>
-            <div id="files" class="clearfix"><?php foreach ($imagenes as $img): ?>
-            <div class="col-xs-6 col-md-4 col-lg-3 fotoupload"><span class="borrar"><button class="btn btn-sm btn-danger" onclick="return borrarFoto(this);"><span class="glyphicon glyphicon-trash"></span></button></span><div class="thumbnail"><img src="/img/publicacion/<?php echo $img['path'] ?>" /><input type="hidden" name="viejas[]" value="<?php echo $img['id'] ?>"></div></div>
-            <?php endforeach ?></div>
+            <div id="files" class="clearfix">
+			<?php if ($publicacion): ?>
+				<?php $i = 0; foreach ($imagenes as $img): ?>
+				<div class="col-xs-6 col-md-4 col-lg-3 fotoupload"><span class="borrar"><button class="btn btn-sm btn-danger" onclick="return borrarFoto(this);"><span class="glyphicon glyphicon-trash"></span></button></span><div class="thumbnail"><img src="/img/publicacion/<?php echo $img['path'] ?>" /><input type="hidden" name="viejas[]" value="<?php echo $img['id'] ?>"></div></div>
+				<?php endforeach ?>
+			<?php endif ?>
+			</div>
             <span class="btn btn-success btn-block fileinput-button">
                 <i class="glyphicon glyphicon-camera"></i>
                 <span>Agregar fotos</span>
