@@ -90,6 +90,8 @@ function aceptar_reserva ( $reserva_id, $user_id) {
     $user_id = $conexion->real_escape_string($user_id);
 	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - Rechazado 3
 	$conexion->query("UPDATE reserva SET estado=2 WHERE id={$reserva_id};");
+	echo $reserva_id;
+	echo '<script type="text/javascript">alert("hello!");</script>';
 	$conexion->query("UPDATE reserva SET estado=3 WHERE id IN (SELECT DISTINCT r.id as reserva_id FROM reserva r
 										INNER JOIN reserva r2 ON r2.publicacion_id=r.publicacion_id
 										WHERE (r.desde BETWEEN r2.desde AND r2.hasta
@@ -386,5 +388,4 @@ function handleClick()
     this.value = (this.value == '+' ? '-' : '+');
 }
 document.getElementById('res_icon').onclick=handleClick;
-
 </script>
