@@ -235,6 +235,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <p><?php echo $publicacion['descripcion'] ?></p>
         </div>
       </div>
+	  <?php if (isset($_SESSION['usuario']) and  $_SESSION['id'] = $publicacion['usuario_id'] ): ?>
 	  <div class="panel panel-default">
         <div class="panel-body">
           <h5 id="Reservas">Reservas <input type="button" id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info" value="+" /></h5>
@@ -244,6 +245,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 		  </div>
 		</div>
 	  </div>
+	  <?php endif?>
 	  
       <div class="panel panel-default">
         <div class="panel-body">
@@ -383,7 +385,6 @@ function handleClick()
 {
     this.value = (this.value == '+' ? '-' : '+');
 }
-document.getElementById('preg_icon').onclick=handleClick;
 document.getElementById('res_icon').onclick=handleClick;
 
 </script>
