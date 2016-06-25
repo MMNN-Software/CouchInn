@@ -99,14 +99,11 @@ function aceptar_reserva ( $reserva_id, $user_id) {
 		$a_rech = $a_rechazar->fetch_assoc();
 	}
 	$sql = "UPDATE reserva SET estado=3 WHERE id IN ({$a_rech[reserva_id]});";
-	echo $sql;
-	echo '<script type="text/javascript">alert("hello!");</script>';
 	if ($conexion->query($sql) === TRUE) {
 		echo "Record updated successfully";
 	} else {
 		echo "Error updating record: " . $conexion->error;
 	}
-	echo '<script type="text/javascript">alert("hello!");</script>';
 	return 0;
 }
 
