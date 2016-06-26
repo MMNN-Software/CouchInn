@@ -244,7 +244,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
           <p><?php echo $publicacion['descripcion'] ?></p>
         </div>
       </div>
-	  <?php if (isset($_SESSION['usuario']) and  $_SESSION['id'] = $publicacion['usuario_id'] ): ?>
+	  <?php if (isset($_SESSION['usuario']) and  $_SESSION['id'] == $publicacion['usuario_id'] ): /* Ultra bug hdp que setea el id del usuario actual cambiando el perfil */?>
 	  <div class="panel panel-default">
         <div class="panel-body">
           <h5 id="Reservas">Reservas <input type="button" id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info" value="+" /></h5>
