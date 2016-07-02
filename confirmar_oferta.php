@@ -8,8 +8,8 @@ $mensaje = $_POST['mensaje'];
 $entrada = $_POST['datein'];
 $salida = $_POST['dateout'];
 $iduser = $_SESSION['id'];
-$entrada = $hoy;
-$salida= $hoy;
+$entrada = $_GET['datein'];
+$salida= $_GET['dateout'];
 
 
 
