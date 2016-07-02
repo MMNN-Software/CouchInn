@@ -50,7 +50,7 @@ if ($capacidad <> 0) {
 if ($entrada <> "") {
 	$fentrada = DateTime::createFromFormat('d/m/Y', $entrada)->format('Y-m-d');
 	$fsalida = DateTime::createFromFormat('d/m/Y', $salida)->format('Y-m-d');	
-	$sql .= "AND pu.id NOT IN (SELECT publicacion_id FROM reserva r WHERE r.estado = 1 AND (r.desde BETWEEN '$fentrada' AND'$fsalida' OR r.hasta BETWEEN '$fentrada' AND'$fsalida' ) )"; 	
+	$sql .= "AND pu.id NOT IN (SELECT publicacion_id FROM reserva r WHERE r.estado = 2 AND '$fentrada' BETWEEN r.desde AND r.hasta OR '$fsalida' BETWEEN r.desde AND r.hasta AND r.desde BETWEEN '$fentrada' AND'$fsalida' OR r.hasta BETWEEN '$fentrada' AND'$fsalida'  )"; 	
 }
 
 $sql .= "ORDER BY pu.fecha DESC /*LIMIT 8*/";
