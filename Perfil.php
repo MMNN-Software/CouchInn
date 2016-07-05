@@ -215,7 +215,9 @@
             <ul class="nav">
               <li<?php if ( !isset($_GET['tab']) ): ?> class="active"<?php endif; ?>><a href="/Perfil.php"><i class="glyphicon glyphicon-info-sign"></i> Información</a></li>
               <li<?php if ( $_GET['tab'] == 'publicaciones' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=publicaciones"><i class="glyphicon glyphicon-bed"></i> Publicaciones</a></li>
-              <li<?php if ( $_GET['tab'] == 'favoritos' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=favoritos"><i class="glyphicon glyphicon-heart"></i> Favoritos</a></li>
+              <li<?php if ( $_GET['tab'] == 'reservas' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=reservas"><i class="glyphicon glyphicon-bed"></i> Mis reservas</a></li>
+			  <li<?php if ( $_GET['tab'] == 'hospedajes' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=hospedajes"><i class="glyphicon glyphicon-bed"></i> Mis hospedajes</a></li>
+			  <li<?php if ( $_GET['tab'] == 'favoritos' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=favoritos"><i class="glyphicon glyphicon-heart"></i> Favoritos</a></li>
               <li<?php if ( $_GET['tab'] == 'valoraciones' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=valoraciones"><i class="glyphicon glyphicon-star"></i> Valoraciones</a></li>
             </ul>
           </div>
@@ -227,6 +229,10 @@
             <?php include 'includes/form_profile.php' ?>
           <?php elseif( $_GET['tab'] == 'publicaciones' ): ?>
             <?php include 'includes/publicaciones.php' ?>
+		  <?php elseif( $_GET['tab'] == 'reservas' ): ?>
+            <?php include 'includes/mis_reservas.php' ?>
+		  <?php elseif( $_GET['tab'] == 'reservas' ): ?>
+            <?php include 'includes/mis_hospedajes.php' ?>
           <?php elseif( $_GET['tab'] == 'valoraciones' ): ?>
             <?php include 'includes/valoraciones.php' ?>
           <?php elseif( $_GET['tab'] == 'favoritos' ): ?>
