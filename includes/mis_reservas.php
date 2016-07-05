@@ -5,7 +5,7 @@ $publicaciones = $conexion->query("SELECT * FROM publicacion where id IN (SELECT
 ?>
 <div class="panel panel-default">
   <div class="panel-body">
-    <h5>Publicaciones</h5>
+    <h5>Mis reservas</h5>
     <hr>
     <div class="list-group">
 <?php while( $publicacion = $publicaciones->fetch_assoc() ){ ?>

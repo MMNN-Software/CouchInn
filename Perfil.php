@@ -231,7 +231,7 @@
             <?php include 'includes/publicaciones.php' ?>
 		  <?php elseif( $_GET['tab'] == 'reservas' ): ?>
             <?php include 'includes/mis_reservas.php' ?>
-		  <?php elseif( $_GET['tab'] == 'reservas' ): ?>
+		  <?php elseif( $_GET['tab'] == 'hospedajes' ): ?>
             <?php include 'includes/mis_hospedajes.php' ?>
           <?php elseif( $_GET['tab'] == 'valoraciones' ): ?>
             <?php include 'includes/valoraciones.php' ?>
