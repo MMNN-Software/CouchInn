@@ -36,7 +36,7 @@
             $cantfav = $favoritos->fetch_assoc();
             $favoritos->free();
           ?>
-          <a href="#" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Agregar a favoritos">
+          <a href="includes/favoritos.php?idp=<?php echo $publicacion['id'] ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Agregar a favoritos">
             <span class="glyphicon glyphicon-heart-empty"></span>
             <span class="favs"><?php if($cantfav['cant']) echo $cantfav['cant'] ?></span>
           </a>

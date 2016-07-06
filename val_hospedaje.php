@@ -16,7 +16,7 @@ $sql = "INSERT INTO valoracion (reserva_id, origen_usuario_id, destino_usuario_i
 
 
 if ($conexion->query($sql) === TRUE) {
-	$conexion->query("UPDATE reserva SET estado = 5 WHERE usuario_id = $iduser AND publicacion_id = $idpubli");
+	/*$conexion->query("UPDATE reserva SET estado = 5 WHERE usuario_id = $iduser AND publicacion_id = $idpubli");*/
     $mjs = '<div class="alert alert-success">
 				<a href="publicacion.php?id=$idpubli" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					Se envio tu valoracion al hospedaje.

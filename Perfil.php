@@ -236,7 +236,7 @@
           <?php elseif( $_GET['tab'] == 'valoraciones' ): ?>
             <?php include 'includes/valoraciones.php' ?>
           <?php elseif( $_GET['tab'] == 'favoritos' ): ?>
-            <?php include 'includes/favoritos.php' ?>
+            <?php include 'includes/mis_favoritos.php' ?>
           <?php endif ?>
         <?php else: ?>
           Info basica

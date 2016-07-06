@@ -1,6 +1,6 @@
-<div class="modal fade" id="valorar">
+<div class="modal fade" id="valor_usuario">
 
-  <form  class="form" action="/val_hospedaje.php?idp=<?php echo $pub['usuario_id']?>" method="POST">
+  <form  class="form" action="/valorar_usuario.php?idu=<?php echo $use['id']; ?>" method="POST">
     <div class="modal-dialog" style="max-width:400px">
       <div class="modal-content">
         <div class="modal-header">
@@ -8,8 +8,8 @@
           <h4 class="modal-title">Valorar</h4>
         </div>
         <div class="modal-body">
-          <form class="form" action="/val_hospedaje.php?idp=<?php echo $pub['usuario_id']?>" method="POST">
-            <p>Se enviara una valoración al hospedaje</p>
+          <form class="form" action="/valorar_usuario.php?idu=<?php echo $use['id']; ?>" method="POST">
+            <p>Se enviara una valoración al viajero</p>
 			<div class="row">
 			<div class="col-sm-12">
 			 <div class="form-group">
@@ -30,7 +30,7 @@
 			<div class="form-group">
 			   <label class="control-label">Mensaje</label>			   
 				<div class="col-xs-12">
-					<input type="text"  class="form-control" id="mensaje" name="mensaje" class="form-control" placeholder="Mensaje" >
+					<input type="text"  class="form-control" id="mensaje" name="mensaje" class="form-control" placeholder="Mensaje" required>
 				</div>
 			</div>
 			</div>
