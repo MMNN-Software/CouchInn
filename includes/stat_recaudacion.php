@@ -1,19 +1,17 @@
 <?php
 
-$pagos = $conexion->query("SELECT u.nombre, u.foto, u.id, p.fecha, p.monto FROM pago p INNER JOIN usuario u ON u.id = p.usuario_id WHERE DATE(p.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."'");
+$pagos = $conexion->query("SELECT u.nombre, u.foto, p.usuario_id, p.fecha, p.monto FROM pago p INNER JOIN usuario u ON u.id = p.usuario_id WHERE DATE(p.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."' ORDER BY p.fecha");
 
 $total = $conexion->query("SELECT SUM(p.monto) as total FROM pago p WHERE DATE(p.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."'");
 
 $total = $total->fetch_assoc();
 $total = $total['total'];
 
-$dias = ($hasta->diff($desde,true))->format('%a');
-
-?>
 
 
-<?php if ($pagos->num_rows): ?>
+if ($pagos->num_rows): ?>
 
+<div class="row">
 <div class="col-sm-4">
 	<div class="panel panel-default">
 		<div class="panel-body">
@@ -47,6 +45,7 @@ $dias = ($hasta->diff($desde,true))->format('%a');
 		</div>
 	</div>
 </div>
+</div>
 
 <h5>Detalles</h5>
 <hr>
@@ -61,7 +60,7 @@ $dias = ($hasta->diff($desde,true))->format('%a');
 	<tbody>
 	<?php while( $pago = $pagos->fetch_assoc() ): ?>
 		<tr>
-			<td><a href="/Perfil.php?id=<?php echo $pago['id']?>"><img class="img-circle shadow" src="/img/perfiles/<?php echo ($pago['foto'])?$pago['foto']:'default.png'; ?>" width="24"> <?php echo $pago['nombre']; ?></a></td>
+			<td><a href="/Perfil.php?id=<?php echo $pago['usuario_id']?>"><img class="img-circle shadow" src="/img/perfiles/<?php echo ($pago['foto'])?$pago['foto']:'default.png'; ?>" width="24"> <?php echo $pago['nombre']; ?></a></td>
 			<td><?php echo $pago['fecha']; ?></td>
 			<td>$<?php echo $pago['monto']; ?></td>
 		</tr>

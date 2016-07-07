@@ -20,6 +20,8 @@
     $desde = (new Datetime('now'))->sub(new DateInterval("P1W"));
   }
 
+  $dias = ($hasta->diff($desde,true))->format('%a');
+
   $link = '/Estadisticas.php?desde=' . $desde->format(DATE_FORMAT) . '&amp;hasta=' . $hasta->format(DATE_FORMAT);
 
   include 'includes/header.php';
