@@ -18,13 +18,15 @@
 </style>
 <br>
 <div class="container">
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <h5>Administración</h5>
-      <hr>
-      <div class="row">
-        <div class="col-sm-6 biglink"><a href="/Categorias.php">Administrar Categorías</a></div>
-        <div class="col-sm-6 biglink"><a href="/Estadisticas.php">Ver Estadísticas</a></div>
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h5>Administración</h5>
+        <hr>
+        <div class="row">
+          <div class="col-sm-6 biglink"><a href="/Categorias.php">Administrar Categorías</a></div>
+          <div class="col-sm-6 biglink"><a href="/Estadisticas.php">Ver Estadísticas</a></div>
+        </div>
       </div>
     </div>
   </div>

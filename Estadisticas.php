@@ -4,6 +4,8 @@
   //Verificacion de usuario logueado y admin
   include 'includes/isAdmin.php';
 
+  setlocale(LC_MONETARY, 'es_AR');
+
   define("DATE_FORMAT","d-m-Y");
 
   $tab = (isset($_GET['tab']))?$_GET['tab']:'recaudacion';
@@ -23,6 +25,13 @@
   $dias = ($hasta->diff($desde,true))->format('%a');
 
   $link = '/Estadisticas.php?desde=' . $desde->format(DATE_FORMAT) . '&amp;hasta=' . $hasta->format(DATE_FORMAT);
+
+  $usuarios = $conexion->query("SELECT u.id, u.nombre, u.foto, u.registro FROM usuario u WHERE activo = 1 AND DATE(u.registro) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."' ORDER BY u.registro");
+
+  $reservas = $conexion->query("SELECT u.nombre, u.foto, r.publicacion_id, r.usuario_id, p.titulo, r.desde, r.hasta, r.fecha FROM reserva r INNER JOIN publicacion p ON p.id = r.publicacion_id INNER JOIN usuario u ON u.id = r.usuario_id WHERE r.estado = 2 AND DATE(r.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."' ORDER BY r.fecha");
+
+  $pagos = $conexion->query("SELECT u.nombre, u.foto, p.usuario_id, p.fecha, p.monto FROM pago p INNER JOIN usuario u ON u.id = p.usuario_id WHERE DATE(p.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."' ORDER BY p.fecha");
+
 
   include 'includes/header.php';
 ?>
@@ -50,9 +59,9 @@
         </form>
         <ul class="nav nav-pills">
           <li><h5 style="margin-right:20px">Estadísticas</h5></li>
-          <li<?php if($tab=='recaudacion'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=recaudacion">Recaudación</a></li>
-          <li<?php if($tab=='reservas'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=reservas">Reservas</a></li>
-          <li<?php if($tab=='usuarios'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=usuarios">Usuarios</a></li>
+          <li<?php if($tab=='recaudacion'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=recaudacion">Recaudación premium <span class="badge"><?php echo $pagos->num_rows ?></span></a></li>
+          <li<?php if($tab=='reservas'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=reservas">Reservas efectuadas <span class="badge"><?php echo $reservas->num_rows ?></span></a></li>
+          <li<?php if($tab=='usuarios'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=usuarios">Usuarios registrados <span class="badge"><?php echo $usuarios->num_rows ?></span></a></li>
         </ul>
         <hr />
         <?php

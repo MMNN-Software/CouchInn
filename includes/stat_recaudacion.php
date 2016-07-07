@@ -1,7 +1,5 @@
 <?php
 
-$pagos = $conexion->query("SELECT u.nombre, u.foto, p.usuario_id, p.fecha, p.monto FROM pago p INNER JOIN usuario u ON u.id = p.usuario_id WHERE DATE(p.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."' ORDER BY p.fecha");
-
 $total = $conexion->query("SELECT SUM(p.monto) as total FROM pago p WHERE DATE(p.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."'");
 
 $total = $total->fetch_assoc();
@@ -29,7 +27,7 @@ if ($pagos->num_rows): ?>
 			<h5>Se recaudó</h5>
 			<hr>
 			<div style="font-size:48px" class="text-right">
-				$<?php echo $total ?>
+				$ <?php echo number_format($total,2,',','.'); ?>
 			</div>
 		</div>
 	</div>

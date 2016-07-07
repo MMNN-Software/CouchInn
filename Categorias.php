@@ -104,6 +104,7 @@
   </div>
 <?php endif ?>
 
+  <div class="col-sm-8 col-sm-offset-2">
   <div class="panel panel-default">
     <div class="panel-body">
       <a href="#" data-toggle="modal" data-target="#addCat" class="btn btn-primary pull-right">Agregar Categoría</a>
@@ -137,6 +138,7 @@
         </tbody>
       </table> 
     </div>
+  </div>
   </div>
 </div>
 <?php 

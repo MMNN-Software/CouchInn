@@ -1,7 +1,5 @@
 <?php
 
-$reservas = $conexion->query("SELECT u.nombre, u.foto, r.publicacion_id, r.usuario_id, p.titulo, r.desde, r.hasta, r.fecha FROM reserva r INNER JOIN publicacion p ON p.id = r.publicacion_id INNER JOIN usuario u ON u.id = r.usuario_id WHERE r.estado = 2 AND DATE(r.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."' ORDER BY r.fecha");
-
 $count = $conexion->query("SELECT COUNT(DISTINCT usuario_id) as personas, COUNT(DISTINCT publicacion_id) as publicaciones FROM reserva r WHERE r.estado = 2 AND DATE(r.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."'");
 
 $count = $count->fetch_assoc();
