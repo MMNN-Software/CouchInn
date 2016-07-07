@@ -108,4 +108,16 @@ $(document).ready(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
   $('#docked').sticky({topSpacing:70});
+  $('[data-fav]').on('click',function(e){
+    var these = this;
+    $.getJSON('/ajax/fav.php?id='+$(this).data('fav'),function(data){
+      if(data.estado){
+        $(these).addClass('btn-danger').removeClass('btn-default').find('.favs').html((data.count)?data.count:'');
+        alert('Agregada a favoritos');
+      }else{
+        alert('Ya se encuentra en favoritos');
+      }
+    });
+    e.preventDefault();
+  });
 });

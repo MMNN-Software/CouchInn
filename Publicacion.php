@@ -197,6 +197,9 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 	   }
    }
 
+
+$favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
+$favoritos = $favoritos->fetch_assoc();
 ?>
   <?php include 'includes/ofertar.php';?>		
   <div class="container main">
@@ -208,7 +211,10 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
         <div class="panel-heading">
           <div class="pull-right">
             <?php if (isset($_SESSION['usuario'])): ?>
-              <a href="includes/favoritos.php?idp=<?php echo $publicacion['id'] ?>" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-heart"></span><span class="hidden-xs"> a favoritos</span></a>
+              <a href="#" data-fav="<?php echo $publicacion['id'] ?>" class="btn btn-sm btn-<?php echo ($favoritos['isfav'])?'danger':'default'; ?>" data-toggle="tooltip" data-placement="top" title="Agregar a favoritos">
+                <span class="glyphicon glyphicon-heart"></span>
+                <span class="favs"><?php if($favoritos['cant']) echo $favoritos['cant'] ?></span>
+              </a>
               <?php if ($_SESSION['id'] == $publicacion['usuario_id'] ): ?>
                 <a href="/Agregar.php?editar=<?php echo $publicacion['id']?>" class="btn btn-sm btn-warning"><span class="glyphicon glyphicon-pencil"></span> Editar</a>
                 <a href="/Borrar.php?id=<?php echo $publicacion['id']?>" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span> Borrar</a>

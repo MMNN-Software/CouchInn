@@ -32,13 +32,12 @@
           $cantpreg = $preguntas->fetch_assoc();
           $preguntas->free();
           if (isset($_SESSION['usuario'])){
-            $favoritos = $conexion->query("SELECT COUNT(*) as cant FROM favorito WHERE publicacion_id = '{$publicacion['id']}'");
-            $cantfav = $favoritos->fetch_assoc();
-            $favoritos->free();
+            $favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$publicacion['id']}'");
+            $favoritos = $favoritos->fetch_assoc();
           ?>
-          <a href="includes/favoritos.php?idp=<?php echo $publicacion['id'] ?>" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Agregar a favoritos">
-            <span class="glyphicon glyphicon-heart-empty"></span>
-            <span class="favs"><?php if($cantfav['cant']) echo $cantfav['cant'] ?></span>
+          <a href="#" data-fav="<?php echo $publicacion['id'] ?>" class="btn btn-sm btn-<?php echo ($favoritos['isfav'])?'danger':'default'; ?>" data-toggle="tooltip" data-placement="top" title="Agregar a favoritos">
+            <span class="glyphicon glyphicon-heart"></span>
+            <span class="favs"><?php if($favoritos['cant']) echo $favoritos['cant'] ?></span>
           </a>
         <?php }
         if ($cantpreg['cant']): ?>
