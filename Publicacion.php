@@ -201,7 +201,8 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 $favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
 $favoritos = $favoritos->fetch_assoc();
 ?>
-  <?php include 'includes/ofertar.php';?>		
+  <?php include 'includes/ofertar.php';?>	
+  <style type="text/css">.oculta{display:none}</style>	
   <div class="container main">
   <?php if (!$publicacion): ?>
     Publicacion no encontrada
@@ -287,76 +288,36 @@ $favoritos = $favoritos->fetch_assoc();
             </div>
           </div>
           <hr>
-          <?php
-
-            $resumen = $conexion->query("SELECT AVG(v.valor) as promedio, COUNT(*) as total
-                                          FROM valoracion v
-                                          WHERE v.destino_usuario_id = '{$publicacion['usuario_id']}'");
-            $detalle = $conexion->query("SELECT v.valor, COUNT(*) as cant
-                                          FROM valoracion v
-                                          WHERE v.destino_usuario_id = '{$publicacion['usuario_id']}'
-                                          GROUP BY v.valor
-                                          ORDER BY v.valor DESC");
+          <?php include('includes/resumen_valoracion.php'); ?>
+        </div>
+       <div class="list-group valoraciones">
+          <?php 
             $valoraciones = $conexion->query("SELECT v.valor, u.nombre, u.foto, v.mensaje
                                               FROM valoracion v
                                               INNER JOIN usuario u ON u.id = v.origen_usuario_id
                                               WHERE v.destino_usuario_id = '{$publicacion['usuario_id']}'
-                                              ORDER BY v.mensaje DESC, v.fecha DESC
-                                              LIMIT 5");
+                                              ORDER BY v.mensaje DESC, v.fecha DESC");
+            $i = 0;
+            while( $val = $valoraciones->fetch_assoc() ): ?>
 
-            $resumen = $resumen->fetch_assoc();
-            $clases = ['','one','two','three','four','five'];
-            for ($i=1; $i <= 5; $i++){
-              $detalles[$i]=0;
-            }
-            while( $val = $detalle->fetch_assoc() ){
-              $detalles[intval($val['valor'])] = $val['cant'];
-            }
-          ?>
-          <div class="rating-box">
-            <div class="score-container">
-              <div class="score"><?php echo number_format($resumen['promedio'],1,',','.')?></div>
-              <div class="score-container-star-rating">
-                <div class="small-star star-rating-non-editable-container">
-                  <div class="current-rating" style="width: <?php echo floor(($resumen['promedio']*100)/5); ?>%;"></div>
+              <div class="list-group-item<?php if ($i>=5): ?> oculta<?php endif ?>">
+                <div class="featured-review-star-rating pull-right">
+                  <div class="tiny-star star-rating-non-editable-container">
+                    <div class="current-rating" style="width: <?php echo floor(($val['valor']*100)/5) ?>%;"></div>
+                  </div>
                 </div>
+                <img src="/img/perfiles/<?php echo ($val['foto'])?$val['foto']:'default.png'; ?>" class="img-circle shadow pull-left">
+                <b><?php echo $val['nombre'] ?></b>
+                <p class="list-group-item-text"><?php echo $val['mensaje'] ?></p>
               </div>
-              <div class="reviews-stats">
-                <span class="reviewers-small"></span>
-                <span class="reviews-num"><?php echo $resumen['total']; ?></span> en total
-              </div>
-            </div>
-            <div class="rating-histogram">
-              <?php for ($i=5; $i > 0; $i--): ?>
-              <div class="rating-bar-container <?php echo $clases[$i] ?>">
-                <span class="bar-label">
-                  <span class="star-tiny star-full"></span><?php echo $i ?>
-                </span>
-                <span class="bar" style="width:<?php echo floor(($detalles[$i]*100)/$resumen['total']) ?>%"></span>
-                <span class="bar-number"><?php echo $detalles[$i] ?></span>
-              </div>
-              <?php endfor; ?>
-            </div>
-          </div>
-        </div>
-       <div class="list-group valoraciones">
-          <?php while( $val = $valoraciones->fetch_assoc() ): ?>
-          <div class="list-group-item">
-            <div class="featured-review-star-rating pull-right">
-              <div class="tiny-star star-rating-non-editable-container">
-                <div class="current-rating" style="width: <?php echo floor(($val['valor']*100)/5) ?>%;"></div>
-              </div>
-            </div>
-            <img src="/img/perfiles/<?php echo ($val['foto'])?$val['foto']:'default.png'; ?>" class="img-circle shadow pull-left">
-            <b><?php echo $val['nombre'] ?></b>
-            <p class="list-group-item-text"><?php echo $val['mensaje'] ?></p>
-          </div>
+              <?php if ($i == 4 && $valoraciones->num_rows > 5){ ?>
+                <a href="#" class="list-group-item text-center" onclick="$('.oculta').show();$(this).hide();return false;">
+                  <b>Ver más (<?php echo $valoraciones->num_rows - 5; ?>)</b>
+                </a>
+              <?php }
+              $i++; ?>
+
           <?php endwhile; ?>
-          <?php if ($resumen['total']): ?>
-          <a href="#" class="list-group-item text-center">
-            <b>Ver todas (<?php echo $resumen['total']; ?>)</b>
-          </a>
-          <?php endif ?>
         </div>
       </div>
     </div>
