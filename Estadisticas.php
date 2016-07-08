@@ -43,17 +43,19 @@
 </style>
 <div class="container">
   <div class="row">
+
     <div class="panel panel-default clearfix">
       <div class="panel-body">
         <button class="btn btn-primary pull-right" type="button" id="daterange">
+          <span class="glyphicon glyphicon-calendar"></span>
           <b></b>
           <span class="caret"></span>
         </button>
         <ul class="nav nav-pills">
           <li><h5 style="margin-right:20px">Estadísticas</h5></li>
-          <li<?php if($tab=='recaudacion'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=recaudacion">Recaudación premium <span class="badge"><?php echo $pagos->num_rows ?></span></a></li>
-          <li<?php if($tab=='reservas'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=reservas">Reservas efectuadas <span class="badge"><?php echo $reservas->num_rows ?></span></a></li>
-          <li<?php if($tab=='usuarios'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=usuarios">Usuarios registrados <span class="badge"><?php echo $usuarios->num_rows ?></span></a></li>
+          <li<?php if($tab=='recaudacion'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=recaudacion">Recaudación <span class="badge"><?php echo $pagos->num_rows ?></span></a></li>
+          <li<?php if($tab=='reservas'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=reservas">Reservas <span class="badge"><?php echo $reservas->num_rows ?></span></a></li>
+          <li<?php if($tab=='usuarios'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=usuarios">Usuarios <span class="badge"><?php echo $usuarios->num_rows ?></span></a></li>
         </ul>
         <hr />
         <?php
@@ -101,6 +103,7 @@ $('#daterange').daterangepicker({
     startDate: start,
     endDate: end,
     autoUpdateInput: false,
+    autoApply: true,
     ranges: {
        'Hoy': [moment(), moment()],
        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],

@@ -107,7 +107,7 @@
   <div class="col-sm-8 col-sm-offset-2">
   <div class="panel panel-default">
     <div class="panel-body">
-      <a href="#" data-toggle="modal" data-target="#addCat" class="btn btn-primary pull-right">Agregar Categoría</a>
+      <a href="#" data-toggle="modal" data-target="#addCat" class="btn btn-primary pull-right">Agregar Categoría <span class="glyphicon glyphicon-plus"></span></a>
       <h5>Categorias</h5>
       <hr>
       <table class="table table-striped table-hover">

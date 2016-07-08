@@ -74,7 +74,7 @@ if ($reservas->num_rows): ?>
 <?php else: ?>
 
 	<div class="alert alert-warning">
-		No se han realizado pagos en el lapso indicado. Intenta ampliar el rango.
+		No se han realizado reservas en el lapso indicado. Intenta ampliar el rango.
 	</div>
 
 <?php endif ?>
