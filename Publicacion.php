@@ -92,8 +92,10 @@ function aceptar_reserva ( $reserva_id, $user_id) {
 	$conexion->query("UPDATE reserva SET estado=2 WHERE id={$reserva_id};");
 	$a_rechazar = $conexion->query("SELECT GROUP_CONCAT(r.id) as reserva_id FROM reserva r
 										INNER JOIN reserva r2 ON r2.publicacion_id=r.publicacion_id
-										WHERE (r.desde BETWEEN r2.desde AND r2.hasta
-										OR r.hasta BETWEEN r2.desde AND r2.hasta)
+										WHERE (((r.desde BETWEEN r2.desde AND r2.hasta)
+										 OR (r.hasta BETWEEN r2.desde AND r2.hasta))
+                                         OR ((r2.desde BETWEEN r.desde AND r.hasta)
+										 OR (r2.hasta BETWEEN r.desde AND r.hasta)))
 										AND r2.id != r.id AND r2.id= {$reserva_id};");
 	if ($a_rechazar->num_rows) {
 		$a_rech = $a_rechazar->fetch_assoc();
