@@ -38,7 +38,6 @@
 <br>
 <style type="text/css">
   #daterange{
-    max-width:350px;
     margin-top: 5px;
   }
 </style>
@@ -46,17 +45,10 @@
   <div class="row">
     <div class="panel panel-default clearfix">
       <div class="panel-body">
-        <form action="/Estadisticas.php" method="GET" class="pull-right" role="form" id="daterange">
-          <div class="input-daterange input-group">
-            <input type="text" class="form-control" value="<?php echo $desde->format(DATE_FORMAT); ?>" name="desde" />
-            <span class="input-group-addon">al</span>
-            <input type="text" class="form-control" value="<?php echo $hasta->format(DATE_FORMAT); ?>" name="hasta" />
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-primary">Buscar</button>
-            </span>
-          </div>
-          <input type="hidden" name="tab" value="<?php echo $tab?>">
-        </form>
+        <button class="btn btn-primary pull-right" type="button" id="daterange">
+          <b></b>
+          <span class="caret"></span>
+        </button>
         <ul class="nav nav-pills">
           <li><h5 style="margin-right:20px">Estadísticas</h5></li>
           <li<?php if($tab=='recaudacion'): ?> class="active"<?php endif; ?>><a href="<?php echo $link ?>&amp;tab=recaudacion">Recaudación premium <span class="badge"><?php echo $pagos->num_rows ?></span></a></li>
@@ -91,16 +83,71 @@
 
 $javascripts = <<<EOD
 <script type="text/javascript">
+
+
+function loadEstadistica(start,end){
+  document.location = "/Estadisticas.php?desde="+start.format('DD-MM-YYYY')+"&hasta="+end.format('DD-MM-YYYY')+"&tab={$tab}";
+}
+
+
 $(document).ready(function(){
-  
-  $('#daterange .input-daterange').datepicker({
-    format: "dd-mm-yyyy",
-    endDate: "today",
-    maxViewMode: 0,
-    language: "es"
-  });
+
+var start = moment("{$desde->format('Y-m-d')}");
+var end = moment("{$hasta->format('Y-m-d')}");
+
+$('#daterange b').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
+
+$('#daterange').daterangepicker({
+    startDate: start,
+    endDate: end,
+    autoUpdateInput: false,
+    ranges: {
+       'Hoy': [moment(), moment()],
+       'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+       'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+       'Este mes': [moment().startOf('month'), moment().endOf('month')],
+    }, 
+    "locale": {
+        "format": "DD/MM/YYYY",
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "Desde",
+        "toLabel": "Hasta",
+        "customRangeLabel": "Personalizado",
+        "weekLabel": "S",
+        "daysOfWeek": [
+            "Dom",
+            "Lun",
+            "Mar",
+            "Mie",
+            "Jue",
+            "Vie",
+            "Sáb"
+        ],
+        "monthNames": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        "firstDay": 1
+    }
+}, loadEstadistica);
+
+
 
 });
+
 </script>
 EOD;
 

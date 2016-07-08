@@ -20,7 +20,7 @@
 			</div>
 			</div>
 			</div>
-            <div class="row">
+            <div class="row" id="search-bar">
               <div class="input-daterange">
 				  <div class="col-sm-6">
 						<div class="form-group">
@@ -30,8 +30,6 @@
 							<input class="form-control" placeholder="Entrada" id="datein" name="datein" required>
 						  </div>
 						</div>
-						
-					 
 				  </div>
 				  <div class="col-sm-6">
 					<div class="form-group">

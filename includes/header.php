@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/css/jquery-ui.min.css" />
   <link rel="stylesheet" href="/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/css/bootstrap-datepicker3.css" />
+  <link rel="stylesheet" href="/css/daterangepicker.css" />
   <link rel="stylesheet" href="/css/ekko-lightbox.min.css" />
   <link rel="stylesheet" href="/css/animate.css" />
   <link rel="stylesheet" href="/css/jquery.fileupload.css" />
