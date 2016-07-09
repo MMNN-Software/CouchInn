@@ -15,7 +15,7 @@
 			<div class="form-group">
 			   <label class="control-label">Mensaje</label>			   
 				<div class="col-xs-12">
-					<input type="text"  class="form-control" id="mensaje" name="mensaje" class="form-control" placeholder="Mensaje" required>
+					<input type="text"  class="form-control" id="mensaje" name="mensaje" placeholder="Mensaje" required />
 				</div>
 			</div>
 			</div>
@@ -27,7 +27,7 @@
 						  <label class="control-label">Fecha entrada </label>
 						  <div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-							<input class="form-control" placeholder="Entrada" id="datein" name="datein" required>
+							<input class="form-control" placeholder="Entrada" id="datein" name="datein" required />
 						  </div>
 						</div>
 				  </div>
@@ -36,7 +36,7 @@
 					  <label class="control-label">Fecha salida</label>
 					  <div class="input-group">
 						<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-						<input class="form-control" placeholder="Salida" id="dateout" name="dateout" required>
+						<input class="form-control" placeholder="Salida" id="dateout" name="dateout" required />
 					  </div>
 					</div>
 				  </div>

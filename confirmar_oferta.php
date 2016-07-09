@@ -8,12 +8,15 @@ $mensaje = $_POST['mensaje'];
 $entrada = $_POST['datein'];
 $salida = $_POST['dateout'];
 $iduser = $_SESSION['id'];
-$entrada = $_GET['datein'];
-$salida= $_GET['dateout'];
+//$entrada = $_GET['datein']; // Pisaban el dato
+//$salida= $_GET['dateout']; // Pisaban el dato
 
+$entrada = $_POST['datein'];
+$salida = $_POST['dateout'];
+$newEntrada = DateTime::createFromFormat('d/m/Y', $entrada)->format('Y-m-d');
+$newSalida = DateTime::createFromFormat('d/m/Y', $salida)->format('Y-m-d');
 
-
-$sql = "INSERT INTO reserva (usuario_id, publicacion_id, mensaje, fecha, desde, hasta, estado) VALUES ($iduser, $idpubli, '$mensaje', '$hoy', '$entrada', '$salida', 1 )"; 
+$sql = "INSERT INTO reserva (usuario_id, publicacion_id, mensaje, fecha, desde, hasta, estado) VALUES ($iduser, $idpubli, '$mensaje', '$hoy', '$newEntrada', '$newSalida', 1)"; 
 
 $result = $conexion->query("select * from reserva where publicacion_id = $idpubli AND usuario_id = $iduser");
 
