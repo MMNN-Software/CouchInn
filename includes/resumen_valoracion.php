@@ -36,7 +36,12 @@ while( $val = $detalle->fetch_assoc() ){
       <span class="bar-label">
         <span class="star-tiny star-full"></span><?php echo $i ?>
       </span>
-      <span class="bar" style="width:<?php echo floor(($detalles[$i]*100)/$resumen['total']) ?>%"></span>
+	  <?php if ($resumen['total'] <> 0): ?>
+          <span class="bar" style="width:<?php echo floor(($detalles[$i]*100)/$resumen['total']) ?>%"></span>
+	  <?php endif ?>
+	  <?php if ($resumen['total'] == 0): ?>
+          <span class="bar" style="width:<?php echo floor(0.0) ?>%"></span>
+	  <?php endif ?>
       <span class="bar-number"><?php echo $detalles[$i] ?></span>
     </div>
     <?php endfor; ?>
