@@ -30,7 +30,7 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
     <div class="list-group">
 	<?php while( $reserva = $reservas->fetch_assoc() ){ ?>
       <div class="list-group-item clearfix">
-        <span class="pull-left"><?php $imagenes = $conexion->query("SELECT path FROM imagen WHERE publicacion_id = '{$rserva['publicacion_id']}' ORDER BY orden ASC LIMIT 1"); 
+        <span class="pull-left"><?php $imagenes = $conexion->query("SELECT path FROM imagen WHERE publicacion_id = '{$reserva['publicacion_id']}' ORDER BY orden ASC LIMIT 1"); 
         if($imagenes->num_rows){
           $im = $imagenes->fetch_assoc();?>
             <img src="/img/publicacion/<?php echo $im['path']; ?>" style="width:150px;margin-right:10px" >
