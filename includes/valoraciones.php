@@ -7,7 +7,6 @@
     <h6>Recibidas</h6>
     <hr>
     <?php
-
     $resumen = $conexion->query("SELECT AVG(v.valor) as promedio, COUNT(*) as total
                                   FROM valoracion v
                                   WHERE v.destino_usuario_id = '{$_SESSION['id']}'");
@@ -44,7 +43,12 @@
           <span class="bar-label">
             <span class="star-tiny star-full"></span><?php echo $i ?>
           </span>
+		  <?php if ($resumen['total'] <> 0): ?>
           <span class="bar" style="width:<?php echo floor(($detalles[$i]*100)/$resumen['total']) ?>%"></span>
+		  <?php endif ?>
+		  <?php if ($resumen['total'] == 0): ?>
+          <span class="bar" style="width:<?php echo floor(0.0) ?>%"></span>
+		  <?php endif ?>
           <span class="bar-number"><?php echo $detalles[$i] ?></span>
         </div>
         <?php endfor; ?>
