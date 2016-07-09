@@ -28483,3 +28483,5 @@ INSERT INTO estados VALUES (0,'Cancelado');
 INSERT INTO estados VALUES (1,'Pendiente');
 INSERT INTO estados VALUES (2,'Aceptado');
 INSERT INTO estados VALUES (3,'Rechazado');
+-- NUEVA COLUMNA DE FECHA DE ACEPTACION
+ALTER TABLE reserva ADD COLUMN fecha_aceptacion DATE;
