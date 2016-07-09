@@ -56,7 +56,7 @@ while( $val = $detalle->fetch_assoc() ){
                                           INNER JOIN reserva r ON r.id = v.reserva_id
                                           INNER JOIN publicacion p ON p.id = r.publicacion_id
                                           WHERE v.destino_usuario_id = '{$_SESSION['id']}'
-                                          ORDER BY v.mensaje DESC, v.fecha DESC");
+                                          ORDER BY v.fecha DESC");
         while( $val = $valoraciones->fetch_assoc() ): ?>
           <div class="list-group-item">
             <div class="featured-review-star-rating pull-right">
