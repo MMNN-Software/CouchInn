@@ -64,7 +64,8 @@ if ($reservas->num_rows): ?>
 
 			    $r_desde = DateTime::createFromFormat("Y-m-d H:i:s",$reserva['desde']);
 			    $r_hasta = DateTime::createFromFormat("Y-m-d H:i:s",$reserva['hasta']);
-			    $r_dias = ($r_hasta->diff($r_desde,true))->format('%a');
+			    $r_dias = $r_hasta->diff($r_desde,true);
+			    $r_dias = $r_dias->format('%a');
 				echo $r_desde->format(DATE_FORMAT);?> - <?php echo $r_hasta->format(DATE_FORMAT) ?> (<?php echo $r_dias ?> día<?php if($r_dias!=1) echo 's'; ?>)</td>
 		</tr>
 	<?php endwhile; ?>

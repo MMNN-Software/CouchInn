@@ -16,7 +16,7 @@
     ci.nombre as ciudad,
     pr.nombre as provincia,
     ca.nombre as categoria,
-	u.id as owner_id,
+  u.id as owner_id,
     u.nombre as owner,
     u.biografia as biografia,
     u.sexo,
@@ -39,7 +39,7 @@ if($publicaciones->num_rows){
 }
 
 function ask_question ( $publi_id, $user_id, $pregunta) {
-	$error = 0;
+  $error = 0;
     global $conexion;
     if( empty(strip_tags ($pregunta))) $error |= PREGUNTA_EMPTY;
 
@@ -49,24 +49,24 @@ function ask_question ( $publi_id, $user_id, $pregunta) {
     $user_id = $conexion->real_escape_string($user_id);
     $pregunta = $conexion->real_escape_string(strip_tags ($pregunta));
     $tiempo = date("Y-m-d H:i:s");
-	$conexion->query("INSERT INTO pregunta (publicacion_id, usuario_id, pregunta, fecha) VALUES ({$publi_id}, {$user_id}, '{$pregunta}', '{$tiempo}');");
-	return 0;
+  $conexion->query("INSERT INTO pregunta (publicacion_id, usuario_id, pregunta, fecha) VALUES ({$publi_id}, {$user_id}, '{$pregunta}', '{$tiempo}');");
+  return 0;
 }
 
 if( isset($_POST['preguntar']) ){
-	$error = ask_question(
+  $error = ask_question(
       $publicacion['id'],
       $_SESSION['id'],
       $_POST['pregunta1']);
-	$pre_agregada = 1;
-	$mensaje = "Pregunta guardada exitosamente.";
-	}
+  $pre_agregada = 1;
+  $mensaje = "Pregunta guardada exitosamente.";
+  }
 else {
     $pre_agregada = 0;
 }
 
 function reply_question ( $preg_id, $user_id, $respuesta) {
-	$error = 0;
+  $error = 0;
     global $conexion;
     if( empty(strip_tags ($respuesta))) $error |= RESPUESTA_EMPTY;
 
@@ -76,135 +76,90 @@ function reply_question ( $preg_id, $user_id, $respuesta) {
     $user_id = $conexion->real_escape_string($user_id);
     $respuesta = $conexion->real_escape_string(strip_tags ($respuesta));
     $tiempo = date("Y-m-d H:i:s");
-	$conexion->query("INSERT INTO respuesta (id, respuesta, fecha) VALUES (NULL, '{$respuesta}', '{$tiempo}');");
-	$conexion->query("UPDATE pregunta SET respuesta_id='{$conexion->insert_id}' WHERE id='{$preg_id}';");
-	return 0;
+  $conexion->query("INSERT INTO respuesta (id, respuesta, fecha) VALUES (NULL, '{$respuesta}', '{$tiempo}');");
+  $conexion->query("UPDATE pregunta SET respuesta_id='{$conexion->insert_id}' WHERE id='{$preg_id}';");
+  return 0;
 }
 
 function aceptar_reserva ( $reserva_id, $user_id) {
     $error = 0;
-	global $conexion;
-	if($error) return $error;
-	
+  global $conexion;
+  if($error) return $error;
+  
     $reserva_id = $conexion->real_escape_string($reserva_id);
     $user_id = $conexion->real_escape_string($user_id);
-	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - Rechazado 3
-	$conexion->query("UPDATE reserva SET estado=2, fecha_aceptacion=current_date WHERE id={$reserva_id};");
-	$a_rechazar = $conexion->query("SELECT GROUP_CONCAT(r.id) as reserva_id FROM reserva r
-										INNER JOIN reserva r2 ON r2.publicacion_id=r.publicacion_id
-										WHERE (((r.desde BETWEEN r2.desde AND r2.hasta)
-										 OR (r.hasta BETWEEN r2.desde AND r2.hasta))
+  // CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - Rechazado 3
+  $conexion->query("UPDATE reserva SET estado=2, fecha_aceptacion=current_date WHERE id={$reserva_id};");
+  $a_rechazar = $conexion->query("SELECT GROUP_CONCAT(r.id) as reserva_id FROM reserva r
+                    INNER JOIN reserva r2 ON r2.publicacion_id=r.publicacion_id
+                    WHERE (((r.desde BETWEEN r2.desde AND r2.hasta)
+                     OR (r.hasta BETWEEN r2.desde AND r2.hasta))
                                          OR ((r2.desde BETWEEN r.desde AND r.hasta)
-										 OR (r2.hasta BETWEEN r.desde AND r.hasta)))
-										AND r2.id != r.id AND r2.id= {$reserva_id};");
-	if ($a_rechazar->num_rows) {
-		$a_rech = $a_rechazar->fetch_assoc();
-	}
-	$sql = "UPDATE reserva SET estado=3 WHERE id IN ({$a_rech[reserva_id]});";
-	if ($conexion->query($sql) === TRUE) {
-		echo "Record updated successfully";
-	} else {
-		echo "Error updating record: " . $conexion->error;
-	}
-	return 0;
+                     OR (r2.hasta BETWEEN r.desde AND r.hasta)))
+                    AND r2.id != r.id AND r2.id= {$reserva_id};");
+  if ($a_rechazar->num_rows) {
+    $a_rech = $a_rechazar->fetch_assoc();
+  }
+  $sql = "UPDATE reserva SET estado=3 WHERE id IN ({$a_rech[reserva_id]});";
+  if ($conexion->query($sql) === TRUE) {
+    echo "Record updated successfully";
+  } else {
+    echo "Error updating record: " . $conexion->error;
+  }
+  return 0;
 }
 
 function rechazar_reserva ( $reserva_id, $user_id) {
-	$error = 0;
-	global $conexion;
-	if($error) return $error;
-	
+  $error = 0;
+  global $conexion;
+  if($error) return $error;
+  
     $reserva_id = $conexion->real_escape_string($reserva_id);
     $user_id = $conexion->real_escape_string($user_id);
-	// CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - RECHAZADO 3
-	$conexion->query("UPDATE reserva SET estado=3 WHERE id={$reserva_id};");
-	return 0;
+  // CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - RECHAZADO 3
+  $conexion->query("UPDATE reserva SET estado=3 WHERE id={$reserva_id};");
+  return 0;
 }
 
 if( isset($_POST['responder']) ){
-	$error = reply_question(
+  $error = reply_question(
       $_POST['responder'],
       $_SESSION['id'],
       $_POST['respuesta']);
-	$res_agregada = 1;
-	$mensaje = "Respuesta guardada exitosamente.";
-	}
+  $res_agregada = 1;
+  $mensaje = "Respuesta guardada exitosamente.";
+  }
 else {
     $res_agregada = 0;
 }
 
 if( isset($_POST['aceptar']) ){
-	$error = aceptar_reserva(
+  $error = aceptar_reserva(
       $_POST['aceptar'],
       $_SESSION['id']);
-	$reserva_aceptada = 1;
-	$mensaje = "Reserva aceptada correctamente.";
-	}
+  $reserva_aceptada = 1;
+  $mensaje = "Reserva aceptada correctamente.";
+  }
 else {
     $reserva_aceptada = 0;
 }
 
 if( isset($_POST['rechazar']) ){
-	$error = rechazar_reserva(
+  $error = rechazar_reserva(
       $_POST['rechazar'],
       $_SESSION['id']);
-	$reserva_rechazada = 1;
-	$mensaje = "Reserva rechazada correctamente.";
-	}
+  $reserva_rechazada = 1;
+  $mensaje = "Reserva rechazada correctamente.";
+  }
 else {
     $reserva_rechazada = 0;
 }
 
-$reservas = $conexion->query("SELECT u.id AS res_user_id,
-                                     u.nombre AS res_u_nombre,
-									 u.foto,
-									r.id AS reserva_id,
-									r.desde AS r_desde,
-									r.hasta as r_hasta,
-									r.mensaje AS r_mensaje,
-									UNIX_TIMESTAMP(r.fecha) AS r_fecha,
-									p.id AS publicacion_id,
-									p.titulo AS publicacion_titulo,
-									p.usuario_id AS publicacion_owner_id
-							FROM reserva r
-							INNER JOIN publicacion p ON p.id = r.publicacion_id
-							INNER JOIN usuario u ON u.id = r.usuario_id
-							WHERE r.estado = 1 AND p.id = '{$id}'
-							ORDER BY r_fecha DESC;");
-   if ($reservas->num_rows) {
-	   $_res = array();
-	   while ( $reser = $reservas->fetch_assoc()){
-		   $_res[] = $reser;
-	   }
-   }
-
-$preguntas = $conexion->query("SELECT pre.id AS preg_id,
-									   pre.usuario_id AS preguntador_id,
-									   pre.respuesta_id AS res_id,
-									   u.foto AS foto,
-									   u.nombre AS preguntador,
-									   pre.pregunta AS pregunta,
-									   UNIX_TIMESTAMP(pre.fecha) AS pre_fecha,
-									   res.respuesta AS respuesta,
-									   res.fecha AS res_fecha
-								FROM pregunta pre
-								LEFT JOIN respuesta res ON res.id = pre.respuesta_id
-								LEFT JOIN usuario u ON u.id=pre.usuario_id
-								WHERE pre.publicacion_id = '{$id}'
-								ORDER BY pre.fecha DESC;");
-   if ($preguntas->num_rows) {
-	   $preg_res = array();
-	   while ( $prre = $preguntas->fetch_assoc()){
-		   $preg_res[] = $prre;
-	   }
-   }
-
-
 $favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
 $favoritos = $favoritos->fetch_assoc();
 ?>
-  <?php include 'includes/ofertar.php';?>	
-  <style type="text/css">.oculta{display:none}</style>	
+  <?php include 'includes/ofertar.php';?>  
+  <style type="text/css">.oculta{display:none}</style>  
   <div class="container main">
   <?php if (!$publicacion): ?>
     Publicacion no encontrada
@@ -253,28 +208,27 @@ $favoritos = $favoritos->fetch_assoc();
           <p><?php echo $publicacion['descripcion'] ?></p>
         </div>
       </div>
-	  
 
-    <?php if (isset($_SESSION['usuario']) and  $_SESSION['id'] == $publicacion['usuario_id'] ): /* Ultra bug hdp que setea el id del usuario actual cambiando el perfil */?>
-	  <div class="panel panel-default">
+<?php if ( isset($_SESSION['usuario']) and  $_SESSION['id'] == $publicacion['usuario_id'] ): ?>
+      <div class="panel panel-default">
         <div class="panel-body">
-          <h5 id="Reservas">Reservas <input type="button" id="res_icon" class="btn btn-success btn-sm pull-right" data-toggle="collapse" data-target="#res_info" value="+" /></h5>
+          <h5>Reservas</h5>
           <hr>
-		  <div id="res_info" class="collapse">
-			<?php include 'includes/reservas.php' ?>
-		  </div>
-		</div>
-	  </div>
-	  <?php endif?>
-	  
+          <?php include 'includes/reservas.php' ?>
+        </div>
+      </div>
+<?php endif?>
+    
       <div class="panel panel-default">
         <div class="panel-body">
           <h5 id="Preguntas">Preguntas</h5>
           <hr>
-    			<?php include 'includes/preguntas.php' ?>
+          <?php include 'includes/preguntas.php' ?>
         </div>
-      </div>	  
+      </div>   
+
     </div>
+
     <div class="col-sm-4">
       <div class="panel panel-default" id="docked">
         <div class="panel-body">
@@ -338,26 +292,26 @@ include 'includes/footer.php'; ?>
 
 <?php if ($pre_agregada == 1): ?>
 <script type="text/javascript">
-	$(function(){successAlert('Exito', 'La pregunta fue guardada exitosamente.');
-				});
+  $(function(){successAlert('Exito', 'La pregunta fue guardada exitosamente.');
+        });
 </script>
 <?php endif ?>
 <?php if ($res_agregada == 1): ?>
 <script type="text/javascript">
-	$(function(){successAlert('Exito', 'La respuesta fue guardada exitosamente.');
-				});
+  $(function(){successAlert('Exito', 'La respuesta fue guardada exitosamente.');
+        });
 </script>
 <?php endif ?>
 <?php if ($reserva_aceptada == 1): ?>
 <script type="text/javascript">
-	$(function(){successAlert('Exito', 'La reserva fue aceptada exitosamente.');
-				});
+  $(function(){successAlert('Exito', 'La reserva fue aceptada exitosamente.');
+        });
 </script>
 <?php endif ?>
 <?php if ($reserva_rechazada == 1): ?>
 <script type="text/javascript">
-	$(function(){successAlert('Exito', 'La reserva fue rechazada exitosamente.');
-				});
+  $(function(){successAlert('Exito', 'La reserva fue rechazada exitosamente.');
+        });
 </script>
 <?php endif ?>
 <script type="text/javascript">

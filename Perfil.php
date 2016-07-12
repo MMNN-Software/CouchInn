@@ -215,32 +215,33 @@
             <ul class="nav">
               <li<?php if ( !isset($_GET['tab']) ): ?> class="active"<?php endif; ?>><a href="/Perfil.php"><i class="glyphicon glyphicon-info-sign"></i> Información</a></li>
               <li<?php if ( $_GET['tab'] == 'publicaciones' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=publicaciones"><i class="glyphicon glyphicon-bed"></i> Publicaciones</a></li>
-              <li<?php if ( $_GET['tab'] == 'reservas' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=reservas"><i class="glyphicon glyphicon-bed"></i> Mis reservas</a></li>
-			  <li<?php if ( $_GET['tab'] == 'hospedajes' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=hospedajes"><i class="glyphicon glyphicon-bed"></i> Mis hospedajes</a></li>
-			  <li<?php if ( $_GET['tab'] == 'favoritos' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=favoritos"><i class="glyphicon glyphicon-heart"></i> Favoritos</a></li>
+              <li<?php if ( $_GET['tab'] == 'reservas' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=reservas"><i class="glyphicon glyphicon-lamp"></i> Reservas</a></li>
+              <li<?php if ( $_GET['tab'] == 'favoritos' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=favoritos"><i class="glyphicon glyphicon-heart"></i> Favoritos</a></li>
               <li<?php if ( $_GET['tab'] == 'valoraciones' ): ?> class="active"<?php endif; ?>><a href="/Perfil.php?tab=valoraciones"><i class="glyphicon glyphicon-star"></i> Valoraciones</a></li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="col-sm-8 col-lg-9">
-        <?php if ($ismyprofile): ?>
-          <?php if ( !isset($_GET['tab']) ): ?>
-            <?php include 'includes/form_profile.php' ?>
-          <?php elseif( $_GET['tab'] == 'publicaciones' ): ?>
-            <?php include 'includes/publicaciones.php' ?>
-		  <?php elseif( $_GET['tab'] == 'reservas' ): ?>
-            <?php include 'includes/mis_reservas.php' ?>
-		  <?php elseif( $_GET['tab'] == 'hospedajes' ): ?>
-            <?php include 'includes/mis_hospedajes.php' ?>
-          <?php elseif( $_GET['tab'] == 'valoraciones' ): ?>
-            <?php include 'includes/valoraciones.php' ?>
-          <?php elseif( $_GET['tab'] == 'favoritos' ): ?>
-            <?php include 'includes/mis_favoritos.php' ?>
-          <?php endif ?>
-        <?php else: ?>
-          Info basica
-        <?php endif ?>
+      <div class="col-sm-8 col-lg-9"><?php
+        if ($ismyprofile){
+          if ( !isset($_GET['tab']) ){
+            include 'includes/form_profile.php';
+            
+          }elseif( $_GET['tab'] == 'publicaciones' ){
+            include 'includes/publicaciones.php';
+
+          }elseif( $_GET['tab'] == 'reservas' ){
+            include 'includes/mis_reservas.php';
+
+          }elseif( $_GET['tab'] == 'valoraciones' ){
+            include 'includes/valoraciones.php';
+
+          }elseif( $_GET['tab'] == 'favoritos' ){
+            include 'includes/mis_favoritos.php';
+          }
+        }else{
+          include 'includes/basic_info.php';
+        } ?>
       </div>
     </div>
   </div>
