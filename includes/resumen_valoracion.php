@@ -2,12 +2,14 @@
 
 $resumen = $conexion->query("SELECT AVG(v.valor) as promedio, COUNT(*) as total
                               FROM valoracion v
-                              WHERE v.destino_usuario_id = '{$publicacion['usuario_id']}'");
+							  INNER JOIN reserva r ON r.id=v.reserva_id
+                              WHERE r.publicacion_id = '{$publicacion['id']}';");
 $detalle = $conexion->query("SELECT v.valor, COUNT(*) as cant
                               FROM valoracion v
-                              WHERE v.destino_usuario_id = '{$publicacion['usuario_id']}'
+							  INNER JOIN reserva r ON r.id=v.reserva_id
+                              WHERE r.publicacion_id = '{$publicacion['id']}'
                               GROUP BY v.valor
-                              ORDER BY v.valor DESC");
+                              ORDER BY v.valor DESC;");
 $resumen = $resumen->fetch_assoc();
 $clases = ['','one','two','three','four','five'];
 for ($i=1; $i <= 5; $i++){

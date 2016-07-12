@@ -250,8 +250,9 @@ $favoritos = $favoritos->fetch_assoc();
           <?php 
             $valoraciones = $conexion->query("SELECT v.valor, u.nombre, u.foto, v.mensaje
                                               FROM valoracion v
+											  INNER JOIN reserva r ON r.id=v.reserva_id
                                               INNER JOIN usuario u ON u.id = v.origen_usuario_id
-                                              WHERE v.destino_usuario_id = '{$publicacion['usuario_id']}'
+                                              WHERE r.publicacion_id = '{$publicacion['id']}'
                                               ORDER BY v.mensaje DESC, v.fecha DESC");
             $i = 0;
             while( $val = $valoraciones->fetch_assoc() ): ?>
