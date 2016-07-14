@@ -22,7 +22,7 @@ if ($_SESSION['usuario'] != NULL && $_SESSION['id'] !== $publicacion['owner_id']
     <div class="form-group">
       <label for="textarea" class="col-sm-1 control-label"><span class="glyphicon glyphicon-comment"></span></label>
       <div class="col-sm-11">
-        <textarea name="pregunta1" id="textarea" class="form-control" rows="2" required="required" placeholder="Escribe aqui tu pregunta..."></textarea>
+        <textarea name="pregunta" id="textarea" class="form-control" rows="2" required="required" placeholder="Escribe aqui tu pregunta..."></textarea>
       </div>
     </div>
 

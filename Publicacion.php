@@ -16,117 +16,83 @@
     ci.nombre as ciudad,
     pr.nombre as provincia,
     ca.nombre as categoria,
-  u.id as owner_id,
+    u.id as owner_id,
     u.nombre as owner,
     u.biografia as biografia,
     u.sexo,
     u.foto
-FROM publicacion pu
-INNER JOIN categoria ca ON ca.id = pu.categoria_id
-INNER JOIN usuario u ON u.id = pu.usuario_id
-INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
-INNER JOIN provincia pr ON pr.id = ci.provincia_id
-WHERE pu.id = '{$id}' AND ca.activa AND pu.estado");
+    FROM publicacion pu
+    INNER JOIN categoria ca ON ca.id = pu.categoria_id
+    INNER JOIN usuario u ON u.id = pu.usuario_id
+    INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
+    INNER JOIN provincia pr ON pr.id = ci.provincia_id
+    WHERE pu.id = '{$id}' AND ca.activa AND pu.estado");
 
-if($publicaciones->num_rows){
-  $publicacion = $publicaciones->fetch_assoc();
-  $img = $conexion->query("SELECT path FROM imagen WHERE publicacion_id = '{$publicacion['id']}' ORDER BY orden ASC");
-  $imagenes = array();
-  while( $im = $img->fetch_assoc() ){
-    $imagenes[] = $im;
+  if($publicaciones->num_rows){
+    $publicacion = $publicaciones->fetch_assoc();
+    $img = $conexion->query("SELECT path FROM imagen WHERE publicacion_id = '{$publicacion['id']}' ORDER BY orden ASC");
+    $imagenes = array();
+    while( $im = $img->fetch_assoc() ){
+      $imagenes[] = $im;
+    }
+    $img->free();
   }
-  $img->free();
-}
 
-if( isset($_POST['preguntar']) ){
-  $fecha = date("Y-m-d H:i:s");
-  $pregunta = $conexion->real_escape_string($_POST['pregunta1']);
-  $conexion->query("INSERT INTO pregunta (publicacion_id, usuario_id, pregunta, fecha) 
-    VALUES ('{$publicacion['id']}', '{$_SESSION['id']}', '{$pregunta}', '{$fecha}');");
-  $mensaje = "Pregunta enviada.";
-}
-
-function aceptar_reserva ( $reserva_id, $user_id) {
-  $error = 0;
-  global $conexion;
-  if($error) return $error;
-  
-  $reserva_id = $conexion->real_escape_string($reserva_id);
-  $user_id = $conexion->real_escape_string($user_id);
-  // CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - Rechazado 3
-  $conexion->query("UPDATE reserva SET estado=2, fecha_aceptacion=current_date WHERE id={$reserva_id};");
-  
-  $a_rechazar = $conexion->query("SELECT GROUP_CONCAT(r.id) as reserva_id FROM reserva r
-                    INNER JOIN reserva r2 ON r2.publicacion_id=r.publicacion_id
-                    WHERE (((r.desde BETWEEN r2.desde AND r2.hasta)
-                     OR (r.hasta BETWEEN r2.desde AND r2.hasta))
-                      OR ((r2.desde BETWEEN r.desde AND r.hasta) 
-                        OR (r2.hasta BETWEEN r.desde AND r.hasta)
-                      )
-                    )
-                    AND r2.id != r.id AND r2.id= {$reserva_id};");
-  if ($a_rechazar->num_rows) {
-    $a_rech = $a_rechazar->fetch_assoc();
+  if( isset($_POST['preguntar']) ){
+    $fecha = date("Y-m-d H:i:s");
+    $pregunta = $conexion->real_escape_string($_POST['pregunta']);
+    $conexion->query("INSERT INTO pregunta (publicacion_id, usuario_id, pregunta, fecha) 
+      VALUES ('{$publicacion['id']}', '{$_SESSION['id']}', '{$pregunta}', '{$fecha}');");
+    $mensaje = "Pregunta enviada.";
   }
-  $conexion->query("UPDATE reserva SET estado=3 WHERE id IN ({$a_rech['reserva_id']});");
-  return 0;
-}
 
-function rechazar_reserva ( $reserva_id, $user_id) {
-  $error = 0;
-  global $conexion;
-  if($error) return $error;
-  
-    $reserva_id = $conexion->real_escape_string($reserva_id);
-    $user_id = $conexion->real_escape_string($user_id);
-  // CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - RECHAZADO 3
-  $conexion->query("UPDATE reserva SET estado=3 WHERE id={$reserva_id};");
-  return 0;
-}
-
-if( isset($_POST['responder']) ){
-  $respuesta = $conexion->real_escape_string($respuesta);
-  $fecha = date("Y-m-d H:i:s");
-  $conexion->query("INSERT INTO respuesta (id, respuesta, fecha) VALUES (NULL, '{$respuesta}', '{$fecha}');");
-  $conexion->query("UPDATE pregunta SET respuesta_id = '{$conexion->insert_id}' WHERE id='{$_POST['responder']}';");
-  $mensaje = "Respuesta guardada exitosamente.";
-}
-
-if( isset($_POST['aceptar']) ){
-  $error = aceptar_reserva(
-      $_POST['aceptar'],
-      $_SESSION['id']);
-  $mensaje = "Reserva aceptada correctamente.";
-}
-
-if( isset($_POST['rechazar']) ){
-  $error = rechazar_reserva(
-      $_POST['rechazar'],
-      $_SESSION['id']);
-  $mensaje = "Reserva rechazada correctamente.";
-}
-
-if( isset($_POST['ofertar']) ){
-  $fecha = date("Y-m-d H:i:s");
-  $mensaje1 = $conexion->real_escape_string($_POST['mensaje']);
-  $in = DateTime::createFromFormat('d/m/Y', $_POST['datein'])->format('Y-m-d');
-  $out = DateTime::createFromFormat('d/m/Y', $_POST['dateout'])->format('Y-m-d');
-
-  $valoraciones = $conexion->query("SELECT * FROM reserva 
-    WHERE publicacion_id = '{$_GET['id']}' AND usuario_id = '{$_SESSION['id']}'
-    '{$in}' BETWEEN desde AND hasta OR desde BETWEEN '{$in}' AND '{$out}' AND estado = 2");
-
-  if ($valoraciones->num_rows) {
-    $error = "Ya existe una oferta que interfiere con tu oferta actual";
-  }else{
-    $conexion->query("INSERT INTO reserva (usuario_id, publicacion_id, mensaje, fecha, desde, hasta, estado) 
-      VALUES ('{$_SESSION['id']}', '{$_GET['id']}', '{$mensaje1}', '{$fecha}', '{$in}', '{$out}', 1)");
-    $mensaje = "Se envió tu petición al dueño de la publicación.";
+  if( isset($_POST['responder']) ){
+    $respuesta = $conexion->real_escape_string($_POST['respuesta']);
+    $fecha = date("Y-m-d H:i:s");
+    $conexion->query("INSERT INTO respuesta (id, respuesta, fecha) VALUES (NULL, '{$respuesta}', '{$fecha}');");
+    $conexion->query("UPDATE pregunta SET respuesta_id = '{$conexion->insert_id}' WHERE id='{$_POST['responder']}';");
+    $mensaje = "Respuesta guardada exitosamente.";
   }
-}
 
-$favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
-$favoritos = $favoritos->fetch_assoc();
+  if( isset($_POST['aceptar']) ){
+    //TODO: revisar que la reserva que se acepta sea válida por las fechas
+    $conexion->query("UPDATE reserva SET estado = 2, fecha_aceptacion = current_date WHERE id = '{$_POST['aceptar']}';");
+    $conexion->query("UPDATE reserva SET estado = 3 WHERE id IN (
+                      SELECT GROUP_CONCAT(r.id) as reserva_id FROM reserva r
+                      INNER JOIN reserva r2 ON r2.publicacion_id = r.publicacion_id
+                      WHERE (((r.desde BETWEEN r2.desde AND r2.hasta) OR (r.hasta BETWEEN r2.desde AND r2.hasta))
+                        OR ((r2.desde BETWEEN r.desde AND r.hasta) OR (r2.hasta BETWEEN r.desde AND r.hasta)))
+                      AND r2.id != r.id AND r2.id = {$reserva_id});");
+    $mensaje = "Reserva aceptada correctamente.";
+  }
+
+  if( isset($_POST['rechazar']) ){
+    // CANCELADO 0 - PENDIENTE 1 - ACEPTADO 2 - RECHAZADO 3
+    $conexion->query("UPDATE reserva SET estado = 3 WHERE id = '{$_POST['rechazar']}';");
+    $mensaje = "Reserva rechazada correctamente.";
+  }
+
+  if( isset($_POST['ofertar']) ){
+    $fecha = date("Y-m-d H:i:s");
+    $mensaje1 = $conexion->real_escape_string($_POST['mensaje']);
+    $in = DateTime::createFromFormat('d/m/Y', $_POST['datein'])->format('Y-m-d');
+    $out = DateTime::createFromFormat('d/m/Y', $_POST['dateout'])->format('Y-m-d');
+
+    $valoraciones = $conexion->query("SELECT * FROM reserva 
+      WHERE publicacion_id = '{$_GET['id']}' AND usuario_id = '{$_SESSION['id']}' AND
+      '{$in}' BETWEEN desde AND hasta OR desde BETWEEN '{$in}' AND '{$out}' AND estado = 2");
+
+    if ($valoraciones->num_rows) {
+      $error = "Ya existe una oferta que interfiere con tu oferta actual";
+    }else{
+      $conexion->query("INSERT INTO reserva (usuario_id, publicacion_id, mensaje, fecha, desde, hasta, estado) 
+        VALUES ('{$_SESSION['id']}', '{$_GET['id']}', '{$mensaje1}', '{$fecha}', '{$in}', '{$out}', 1)");
+      $mensaje = "Se envió tu petición al dueño de la publicación.";
+    }
+  }
+
+  $favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
+  $favoritos = $favoritos->fetch_assoc();
 ?>
   <?php include 'includes/form_ofertar.php';?>  
   <style type="text/css">.oculta{display:none}</style>  
