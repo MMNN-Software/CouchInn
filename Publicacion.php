@@ -20,13 +20,14 @@
     u.nombre as owner,
     u.biografia as biografia,
     u.sexo,
-    u.foto
+    u.foto,
+    ca.activa
     FROM publicacion pu
     INNER JOIN categoria ca ON ca.id = pu.categoria_id
     INNER JOIN usuario u ON u.id = pu.usuario_id
     INNER JOIN ciudad ci    ON ci.id = pu.ciudad_id
     INNER JOIN provincia pr ON pr.id = ci.provincia_id
-    WHERE pu.id = '{$id}' AND ca.activa AND pu.estado");
+    WHERE pu.id = '{$id}' AND pu.estado");
 
   if($publicaciones->num_rows){
     $publicacion = $publicaciones->fetch_assoc();
@@ -90,6 +91,9 @@
       $mensaje = "Se envió tu petición al dueño de la publicación.";
     }
   }
+
+  if(!$publicacion['activa'])
+    $error .= "La categoria de la publicación se encuentra inactiva, podrás ver la publicación pero no aparecerá en los listados.<br>Para que vuelva a aparecer podés editarla con una categoria nueva.";
 
   $favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
   $favoritos = $favoritos->fetch_assoc();

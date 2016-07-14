@@ -1,14 +1,13 @@
 <?php
 
-$publi = $conexion->query("SELECT * FROM publicacion where id IN (SELECT publicacion_id FROM reserva WHERE estado = 2 AND usuario_id = '{$_SESSION['id']}' AND CURDATE() > hasta AND id NOT IN (SELECT reserva_id FROM VALORACION where origen_usuario_id = '{$_SESSION['id']}'))");
+$publi = $conexion->query("SELECT * FROM publicacion WHERE id IN (SELECT publicacion_id FROM reserva WHERE estado = 2 AND usuario_id = '{$_SESSION['id']}' AND CURDATE() > hasta AND id NOT IN (SELECT reserva_id FROM valoracion where origen_usuario_id = '{$_SESSION['id']}'))");
 
 $user = $conexion->query("SELECT * FROM usuario where id IN 
 						(SELECT usuario_id FROM reserva where estado = 2 AND CURDATE() > hasta AND publicacion_id IN 
-						(SELECT id from publicacion where usuario_id = '{$_SESSION['id']}') AND id NOT IN (SELECT reserva_id FROM VALORACION where origen_usuario_id = '{$_SESSION['id']}'))");
+						(SELECT id from publicacion where usuario_id = '{$_SESSION['id']}') AND id NOT IN (SELECT reserva_id FROM valoracion where origen_usuario_id = '{$_SESSION['id']}'))");
  
 $hoy = date("Y-m-d");
 ?>
-
 
 <div class="list-group">
 <?php while ($pub = $publi->fetch_assoc()) { ?>
@@ -29,11 +28,11 @@ $hoy = date("Y-m-d");
     <h4 class="list-group-item-heading"><a href="/Publicacion.php?id=<?php echo $pub['id'] ?>"><?php echo $pub['titulo']; ?></a></h4>
         <!--<p class="list-group-item-text"><span class="glyphicon glyphicon-comment"></span> </p>-->
   </div>
- <?php } ?>
+<?php } ?>
 </div>
  
 <div class="list-group">
-  <?php foreach ($use = $user->fetch_assoc()) { ?>
+  <?php while ( $use = $user->fetch_assoc() ) { ?>
 
   <div class="list-group-item clearfix">
    <span class="pull-left"><?php $imuser = $conexion->query("SELECT foto FROM usuario WHERE id = '{$use['id']}' "); 
