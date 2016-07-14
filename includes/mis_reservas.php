@@ -3,7 +3,7 @@
       
     <ul class="nav nav-pills">
       <li><h5 style="margin-right:20px">Reservas</h5></li>
-      <li class="active"><a data-toggle="tab" href="#confirmadas">Confirmadas</a></li>
+      <li class="active"><a data-toggle="tab" href="#confirmadas">Todas</a></li>
       <li><a data-toggle="tab" href="#finalizadas">Finalizadas</a></li>
     </ul>
 

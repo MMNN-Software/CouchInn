@@ -1,6 +1,7 @@
   
 <div class="modal fade" id="ofertar">
-  <form  class="form" action="/confirmar_oferta.php?idp=<?php echo $publicacion['id']?>" method="POST">
+  <form  class="form" action="/Publicacion.php?id=<?php echo $publicacion['id']?>" method="POST">
+  	<input type="hidden" name="ofertar" value="1">
     <div class="modal-dialog" style="max-width:400px">
       <div class="modal-content">
         <div class="modal-header">
@@ -8,7 +9,6 @@
           <h4 class="modal-title">Ofertar</h4>
         </div>
         <div class="modal-body">
-          <form class="form" action="/confirmar_oferta.php?idp=<?php echo $publicacion['id']?>" method="POST">
             <p>Se enviara una petición para poder llevar a cabo la reserva</p>
 			<div class="row">
 			<div class="col-sm-12">
@@ -42,7 +42,6 @@
 				  </div>
 			  </div>
             </div>
-          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>

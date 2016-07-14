@@ -30,10 +30,10 @@ if (!$reservas->num_rows): ?>
 	      	<small class="pull-right"><?php echo tiempo_transcurrido($reserva['r_fecha']) ?></small>
 	      	<a href="/Perfil.php?id=<?php echo $reserva['res_user_id']?>"><?php echo $reserva['res_u_nombre'] ?></a>
 	      </h5>
-		    <form method="post" name="responder_<?php echo ($reserva['reserva_id']) ?>" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Reservas" class="form" role="form">
+		    <form method="post" name="responder_<?php echo ($reserva['reserva_id']) ?>" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>" class="form" role="form">
 		      <!-- <input type="hidden" id="acep_rech" name="aceptar" value="<?php echo ($reserva['reserva_id']) ?>" /> -->
-		      <span style="width:70%"><b>Periodo: </b><?php echo strip_tags ((string)$reserva['r_desde']) ?> - <?php echo strip_tags ((string)$reserva['r_hasta']) ?></span> </br>
-		      <span style="width:70%"><b>Mensaje: </b><?php echo strip_tags ((string)$reserva['r_mensaje']) ?></span>
+		      <span style="width:70%"><b>Periodo: </b><?php echo $reserva['r_desde'] ?> - <?php echo $reserva['r_hasta'] ?></span> </br>
+		      <span style="width:70%"><b>Mensaje: </b><?php echo $reserva['r_mensaje'] ?></span>
 		      <div class="pull-right">
 		      <button type="submit" class="btn btn-success btn-sm" name="aceptar" value="<?php echo ($reserva['reserva_id']) ?>">Aceptar</button>
 		      <button type="submit" class="btn btn-danger btn-sm" name="rechazar" value="<?php echo ($reserva['reserva_id']) ?>">Rechazar</button>

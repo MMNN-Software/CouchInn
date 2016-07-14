@@ -5,7 +5,41 @@ $count = $conexion->query("SELECT COUNT(DISTINCT usuario_id) as personas, COUNT(
 $count = $count->fetch_assoc();
 
 
-if ($reservas->num_rows): ?>
+if ($reservas->num_rows): 
+$javascripts .= <<<EOD
+
+<script type="text/javascript">
+  /*google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Year', 'Personas', 'Reservas', 'Publicaciones'],
+      ['2004',  1000, 123, 1233],
+      ['2004',  1000, 123, 1233],
+      ['2004',  1000, 123, 1233],
+      ['2004',  1000, 123, 1233],
+      ['2004',  1000, 123, 1233],
+    ]);
+
+    var options = {
+    	height: 350
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart'));
+
+    chart.draw(data, options);
+  }*/
+</script>
+EOD;
+
+?>
+<div class="row">
+	<div class="col-xs-12">
+		<div id="chart"></div>
+	</div>
+</div>
+
 
 <div class="row">
 <div class="col-sm-4">
@@ -62,8 +96,8 @@ if ($reservas->num_rows): ?>
 			<td><?php echo $reserva['fecha']; ?></td>
 			<td><?php
 
-			    $r_desde = DateTime::createFromFormat("Y-m-d H:i:s",$reserva['desde']);
-			    $r_hasta = DateTime::createFromFormat("Y-m-d H:i:s",$reserva['hasta']);
+			    $r_desde = DateTime::createFromFormat("Y-m-d",$reserva['desde']);
+			    $r_hasta = DateTime::createFromFormat("Y-m-d",$reserva['hasta']);
 			    $r_dias = $r_hasta->diff($r_desde,true);
 			    $r_dias = $r_dias->format('%a');
 				echo $r_desde->format(DATE_FORMAT);?> - <?php echo $r_hasta->format(DATE_FORMAT) ?> (<?php echo $r_dias ?> día<?php if($r_dias!=1) echo 's'; ?>)</td>

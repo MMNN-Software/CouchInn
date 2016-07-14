@@ -84,7 +84,7 @@
 </div>
 <?php 
 
-$javascripts = <<<EOD
+$javascripts .= <<<EOD
 <script type="text/javascript">
 
 

@@ -8,6 +8,8 @@ $valoraciones = $conexion->query("SELECT v.valor, v.mensaje, p.titulo, p.id as p
                                   WHERE v.origen_usuario_id = '{$_SESSION['id']}'
                                   ORDER BY v.mensaje DESC, v.fecha DESC");
 
+if( $valoraciones->num_rows ){
+
 ?><div class="list-group valoraciones">
     <?php while( $val = $valoraciones->fetch_assoc() ): ?>
       <div class="list-group-item clearfix">
@@ -25,3 +27,9 @@ $valoraciones = $conexion->query("SELECT v.valor, v.mensaje, p.titulo, p.id as p
       </div>
   <?php endwhile; ?>
 </div>
+
+<?php }else{ ?>
+
+<p class="text-center">Todavía no realizaste ninguna valoración</p>
+
+<?php } ?>

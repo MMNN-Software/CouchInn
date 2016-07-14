@@ -25,6 +25,7 @@
   <script type="text/javascript" src="/js/main.js"></script>
   <script type="text/javascript" src="/js/jAlert-v4.min.js"></script>
   <script type="text/javascript" src="/js/jAlert-functions.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <?php if (isset($javascripts)): ?>
     <?php echo $javascripts; ?>
   <?php endif ?>

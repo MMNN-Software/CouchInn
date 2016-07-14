@@ -17,7 +17,7 @@ $preguntas = $conexion->query("SELECT pre.id AS preg_id,
 
 
 if ($_SESSION['usuario'] != NULL && $_SESSION['id'] !== $publicacion['owner_id']):  ?>
-  <form method="post" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form form-horizontal" role="form">
+  <form method="post" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>" class="form form-horizontal" role="form">
     <input type="hidden" name="preguntar" value="1" />
     <div class="form-group">
       <label for="textarea" class="col-sm-1 control-label"><span class="glyphicon glyphicon-comment"></span></label>
@@ -35,7 +35,7 @@ if ($_SESSION['usuario'] != NULL && $_SESSION['id'] !== $publicacion['owner_id']
   <hr>
 <?php endif ?>
 
-<?php if (!$preguntas->fetch_assoc()): ?>
+<?php if (!$preguntas->num_rows): ?>
   Por el momento no hay preguntas para esta publicación.
 <?php else: ?>
   <?php 
@@ -60,7 +60,7 @@ if ($_SESSION['usuario'] != NULL && $_SESSION['id'] !== $publicacion['owner_id']
         </div>
       <?php endif ?>
       <?php if ($pregunta['respuesta'] == NULL && $_SESSION[id] == $publicacion[owner_id]): ?>
-      <form method="post" name="responder_<?php echo ($pregunta['preg_id']) ?>" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>#Preguntas" class="form" role="form">
+      <form method="post" name="responder_<?php echo ($pregunta['preg_id']) ?>" action="/Publicacion.php?id=<?php echo $publicacion['id'] ?>" class="form" role="form">
         <div class="developer-reply" style="width:100%; margin:7px; float:right">
         <div class="media-body">
           <input type="hidden" name="responder" value="<?php echo ($pregunta['preg_id']) ?>" />

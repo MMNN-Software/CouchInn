@@ -20,8 +20,7 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
               INNER JOIN publicacion p ON p.id = r.publicacion_id
               INNER JOIN usuario u ON u.id = r.usuario_id
               WHERE r.estado = 1 AND r.usuario_id='{$_SESSION['id']}'
-              ORDER BY p.titulo, r_fecha DESC;");
-
+              ORDER BY r_fecha DESC;");
 ?>
 
 <div class="list-group">
@@ -39,9 +38,9 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
       <span class="pull-right">
         <!--aca irian botones-->
       </span>
-	<span style="width:70%"><b>Periodo: </b><?php echo strip_tags ((string)$reserva['r_desde']) ?> - <?php echo strip_tags ((string)$reserva['r_hasta']) ?></span> </br>
-	<span style="width:70%"><b>Mensaje: </b><?php echo strip_tags ((string)$reserva['r_mensaje']) ?></span> </br>
-	<span style="width:70%"><b>Estado: </b><?php echo strip_tags ((string)$reserva['estado']) ?></span>
+	<span style="width:70%"><b>Periodo: </b><?php echo $reserva['r_desde'] ?> - <?php echo $reserva['r_hasta'] ?></span> </br>
+	<span style="width:70%"><b>Mensaje: </b><?php echo $reserva['r_mensaje'] ?></span> </br>
+	<span style="width:70%"><b>Estado: </b><?php echo $reserva['estado'] ?></span>
       <!--<p class="list-group-item-text"><span class="glyphicon glyphicon-comment"></span> </p>-->
     </div>
 <?php } if(!$reservas->num_rows):?>
