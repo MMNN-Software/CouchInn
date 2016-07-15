@@ -1,12 +1,12 @@
 <?php 
 $valoraciones = $conexion->query("SELECT v.valor, v.mensaje, p.titulo, p.id as publicacion_id, 
-                                  (SELECT i.path FROM imagen i WHERE i.publicacion_id = p.id ORDER BY i.id LIMIT 1) as imagen
-                                  FROM valoracion v
-                                  INNER JOIN usuario u ON u.id = v.origen_usuario_id
-                                  INNER JOIN reserva r ON r.id = v.reserva_id
-                                  INNER JOIN publicacion p ON p.id = r.publicacion_id
-                                  WHERE v.origen_usuario_id = '{$_SESSION['id']}'
-                                  ORDER BY v.mensaje DESC, v.fecha DESC");
+            (SELECT i.path FROM imagen i WHERE i.publicacion_id = p.id ORDER BY i.id LIMIT 1) as imagen
+            FROM valoracion v
+            INNER JOIN usuario u ON u.id = v.origen_usuario_id
+            INNER JOIN reserva r ON r.id = v.reserva_id
+            INNER JOIN publicacion p ON p.id = r.publicacion_id
+            WHERE v.origen_usuario_id = '{$_SESSION['id']}'
+            ORDER BY v.fecha DESC");
 
 if( $valoraciones->num_rows ){
 

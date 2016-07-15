@@ -1,9 +1,6 @@
   <div class="footer">
     <div class="container text-center">
-      <a href="/Acerca.php">Acerca de</a> -
-      <a href="/Ayuda.php">Ayuda</a> -
-      <a href="/PoliticasUso">Políticas de uso</a> -
-      <a href="/Privacidad">Privacidad</a>
+      <a href="/Acerca.php">Acerca de</a>
     </div>
   </div>
   <script type="text/javascript" src="/js/jquery-2.2.4.min.js"></script>

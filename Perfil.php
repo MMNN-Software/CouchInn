@@ -136,6 +136,15 @@
     }
   }
 
+  if(isset($_POST['valorar'])){
+    $mensaje1 = $conexion->real_escape_string($_POST['mensaje']);
+    $valor = $_POST['valoracion'];
+
+    $hoy = date("Y-m-d");
+    $conexion->query("INSERT INTO valoracion (reserva_id, origen_usuario_id, destino_usuario_id, fecha,valor, mensaje) VALUES ('{$_POST['rid']}', '{$_SESSION['id']}', '{$_POST['uid']}', '$hoy', '{$_POST['valoracion']}', '{$mensaje1}')");
+    $mensaje = "Tu valoración se ha enviado con éxito"; 
+  }
+
   $iduser = $conexion->real_escape_string((isset($_GET['id']))?$_GET['id']:$_SESSION['id']);
 
   $usuario_perfil = $conexion->query("SELECT * FROM usuario WHERE id = '{$iduser}'");

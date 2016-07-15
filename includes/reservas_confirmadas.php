@@ -19,7 +19,7 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
               FROM reserva r
               INNER JOIN publicacion p ON p.id = r.publicacion_id
               INNER JOIN usuario u ON u.id = r.usuario_id
-              WHERE r.estado = 1 AND r.usuario_id='{$_SESSION['id']}'
+              WHERE r.estado = 1 OR ( r.estado = 2 AND r.hasta > CURDATE()) AND r.usuario_id='{$_SESSION['id']}'
               ORDER BY r_fecha DESC;");
 ?>
 

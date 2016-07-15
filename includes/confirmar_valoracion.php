@@ -1,6 +1,6 @@
 <div class="modal fade" id="valor_usuario">
 
-  <form  class="form" action="/valorar_usuario.php?idu=<?php echo $use['id']; ?>" method="POST">
+  <form  class="form" action="/valorar.php?id=<?php echo $usuario['id']; ?>" method="POST">
     <div class="modal-dialog" style="max-width:400px">
       <div class="modal-content">
         <div class="modal-header">
