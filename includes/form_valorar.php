@@ -14,11 +14,11 @@
         <label class="control-label">Valoración</label>
         <select name="valoracion" class="form-control" required>
           <option value="">Seleccione valor</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
+          <option value="1">1 - Pésimo</option>
+          <option value="2">2 - Malo</option>
+          <option value="3">3 - Regular</option>
+          <option value="4">4 - Buena</option>
+          <option value="5">5 - Excelente</option>
         </select>
       </div>
     </div>

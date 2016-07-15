@@ -6,6 +6,7 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
                                     r.desde AS r_desde,
                                     r.hasta as r_hasta,
                                     r.mensaje AS r_mensaje,
+                                    r.estado,
                                     UNIX_TIMESTAMP(r.fecha) AS r_fecha,
                                     p.id AS publicacion_id,
                                     p.titulo AS publicacion_titulo,
@@ -13,7 +14,7 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
                                 FROM reserva r
                                 INNER JOIN publicacion p ON p.id = r.publicacion_id
                                 INNER JOIN usuario u ON u.id = r.usuario_id
-                                WHERE r.estado = 1 AND p.id = '{$id}'
+                                WHERE r.estado = 1 OR r.estado = 2 AND r.hasta > CURDATE() AND p.id = '{$id}'
                                 ORDER BY r_fecha DESC;");
 
 if (!$reservas->num_rows): ?>
@@ -35,8 +36,12 @@ if (!$reservas->num_rows): ?>
 		      <span style="width:70%"><b>Periodo: </b><?php echo $reserva['r_desde'] ?> - <?php echo $reserva['r_hasta'] ?></span> </br>
 		      <span style="width:70%"><b>Mensaje: </b><?php echo $reserva['r_mensaje'] ?></span>
 		      <div class="pull-right">
+		      <?php if ($reserva['estado']==1): ?>
 		      <button type="submit" class="btn btn-success btn-sm" name="aceptar" value="<?php echo ($reserva['reserva_id']) ?>">Aceptar</button>
 		      <button type="submit" class="btn btn-danger btn-sm" name="rechazar" value="<?php echo ($reserva['reserva_id']) ?>">Rechazar</button>
+			  <?php else: ?>
+			  	Aceptada
+		      <?php endif ?>
 		      </div>
 		    </form>
 	    </div>

@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-body">
-      
+    
     <ul class="nav nav-pills">
       <li><h5 style="margin-right:20px">Reservas</h5></li>
       <li class="active"><a data-toggle="tab" href="#confirmadas">Todas</a></li>

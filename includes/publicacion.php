@@ -16,7 +16,14 @@
       <?php }
     ?></a>
     <div class="panel-body">
-      <h6><b><?php echo $publicacion['titulo'] ?></b></h6>
+      <h6>
+        <div class="featured-review-star-rating pull-right">
+          <div class="tiny-star star-rating-non-editable-container" data-toggle="tooltip" data-placement="right" title="<?php echo number_format($publicacion['ranking'],1); ?> estrellas">
+            <div class="current-rating" style="width: <?php echo round(($publicacion['ranking']*100)/5) ?>%;"></div>
+          </div>
+        </div>
+        <b><?php echo $publicacion['titulo'] ?></b>
+      </h6>
       <div>
         Para <?php echo $publicacion['capacidad'] ?> persona<?php if ($publicacion['capacidad']!=1): ?>s<?php endif ?> <br>
         <?php echo $publicacion['categoria'] ?> en <a href="/?ciudad=<?php echo $publicacion['ciudad_id'] ?>"><?php echo $publicacion['ciudad'] ?>, <?php echo $publicacion['provincia'] ?></a>

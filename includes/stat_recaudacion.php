@@ -10,39 +10,39 @@ $total = $total['total'];
 if ($pagos->num_rows): ?>
 
 <div class="row">
-<div class="col-sm-4">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<h5>Se realiz<?php echo ($pagos->num_rows==1)?'ó':'aron'; ?></h5>
-			<hr>
-			<div style="font-size:48px" class="text-right">
-				<?php echo $pagos->num_rows ?> pago<?php if ($pagos->num_rows!=1) echo 's'; ?>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h5>Se realiz<?php echo ($pagos->num_rows==1)?'ó':'aron'; ?></h5>
+				<hr>
+				<div style="font-size:48px" class="text-right">
+					<?php echo $pagos->num_rows ?> pago<?php if ($pagos->num_rows!=1) echo 's'; ?>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="col-sm-4">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<h5>Se recaudó</h5>
-			<hr>
-			<div style="font-size:48px" class="text-right">
-				$ <?php echo number_format($total,2,',','.'); ?>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h5>Se recaudó</h5>
+				<hr>
+				<div style="font-size:48px" class="text-right">
+					$ <?php echo number_format($total,2,',','.'); ?>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="col-sm-4">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<h5>Días</h5>
-			<hr>
-			<div style="font-size:48px" class="text-right">
-				<?php echo $dias ?> día<?php if ($dias!=1) echo 's'; ?>
+	<div class="col-sm-4">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<h5>Días</h5>
+				<hr>
+				<div style="font-size:48px" class="text-right">
+					<?php echo $dias ?> día<?php if ($dias!=1) echo 's'; ?>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
 </div>
 
 <h5>Detalles</h5>
@@ -56,13 +56,13 @@ if ($pagos->num_rows): ?>
 		</tr>
 	</thead>
 	<tbody>
-	<?php while( $pago = $pagos->fetch_assoc() ): ?>
-		<tr>
-			<td><a href="/Perfil.php?id=<?php echo $pago['usuario_id']?>"><img class="img-circle shadow" src="/img/perfiles/<?php echo ($pago['foto'])?$pago['foto']:'default.png'; ?>" width="24"> <?php echo $pago['nombre']; ?></a></td>
-			<td><?php echo $pago['fecha']; ?></td>
-			<td>$<?php echo $pago['monto']; ?></td>
-		</tr>
-	<?php endwhile; ?>
+		<?php while( $pago = $pagos->fetch_assoc() ): ?>
+			<tr>
+				<td><a href="/Perfil.php?id=<?php echo $pago['usuario_id']?>"><img class="img-circle shadow" src="/img/perfiles/<?php echo ($pago['foto'])?$pago['foto']:'default.png'; ?>" width="24"> <?php echo $pago['nombre']; ?></a></td>
+				<td><?php echo $pago['fecha']; ?></td>
+				<td>$<?php echo $pago['monto']; ?></td>
+			</tr>
+		<?php endwhile; ?>
 	</tbody>
 	<tfoot>
 		<tr>
