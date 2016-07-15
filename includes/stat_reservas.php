@@ -5,40 +5,7 @@ $count = $conexion->query("SELECT COUNT(DISTINCT usuario_id) as personas, COUNT(
 $count = $count->fetch_assoc();
 
 
-if ($reservas->num_rows): 
-	$javascripts .= <<<EOD
-
-<script type="text/javascript">
-	/*google.charts.load('current', {'packages':['corechart']});
-	google.charts.setOnLoadCallback(drawChart);
-
-	function drawChart() {
-		var data = google.visualization.arrayToDataTable([
-		['Year', 'Personas', 'Reservas', 'Publicaciones'],
-		['2004',  1000, 123, 1233],
-		['2004',  1000, 123, 1233],
-		['2004',  1000, 123, 1233],
-		['2004',  1000, 123, 1233],
-		['2004',  1000, 123, 1233],
-		]);
-
-		var options = {
-			height: 350
-		};
-
-		var chart = new google.visualization.LineChart(document.getElementById('chart'));
-
-		chart.draw(data, options);
-	}*/
-</script>
-EOD;
-
-?>
-<div class="row">
-	<div class="col-xs-12">
-		<div id="chart"></div>
-	</div>
-</div>
+if ($reservas->num_rows): ?>
 
 
 <div class="row">
@@ -93,7 +60,9 @@ EOD;
 			<tr>
 				<td><a href="/Perfil.php?id=<?php echo $reserva['usuario_id']?>"><img class="img-circle shadow" src="/img/perfiles/<?php echo ($reserva['foto'])?$reserva['foto']:'default.png'; ?>" width="24"> <?php echo $reserva['nombre']; ?></a></td>
 				<td><a href="/Publicacion.php?id=<?php echo $reserva['publicacion_id'] ?>"><?php echo $reserva['titulo']; ?></a></td>
-				<td><?php echo $reserva['fecha']; ?></td>
+				<td><?php 
+				$tempdate = DateTime::createFromFormat("Y-m-d H:i:s",$reserva['fecha']);
+				echo $tempdate->format(DATE_FORMAT); ?></td>
 				<td><?php
 
 					$r_desde = DateTime::createFromFormat("Y-m-d",$reserva['desde']);

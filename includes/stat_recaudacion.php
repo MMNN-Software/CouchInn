@@ -7,7 +7,57 @@ $total = $total['total'];
 
 
 
-if ($pagos->num_rows): ?>
+if ($pagos->num_rows): 
+
+
+  $detalles = $conexion->query("SELECT DATE(p.fecha) as fecha_rec, SUM(p.monto) as monto, COUNT(*) as cant
+			FROM pago p
+			WHERE DATE(p.fecha) BETWEEN '".$desde->format("Y-m-d")."' AND '".$hasta->format("Y-m-d")."'
+			GROUP BY fecha_rec
+			ORDER BY fecha_rec");
+
+
+
+$javascripts .= <<<EOD
+
+<script type="text/javascript">
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable([
+		['Día', 'Recaudación'],
+EOD;
+
+while( $detalle = $detalles->fetch_assoc() ){
+	$fecha = DateTime::createFromFormat("Y-m-d",$detalle['fecha_rec']);
+	$javascripts .= "[new Date('{$fecha->format('D M d Y')}'), {$detalle['monto']}],";
+}
+
+		
+$javascripts .= <<<EOD
+		]);
+
+		var options = {
+			height: 350,
+          curveType: 'function',
+          legend: { position: 'bottom' }
+		};
+
+		var chart = new google.visualization.LineChart(document.getElementById('chart'));
+
+		chart.draw(data, options);
+	}
+</script>
+EOD;
+
+?>
+<div class="row">
+	<div class="col-xs-12">
+		<div id="chart"></div>
+	</div>
+</div>
+
 
 <div class="row">
 	<div class="col-sm-4">
