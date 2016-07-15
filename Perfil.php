@@ -145,6 +145,11 @@
     $mensaje = "Tu valoración se ha enviado con éxito"; 
   }
 
+  if(isset($_POST['borrar_favorito'])){
+    $conexion->query("DELETE FROM favorito WHERE id = '{$_POST['borrar_favorito']}'");
+    if($conexion->affected_rows) $mensaje = "La publicación ha sido borrada de favoritos"; 
+  }
+
   $iduser = $conexion->real_escape_string((isset($_GET['id']))?$_GET['id']:$_SESSION['id']);
 
   $usuario_perfil = $conexion->query("SELECT * FROM usuario WHERE id = '{$iduser}'");

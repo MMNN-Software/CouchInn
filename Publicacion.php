@@ -56,14 +56,17 @@
   }
 
   if( isset($_POST['aceptar']) ){
-    //TODO: revisar que la reserva que se acepta sea válida por las fechas
     $conexion->query("UPDATE reserva SET estado = 2, fecha_aceptacion = current_date WHERE id = '{$_POST['aceptar']}';");
-    $conexion->query("UPDATE reserva SET estado = 3 WHERE id IN (
-                      SELECT GROUP_CONCAT(r.id) as reserva_id FROM reserva r
+    $reservas = $conexion->query("SELECT r.id FROM reserva r
                       INNER JOIN reserva r2 ON r2.publicacion_id = r.publicacion_id
                       WHERE (((r.desde BETWEEN r2.desde AND r2.hasta) OR (r.hasta BETWEEN r2.desde AND r2.hasta))
                         OR ((r2.desde BETWEEN r.desde AND r.hasta) OR (r2.hasta BETWEEN r.desde AND r.hasta)))
-                      AND r2.id != r.id AND r2.id = {$reserva_id});");
+                      AND r2.id != r.id AND r2.id = '{$_POST['aceptar']}';");
+
+    while ( $reserva = $reservas->fetch_assoc() ) {
+      $conexion->query("UPDATE reserva SET estado = 3 WHERE id= '{$reserva['id']}'");
+    }
+
     $mensaje = "Reserva aceptada correctamente.";
   }
 
@@ -79,12 +82,12 @@
     $in = DateTime::createFromFormat('d/m/Y', $_POST['datein'])->format('Y-m-d');
     $out = DateTime::createFromFormat('d/m/Y', $_POST['dateout'])->format('Y-m-d');
 
-    $valoraciones = $conexion->query("SELECT * FROM reserva 
-      WHERE publicacion_id = '{$_GET['id']}' AND usuario_id = '{$_SESSION['id']}' AND
-      '{$in}' BETWEEN desde AND hasta OR desde BETWEEN '{$in}' AND '{$out}' AND estado = 2");
+    $valoraciones = $conexion->query("SELECT id FROM reserva 
+      WHERE publicacion_id = '{$_GET['id']}' AND estado = 2 AND
+      ('{$in}' BETWEEN desde AND hasta OR desde BETWEEN '{$in}' AND '{$out}')");
 
     if ($valoraciones->num_rows) {
-      $error = "Ya existe una oferta que interfiere con tu oferta actual";
+      $error = "La publicacion no se encuentra disponible en las fechas indicadas.";
     }else{
       $conexion->query("INSERT INTO reserva (usuario_id, publicacion_id, mensaje, fecha, desde, hasta, estado) 
         VALUES ('{$_SESSION['id']}', '{$_GET['id']}', '{$mensaje1}', '{$fecha}', '{$in}', '{$out}', 1)");
@@ -95,7 +98,7 @@
   if(!$publicacion['activa'])
     $error .= "La categoria de la publicación se encuentra inactiva, podrás ver la publicación pero no aparecerá en los listados.<br>Para que vuelva a aparecer podés editarla con una categoria nueva.";
 
-  $favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
+  $favoritos = $conexion->query("SELECT COUNT(*) as cant, (SELECT COUNT(*) FROM favorito WHERE usuario_id = '{$_SESSION['id']}' AND publicacion_id = '{$id}') as isfav FROM favorito WHERE publicacion_id = '{$id}'");
   $favoritos = $favoritos->fetch_assoc();
 ?>
   <?php include 'includes/form_ofertar.php';?>  

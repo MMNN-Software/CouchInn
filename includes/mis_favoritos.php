@@ -1,5 +1,5 @@
 <?php
-$favoritos = $conexion->query("SELECT p.id, f.fecha, p.titulo
+$favoritos = $conexion->query("SELECT p.id, f.fecha, p.titulo, f.id as idf
   FROM favorito f
   INNER JOIN publicacion p ON p.id = f.publicacion_id 
   WHERE f.usuario_id = '{$_SESSION['id']}'
@@ -21,7 +21,10 @@ $favoritos = $conexion->query("SELECT p.id, f.fecha, p.titulo
                   <?php } 
                   $imagenes->free(); ?></span>
                   <span class="pull-right">
-                    <!--aca irian botones-->
+                    <form action="/Perfil.php?tab=favoritos" method="POST">
+                      <input type="hidden" name="borrar_favorito" value="<?php echo $favorito['idf'] ?>">                    
+                      <button type="submit" class="btn btn-danger">Borrar</button>
+                    </form>
                   </span>
                   <h5 class="list-group-item-heading"><a href="/Publicacion.php?id=<?php echo $favorito['id'] ?>"><?php echo $favorito['titulo']; ?></a></h5>
                   <p class="list-group-item-text">Agregado el <?php echo (new Datetime($favorito['fecha']))->format('d-m-Y'); ?></p>

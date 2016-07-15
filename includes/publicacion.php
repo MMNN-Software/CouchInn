@@ -39,7 +39,7 @@
           $cantpreg = $preguntas->fetch_assoc();
           $preguntas->free();
           if (isset($_SESSION['usuario'])){
-            $favoritos = $conexion->query("SELECT COUNT(*) as cant, COUNT(usuario_id = '{$_SESSION['id']}') as isfav FROM favorito WHERE publicacion_id = '{$publicacion['id']}'");
+            $favoritos = $conexion->query("SELECT COUNT(*) as cant, (SELECT COUNT(*) FROM favorito WHERE usuario_id = '{$_SESSION['id']}' AND publicacion_id = '{$publicacion['id']}') as isfav FROM favorito WHERE publicacion_id = '{$publicacion['id']}'");
             $favoritos = $favoritos->fetch_assoc();
           ?>
           <a href="#" data-fav="<?php echo $publicacion['id'] ?>" class="btn btn-sm btn-<?php echo ($favoritos['isfav'])?'danger':'default'; ?>" data-toggle="tooltip" data-placement="top" title="Agregar a favoritos">
