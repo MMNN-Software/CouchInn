@@ -20,7 +20,7 @@ $reservas = $conexion->query("SELECT u.id AS res_user_id,
 							INNER JOIN publicacion p ON p.id = r.publicacion_id
 							INNER JOIN usuario u ON u.id = r.usuario_id
 							WHERE r.estado = 2 AND r.hasta <= current_date AND r.usuario_id='{$_SESSION['id']}'
-							ORDER BY p.titulo, r_fecha DESC;");
+							ORDER BY r_fecha DESC;");
 ?>
 
 <div class="list-group">
