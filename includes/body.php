@@ -62,19 +62,34 @@
         <input type="text"  class="form-control" id="titulo" name="titulo" class="form-control" placeholder="Titulo" >
       </div>
     </div>
+	
     <div class="col-sm-3">
       <div class="form-group">
         <label class="control-label">Descripción</label>
         <input type="text"  class="form-control" id="descripcion" name="descripcion" class="form-control" placeholder="Descripción" >
       </div>
     </div>
-    <div class="col-sm-3">
+	
+	<div class="col-sm-3">
+          <div class="form-group">
+            <label class="control-label">Ordenar por</label>
+            <select name="ordenar" class="form-control">
+              <option value="0">Fecha</option>            
+              <option value="1">Nombre</option>
+			  <option value="2">Valoración</option>             
+            </select>
+          </div>
+        </div>
+    
+    </div>
+	<div class="row">
+		<div class="col-sm-12">
       <div class="form-group">
         <label class="control-label"></label>
         <button type="submit" class="btn btn-lg btn-block btn-primary">Buscar <span class="glyphicon glyphicon-search"></span></button>
       </div>
     </div>
-    </div>
+	</div>
   </div>
   </div>
 </form>
